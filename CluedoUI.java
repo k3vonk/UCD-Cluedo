@@ -87,6 +87,7 @@ public class CluedoUI extends JFrame {
 
         JTextArea infArea = new JTextArea("", 33, 26);
         infArea.setLineWrap(true);
+        infArea.setEditable(false);
         infArea.setMaximumSize(infArea.getPreferredSize());
         JScrollPane scrollPane = new JScrollPane(infArea);
         InformationPanel.add(scrollPane);
