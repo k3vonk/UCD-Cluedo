@@ -1,31 +1,20 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 
-public class testMain extends JFrame{
+public class testMain extends JFrame {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-		BoardPanel test = new BoardPanel();
-		JFrame frame = new JFrame();
-		frame.setSize(660, 700);
-		frame.setTitle("Cluedo");
+    public static void main(String[] args) {
+        final CluedoUI ui = new CluedoUI();
 
-		frame.add(test);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+        // TODO Auto-generated method stub
 
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		test.movementTest();
-		test.repaint();
-
-		System.out.println("Do we get this far?");
-	}
+    }
 
 
 }
