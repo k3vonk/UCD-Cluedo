@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+@SuppressWarnings("serial")
 public class CluedoUI extends JFrame {
 
 
@@ -65,7 +66,7 @@ public class CluedoUI extends JFrame {
         mainPanel.add(bottomContainerPanel);
 
         try {
-            BufferedImage myPicture = ImageIO.read(new File("mrsPlumPlayer.png"));
+            BufferedImage myPicture = ImageIO.read(this.getClass().getResource("mrsPlumPlayer.png"));
             //myPicture.
             JLabel picLabel = new JLabel(new ImageIcon(myPicture));
             //picLabel.setPreferredSize(new Dimension(100,100));
@@ -96,13 +97,13 @@ public class CluedoUI extends JFrame {
             JLabel picLabel = new JLabel(new ImageIcon(myPicture));
             InformationPanel.add(picLabel);
 
-            myPicture = ImageIO.read(new File("dagger.png"));
+            myPicture = ImageIO.read(new File("Dagger.png"));
             picLabel = new JLabel(new ImageIcon(myPicture));
             InformationPanel.add(picLabel);
-
+            	/*
             myPicture = ImageIO.read(new File("ballroom.png"));
             picLabel = new JLabel(new ImageIcon(myPicture));
-            InformationPanel.add(picLabel);
+            InformationPanel.add(picLabel);*/
 
         } catch (IOException ex) {
             //ex.printStackTrace();
