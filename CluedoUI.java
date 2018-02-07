@@ -24,18 +24,6 @@ public class CluedoUI extends JFrame {
         frame.setTitle("Cluedo");
         frame.setVisible(true);
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
-
-        //test.movementTest();
-        //test.repaint();
-
-        System.out.println("Do we get this far?");
     }
 
     public void DrawMainPanel(){
