@@ -1,23 +1,32 @@
 import java.awt.Graphics;
 
+import javax.swing.JComponent;
+
 /**
  * A class that makes an array of tiles
  * @author Gajun
  *
  */
-public class TileGrid {
+@SuppressWarnings("serial")
+public class TileGrid extends JComponent{
 	public Tile[][] map; //Array of Tiles
 	
-	private double x, y; //Coordinates for the start of each tile
+	//Array size
+	private static final int COLUMN = 24;
+	private static final int ROW = 25;
+	
+	//Starting coordinates for the tile
+	private double x = 42.5;
+	private double y = 23.25;
 	
 	//Constructor that builds the array of tiles
 	public TileGrid() {
-		map = new Tile[24][25];
-		x = 42.5;
+		map = new Tile[COLUMN][ROW];  //Dimension of the Board
+		
 		for(int i = 0; i < map.length; i++) {
 			y = 23.25;
 			for(int j = 0; j < map[i].length; j++) {
-				map[i][j] = new Tile(x, y);
+				map[i][j] = new Tile(x, y, j, i);
 				y += 23;
 			}
 			
@@ -26,10 +35,10 @@ public class TileGrid {
 	}
 	
 	//Draw the tiles
-	public void drawMe(Graphics g) {
+	public void drawGrid(Graphics g) {
 		for(int i = 0; i < map.length; i++) {
 			for(int j = 0; j < map[i].length; j++) {
-				map[i][j].drawMe(g);
+				map[i][j].drawTile(g);
 			}
 		}
 	}
