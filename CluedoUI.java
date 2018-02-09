@@ -10,12 +10,12 @@ public class CluedoUI extends JFrame {
 
 
     JPanel mainPanel = new JPanel();
-    private BoardPanel test;
-
+    private BoardPanel test; //NEW! I instatiate the Boardpanel object OUTSIDE Drawmainpanel so it can be used by other methods
+                    //NEW!
     public CluedoUI(BoardPanel test) {
 
         JFrame frame = new JFrame();
-        this.test = test;
+        this.test = test; // NEW! I need an instance of Boardpanel as part of the constructor.
         DrawMainPanel();
 
         frame.add(mainPanel);
@@ -27,10 +27,17 @@ public class CluedoUI extends JFrame {
         frame.setVisible(true);
 
     }
-    //Method to move the character down 1 space.
+
+    //Methods to move the characters 1 space.
+    //For now these move both players and weapons. The input is the name of what you want to move.
     public void moveDown(String name){
         test.moveDown(name);
     }
+    public void moveUp(String name){test.moveUp(name);}
+    public void moveRight(String name){test.moveRight(name);}
+    public void moveLeft(String name){test.moveLeft(name);}
+    //Method to set the weapons somewhere.
+    public void setWeaponTile(String name, int newRow, int newColumn){test.setWeaponTile(name,newRow,newColumn);}
 
     public void DrawMainPanel(){
         JPanel bottomContainerPanel = new JPanel();
@@ -105,6 +112,6 @@ public class CluedoUI extends JFrame {
         }
 
         submit.addActionListener(e -> infArea.insert("Mrs.White: " + inputText.getText() + "\n", 0));
-        submit.addActionListener(e -> moveDown("White")); //For testing purposes
+        submit.addActionListener(e -> moveDown("White")); //For testing purposes. Press the submit button and see what happens :)
     }
 }

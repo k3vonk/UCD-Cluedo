@@ -26,7 +26,7 @@ public class Player extends Token{
   		this.colour = colour;
   		this.position = position;
   	}
-
+    //Accessor method to obtain a player's name
   	public String getPlayerName(){
   	    return this.name;
     }

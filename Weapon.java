@@ -23,7 +23,11 @@ public class Weapon extends Token{
 		super(position);
 		this.type = type;
 	}
-	
+	//Accessor method to obtain a weapon's name.
+	public String getWeaponName(){
+		return this.type;
+	}
+
 	//Draw the initials of the weapon
 	public void drawWeapon(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;

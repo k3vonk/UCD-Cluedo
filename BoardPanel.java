@@ -56,7 +56,7 @@ public class BoardPanel extends JPanel{
 		repaint();
 	}
 	*/
-
+	//Method for moving weapons that APPARENTLY isnt allowed. So i just put them with the player movements.
 	public void setWeaponTile(String name, int newRow, int newColumn){
 		for(int j = 0; j < 6; j++){
 			if(logo.get(j).getName() == name){
@@ -66,13 +66,19 @@ public class BoardPanel extends JPanel{
 		}
 		repaint();
 	}
-
+	//For now these move both players and weapons. The input is the name of what you want to move.
+	//They work by cycling through all 12 players/weapons and when the name matches, it moves it.
+	//Ive considered ending it after a name matches but 12 loops is literally NOTHING for the CPU!
 	//Moving player up
 	public void moveUp(String name){
 		for(int j = 0; j < 6; j++){
 			if(icon.get(j).getPlayerName() == name){
 				Tile tempTile = new Tile(icon.get(j).getTile().getXCord(),icon.get(j).getTile().getYCord()-23, icon.get(j).getTile().getRow()-1, icon.get(j).getTile().getColumn());
 				icon.get(j).setTile(tempTile);
+			}
+			if(logo.get(j).getWeaponName() == name){
+				Tile tempTile = new Tile(logo.get(j).getTile().getXCord(),logo.get(j).getTile().getYCord()-23, logo.get(j).getTile().getRow()-1, logo.get(j).getTile().getColumn());
+				logo.get(j).setTile(tempTile);
 			}
 		}
 		repaint();
@@ -84,6 +90,10 @@ public class BoardPanel extends JPanel{
 				Tile tempTile = new Tile(icon.get(j).getTile().getXCord()+23,icon.get(j).getTile().getYCord(), icon.get(j).getTile().getRow(), icon.get(j).getTile().getColumn()+1);
 				icon.get(j).setTile(tempTile);
 			}
+			if(logo.get(j).getWeaponName() == name){
+				Tile tempTile = new Tile(logo.get(j).getTile().getXCord()+23,logo.get(j).getTile().getYCord(), logo.get(j).getTile().getRow(), logo.get(j).getTile().getColumn()+1);
+				logo.get(j).setTile(tempTile);
+			}
 		}
 		repaint();
 	}
@@ -94,6 +104,10 @@ public class BoardPanel extends JPanel{
 				Tile tempTile = new Tile(icon.get(j).getTile().getXCord(),icon.get(j).getTile().getYCord()+23, icon.get(j).getTile().getRow()+1, icon.get(j).getTile().getColumn());
 				icon.get(j).setTile(tempTile);
 			}
+			if(logo.get(j).getWeaponName() == name){
+				Tile tempTile = new Tile(logo.get(j).getTile().getXCord(),logo.get(j).getTile().getYCord()+23, logo.get(j).getTile().getRow()+1, logo.get(j).getTile().getColumn());
+				logo.get(j).setTile(tempTile);
+			}
 		}
 		repaint();
 	}
@@ -103,6 +117,10 @@ public class BoardPanel extends JPanel{
 			if(icon.get(j).getPlayerName() == name){
 				Tile tempTile = new Tile(icon.get(j).getTile().getXCord()-23,icon.get(j).getTile().getYCord(), icon.get(j).getTile().getRow(), icon.get(j).getTile().getColumn()-1);
 				icon.get(j).setTile(tempTile);
+			}
+			if(logo.get(j).getWeaponName() == name){
+				Tile tempTile = new Tile(logo.get(j).getTile().getXCord()-23,logo.get(j).getTile().getYCord(), logo.get(j).getTile().getRow(), logo.get(j).getTile().getColumn()-1);
+				logo.get(j).setTile(tempTile);
 			}
 		}
 		repaint();
