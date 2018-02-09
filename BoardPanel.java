@@ -66,11 +66,12 @@ public class BoardPanel extends JPanel{
 		}
 		repaint();
 	}
-	//For now these move both players and weapons. The input is the name of what you want to move.
-	//They work by cycling through all 12 players/weapons and when the name matches, it moves it.
+	//For now these move both players and weapons. The input is the direction to move and name of what to move.
+	//They work by cycling through directions then all 12 players/weapons and when the name matches, it moves it.
 	//Ive considered ending it after a name matches but 12 loops is literally NOTHING for the CPU!
-	//Moving player up
-	public void moveUp(String name){
+	//Method to move player/weapon.
+	public void Movement(String direction, String name){
+	if(direction == "up"){
 		for(int j = 0; j < 6; j++){
 			if(icon.get(j).getPlayerName() == name){
 				Tile tempTile = new Tile(icon.get(j).getTile().getXCord(),icon.get(j).getTile().getYCord()-23, icon.get(j).getTile().getRow()-1, icon.get(j).getTile().getColumn());
@@ -84,7 +85,7 @@ public class BoardPanel extends JPanel{
 		repaint();
 	}
 	//Moving player right
-	public void moveRight(String name){
+	else if(direction == "right"){
 		for(int j = 0; j < 6; j++){
 			if(icon.get(j).getPlayerName() == name){
 				Tile tempTile = new Tile(icon.get(j).getTile().getXCord()+23,icon.get(j).getTile().getYCord(), icon.get(j).getTile().getRow(), icon.get(j).getTile().getColumn()+1);
@@ -98,7 +99,7 @@ public class BoardPanel extends JPanel{
 		repaint();
 	}
 	//Moving player down
-	public void moveDown(String name){
+	else if(direction == "down"){
 		for(int j = 0; j < 6; j++){
 			if(icon.get(j).getPlayerName() == name){
 				Tile tempTile = new Tile(icon.get(j).getTile().getXCord(),icon.get(j).getTile().getYCord()+23, icon.get(j).getTile().getRow()+1, icon.get(j).getTile().getColumn());
@@ -112,7 +113,7 @@ public class BoardPanel extends JPanel{
 		repaint();
 	}
 	//Moving player left
-	public void moveLeft(String name){
+	else if(direction == "left"){
 		for(int j = 0; j < 6; j++){
 			if(icon.get(j).getPlayerName() == name){
 				Tile tempTile = new Tile(icon.get(j).getTile().getXCord()-23,icon.get(j).getTile().getYCord(), icon.get(j).getTile().getRow(), icon.get(j).getTile().getColumn()-1);
@@ -125,6 +126,7 @@ public class BoardPanel extends JPanel{
 		}
 		repaint();
 	}
+}
 
 
 	//Draw the objects together
