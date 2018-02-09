@@ -30,9 +30,7 @@ public class CluedoUI extends JFrame {
 
     //Methods to move the characters 1 space.
     //For now these move both players and weapons. The input is the name of what you want to move.
-    public void moveDown(String name){
-        test.moveDown(name);
-    }
+    public void moveDown(String name){test.moveDown(name);}
     public void moveUp(String name){test.moveUp(name);}
     public void moveRight(String name){test.moveRight(name);}
     public void moveLeft(String name){test.moveLeft(name);}
