@@ -70,7 +70,7 @@ public class BoardPanel extends JPanel{
 	//Moving player up
 	public void moveUp(String name){
 		for(int j = 0; j < 6; j++){
-			if(icon.get(j).getName() == name){
+			if(icon.get(j).getPlayerName() == name){
 				Tile tempTile = new Tile(icon.get(j).getTile().getXCord(),icon.get(j).getTile().getYCord()-23, icon.get(j).getTile().getRow()-1, icon.get(j).getTile().getColumn());
 				icon.get(j).setTile(tempTile);
 			}
@@ -80,7 +80,7 @@ public class BoardPanel extends JPanel{
 	//Moving player right
 	public void moveRight(String name){
 		for(int j = 0; j < 6; j++){
-			if(icon.get(j).getName() == name){
+			if(icon.get(j).getPlayerName() == name){
 				Tile tempTile = new Tile(icon.get(j).getTile().getXCord()+23,icon.get(j).getTile().getYCord(), icon.get(j).getTile().getRow(), icon.get(j).getTile().getColumn()+1);
 				icon.get(j).setTile(tempTile);
 			}
@@ -90,7 +90,7 @@ public class BoardPanel extends JPanel{
 	//Moving player down
 	public void moveDown(String name){
 		for(int j = 0; j < 6; j++){
-			if(icon.get(j).getName() == name){
+			if(icon.get(j).getPlayerName() == name){
 				Tile tempTile = new Tile(icon.get(j).getTile().getXCord(),icon.get(j).getTile().getYCord()+23, icon.get(j).getTile().getRow()+1, icon.get(j).getTile().getColumn());
 				icon.get(j).setTile(tempTile);
 			}
@@ -100,7 +100,7 @@ public class BoardPanel extends JPanel{
 	//Moving player left
 	public void moveLeft(String name){
 		for(int j = 0; j < 6; j++){
-			if(icon.get(j).getName() == name){
+			if(icon.get(j).getPlayerName() == name){
 				Tile tempTile = new Tile(icon.get(j).getTile().getXCord()-23,icon.get(j).getTile().getYCord(), icon.get(j).getTile().getRow(), icon.get(j).getTile().getColumn()-1);
 				icon.get(j).setTile(tempTile);
 			}

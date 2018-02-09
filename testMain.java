@@ -4,8 +4,9 @@ import javax.swing.*;
 public class testMain extends JFrame {
 
     public static void main(String[] args) {
-       final CluedoUI ui = new CluedoUI();
-    	
+        BoardPanel test = new BoardPanel();
+        CluedoUI ui = new CluedoUI(test);
+
     /*	JFrame frame = new JFrame();
     	
     	BoardPanel an = new BoardPanel();

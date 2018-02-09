@@ -26,6 +26,10 @@ public class Player extends Token{
   		this.colour = colour;
   		this.position = position;
   	}
+
+  	public String getPlayerName(){
+  	    return this.name;
+    }
   	
     //Method to create the player icon.
     public void drawPlayer(Graphics g) {

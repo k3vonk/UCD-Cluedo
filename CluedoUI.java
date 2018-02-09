@@ -10,10 +10,12 @@ public class CluedoUI extends JFrame {
 
 
     JPanel mainPanel = new JPanel();
+    private BoardPanel test;
 
-    public CluedoUI() {
+    public CluedoUI(BoardPanel test) {
 
         JFrame frame = new JFrame();
+        this.test = test;
         DrawMainPanel();
 
         frame.add(mainPanel);
@@ -25,11 +27,14 @@ public class CluedoUI extends JFrame {
         frame.setVisible(true);
 
     }
+    //Method to move the character down 1 space.
+    public void moveDown(String name){
+        test.moveDown(name);
+    }
 
     public void DrawMainPanel(){
         JPanel bottomContainerPanel = new JPanel();
         JPanel containerPanel = new JPanel();
-        BoardPanel test = new BoardPanel();
         JPanel InformationPanel = new JPanel();
 
         containerPanel.setPreferredSize(new Dimension(1000, 700));
@@ -100,5 +105,6 @@ public class CluedoUI extends JFrame {
         }
 
         submit.addActionListener(e -> infArea.insert("Mrs.White: " + inputText.getText() + "\n", 0));
+        submit.addActionListener(e -> moveDown("White")); //For testing purposes
     }
 }
