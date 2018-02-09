@@ -27,7 +27,7 @@ public class Weapon extends Token{
 	//Draw the initials of the weapon
 	public void drawWeapon(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		Font font = new Font("Serif", Font.BOLD, 22); //Font serif
+		Font font = new Font("Comic Sans MS", Font.PLAIN, 22); //Font Comic Sans
 		g2.setFont(font);
 		g2.setColor(Color.blue);  //Blue color
 		

@@ -41,11 +41,11 @@ public class BoardPanel extends JPanel{
 
 	//Creating a list of players [Fixed starting location]
 	public void createPlayers(){
-		icon.add(new Player("Plum", Color.magenta,  test3.map[21][1]));
-		icon.add(new Player("White", Color.white, test3.map[21][1]));
-		icon.add(new Player("Scarlet", Color.red,  test3.map[21][1]));
-		icon.add(new Player("Green", Color.green,  test3.map[21][1]));
-		icon.add(new Player("Mustard", Color.yellow,  test3.map[21][1]));
+		icon.add(new Player("Plum", Color.magenta,  test3.map[23][19]));
+		icon.add(new Player("White", Color.white, test3.map[9][0]));
+		icon.add(new Player("Scarlet", Color.red,  test3.map[7][24]));
+		icon.add(new Player("Green", Color.green,  test3.map[14][0]));
+		icon.add(new Player("Mustard", Color.yellow,  test3.map[0][17]));
 		icon.add(new Player("Peacock", Color.blue,  test3.map[23][6]));
 	}
 	
@@ -56,6 +56,57 @@ public class BoardPanel extends JPanel{
 		repaint();
 	}
 	*/
+
+	public void setWeaponTile(String name, int newRow, int newColumn){
+		for(int j = 0; j < 6; j++){
+			if(logo.get(j).getName() == name){
+				Tile tempTile = new Tile((23*newColumn), 23.5 + (23*newRow), newRow, newColumn);
+				logo.get(j).setTile(tempTile);
+			}
+		}
+		repaint();
+	}
+
+	//Moving player up
+	public void moveUp(String name){
+		for(int j = 0; j < 6; j++){
+			if(icon.get(j).getName() == name){
+				Tile tempTile = new Tile(icon.get(j).getTile().getXCord(),icon.get(j).getTile().getYCord()-23, icon.get(j).getTile().getRow()-1, icon.get(j).getTile().getColumn());
+				icon.get(j).setTile(tempTile);
+			}
+		}
+		repaint();
+	}
+	//Moving player right
+	public void moveRight(String name){
+		for(int j = 0; j < 6; j++){
+			if(icon.get(j).getName() == name){
+				Tile tempTile = new Tile(icon.get(j).getTile().getXCord()+23,icon.get(j).getTile().getYCord(), icon.get(j).getTile().getRow(), icon.get(j).getTile().getColumn()+1);
+				icon.get(j).setTile(tempTile);
+			}
+		}
+		repaint();
+	}
+	//Moving player down
+	public void moveDown(String name){
+		for(int j = 0; j < 6; j++){
+			if(icon.get(j).getName() == name){
+				Tile tempTile = new Tile(icon.get(j).getTile().getXCord(),icon.get(j).getTile().getYCord()+23, icon.get(j).getTile().getRow()+1, icon.get(j).getTile().getColumn());
+				icon.get(j).setTile(tempTile);
+			}
+		}
+		repaint();
+	}
+	//Moving player left
+	public void moveLeft(String name){
+		for(int j = 0; j < 6; j++){
+			if(icon.get(j).getName() == name){
+				Tile tempTile = new Tile(icon.get(j).getTile().getXCord()-23,icon.get(j).getTile().getYCord(), icon.get(j).getTile().getRow(), icon.get(j).getTile().getColumn()-1);
+				icon.get(j).setTile(tempTile);
+			}
+		}
+		repaint();
+	}
 
 
 	//Draw the objects together

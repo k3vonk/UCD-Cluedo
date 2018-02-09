@@ -31,8 +31,8 @@ public class Player extends Token{
     public void drawPlayer(Graphics g) {
         Graphics2D gg = (Graphics2D) g;
         
-        //Font for initials. (Don't submit until we find Comic Sans MS ty.)
-        Font font = new Font("Comic Sans MS", Font.ITALIC, 15);
+        //Font for initials.
+        Font font = new Font("Comic Sans MS", Font.PLAIN, 15);
         gg.setFont(font);
 
         gg.setColor(colour); //Colour for Icon

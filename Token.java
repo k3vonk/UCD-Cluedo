@@ -23,5 +23,5 @@ public class Token extends JPanel{
 	public void setTile(Tile position) {
 		this.position = position;
 	}
-	
+
 }

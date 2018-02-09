@@ -54,7 +54,7 @@ public class CluedoUI extends JFrame {
         mainPanel.add(bottomContainerPanel);
 
         try {
-            BufferedImage myPicture = ImageIO.read(this.getClass().getResource("mrsPlumPlayer.png"));
+            BufferedImage myPicture = ImageIO.read(this.getClass().getResource("Cluedo Images/mrsPlumPlayer.png"));
             //myPicture.
             JLabel picLabel = new JLabel(new ImageIcon(myPicture));
             //picLabel.setPreferredSize(new Dimension(100,100));
