@@ -29,12 +29,9 @@ public class CluedoUI extends JFrame {
     }
 
     //Methods to move the characters 1 space.
-    //For now these move both players and weapons. The input is the name of what you want to move.
-    public void moveDown(String name){test.moveDown(name);}
-    public void moveUp(String name){test.moveUp(name);}
-    public void moveRight(String name){test.moveRight(name);}
-    public void moveLeft(String name){test.moveLeft(name);}
-    //Method to set the weapons somewhere.
+    //For now these move both players and weapons. The input is the name of what you want to move and direction to move.
+    public void Movement(String direction, String name){test.Movement(direction,name)}
+    //Method to set the weapons somewhere. Unused for assignment 1.
     public void setWeaponTile(String name, int newRow, int newColumn){test.setWeaponTile(name,newRow,newColumn);}
 
     public void DrawMainPanel(){
@@ -110,6 +107,6 @@ public class CluedoUI extends JFrame {
         }
 
         submit.addActionListener(e -> infArea.insert("Mrs.White: " + inputText.getText() + "\n", 0));
-        submit.addActionListener(e -> moveDown("White")); //For testing purposes. Press the submit button and see what happens :)
+        submit.addActionListener(e -> Movement("down", "White")); //For testing purposes. Press the submit button and see what happens :)
     }
 }
