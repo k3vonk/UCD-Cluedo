@@ -30,9 +30,11 @@ public class CluedoUI extends JFrame {
 
     //Methods to move the characters 1 space.
     //For now these move both players and weapons. The input is the name of what you want to move and direction to move.
-    public void Movement(String direction, String name){test.Movement(direction,name)}
+    public boolean Movement(String direction, String name){
+        return  test.Movement(direction,name);
+    }
     //Method to set the weapons somewhere. Unused for assignment 1.
-    public void setWeaponTile(String name, int newRow, int newColumn){test.setWeaponTile(name,newRow,newColumn);}
+    //  public void setWeaponTile(String name, int newRow, int newColumn){test.setWeaponTile(name,newRow,newColumn);}
 
     public void DrawMainPanel(){
         JPanel bottomContainerPanel = new JPanel();

@@ -48,16 +48,9 @@ public class BoardPanel extends JPanel{
 		icon.add(new Player("Mustard", Color.yellow,  test3.map[0][17]));
 		icon.add(new Player("Peacock", Color.blue,  test3.map[23][6]));
 	}
-	
-	/*
-	public void movement() {
-		
-	//	logo[0].setTile(test3.map[5][5]);
-		repaint();
-	}
-	*/
+
 	//Method for moving weapons that APPARENTLY isnt allowed. So i just put them with the player movements.
-	public void setWeaponTile(String name, int newRow, int newColumn){
+	/*public void setWeaponTile(String name, int newRow, int newColumn){
 		for(int j = 0; j < 6; j++){
 			if(logo.get(j).getName() == name){
 				Tile tempTile = new Tile((23*newColumn), 23.5 + (23*newRow), newRow, newColumn);
@@ -65,67 +58,87 @@ public class BoardPanel extends JPanel{
 			}
 		}
 		repaint();
-	}
+	}*/
+
 	//For now these move both players and weapons. The input is the direction to move and name of what to move.
 	//They work by cycling through directions then all 12 players/weapons and when the name matches, it moves it.
 	//Ive considered ending it after a name matches but 12 loops is literally NOTHING for the CPU!
 	//Method to move player/weapon.
-	public void Movement(String direction, String name){
+	public boolean Movement(String direction, String name){
+		boolean moved;
+		boolean correctName = false;
+		boolean correctDirection = false;
+	//Moving player up
 	if(direction == "up"){
+		correctDirection = true;
 		for(int j = 0; j < 6; j++){
 			if(icon.get(j).getPlayerName() == name){
 				Tile tempTile = new Tile(icon.get(j).getTile().getXCord(),icon.get(j).getTile().getYCord()-23, icon.get(j).getTile().getRow()-1, icon.get(j).getTile().getColumn());
 				icon.get(j).setTile(tempTile);
+				correctName = true;
 			}
 			if(logo.get(j).getWeaponName() == name){
 				Tile tempTile = new Tile(logo.get(j).getTile().getXCord(),logo.get(j).getTile().getYCord()-23, logo.get(j).getTile().getRow()-1, logo.get(j).getTile().getColumn());
 				logo.get(j).setTile(tempTile);
+				correctName = true;
 			}
 		}
 		repaint();
 	}
 	//Moving player right
 	else if(direction == "right"){
+		correctDirection = true;
 		for(int j = 0; j < 6; j++){
 			if(icon.get(j).getPlayerName() == name){
 				Tile tempTile = new Tile(icon.get(j).getTile().getXCord()+23,icon.get(j).getTile().getYCord(), icon.get(j).getTile().getRow(), icon.get(j).getTile().getColumn()+1);
 				icon.get(j).setTile(tempTile);
+				correctName = true;
 			}
 			if(logo.get(j).getWeaponName() == name){
 				Tile tempTile = new Tile(logo.get(j).getTile().getXCord()+23,logo.get(j).getTile().getYCord(), logo.get(j).getTile().getRow(), logo.get(j).getTile().getColumn()+1);
 				logo.get(j).setTile(tempTile);
+				correctName = true;
 			}
 		}
 		repaint();
 	}
 	//Moving player down
 	else if(direction == "down"){
+		correctDirection = true;
 		for(int j = 0; j < 6; j++){
 			if(icon.get(j).getPlayerName() == name){
 				Tile tempTile = new Tile(icon.get(j).getTile().getXCord(),icon.get(j).getTile().getYCord()+23, icon.get(j).getTile().getRow()+1, icon.get(j).getTile().getColumn());
 				icon.get(j).setTile(tempTile);
+				correctName = true;
 			}
 			if(logo.get(j).getWeaponName() == name){
 				Tile tempTile = new Tile(logo.get(j).getTile().getXCord(),logo.get(j).getTile().getYCord()+23, logo.get(j).getTile().getRow()+1, logo.get(j).getTile().getColumn());
 				logo.get(j).setTile(tempTile);
+				correctName = true;
 			}
 		}
 		repaint();
 	}
 	//Moving player left
 	else if(direction == "left"){
+		correctDirection = true;
 		for(int j = 0; j < 6; j++){
 			if(icon.get(j).getPlayerName() == name){
 				Tile tempTile = new Tile(icon.get(j).getTile().getXCord()-23,icon.get(j).getTile().getYCord(), icon.get(j).getTile().getRow(), icon.get(j).getTile().getColumn()-1);
 				icon.get(j).setTile(tempTile);
+				correctName = true;
 			}
 			if(logo.get(j).getWeaponName() == name){
 				Tile tempTile = new Tile(logo.get(j).getTile().getXCord()-23,logo.get(j).getTile().getYCord(), logo.get(j).getTile().getRow(), logo.get(j).getTile().getColumn()-1);
 				logo.get(j).setTile(tempTile);
+				correctName = true;
 			}
 		}
 		repaint();
 	}
+	//When this is false, no move has been made and the info box should return an error to the player, prompting them to try again.
+	moved = correctDirection && correctName;
+	return moved;
 }
 
 
@@ -134,15 +147,15 @@ public class BoardPanel extends JPanel{
 		Graphics2D g2 = (Graphics2D) g;
 		test.paintComponent(g2); //Board image never changes
 		test3.drawGrid(g2); //Draw grid
-		
+
 		//Draw all the weapons in their current position
 		for(Weapon li: logo) {
 			li.drawWeapon(g2);
 		}
-		
+
 		//Draw all the players in their first location
 		for(Player pi: icon) {
 			pi.drawPlayer(g2);
-		}	
+		}
 	}
 }
