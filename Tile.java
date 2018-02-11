@@ -57,9 +57,10 @@ public class Tile extends JPanel{
 		Rectangle2D rect = new Rectangle2D.Double(x, y, WIDTH, HEIGHT);
 		
 		//Set color of grid lines to be invisible
-		Color color = new Color(0, 0, 0, 0.8f); //Black 
+		//Color color = new Color(0, 0, 0, 0.8f); //Black
+		Color color = Color.white;
 		g2.setPaint(color);
 		
-		g2.draw(rect);
+		//g2.draw(rect);
 	}
 }
