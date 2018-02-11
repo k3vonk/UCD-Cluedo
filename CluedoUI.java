@@ -17,6 +17,8 @@ public class CluedoUI extends JFrame {
 
     JPanel mainPanel = new JPanel();
     private BoardPanel test;
+    Boolean testingUser = true;
+    Boolean alerted = false;
 
     public CluedoUI(BoardPanel test) {
         JFrame frame = new JFrame();
@@ -30,6 +32,7 @@ public class CluedoUI extends JFrame {
         frame.setTitle("Cluedo");
         frame.setVisible(true);
         frame.setResizable(false);
+
 
     }
 
@@ -78,8 +81,24 @@ public class CluedoUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String input = bottomContainerPanel.getInput();
-                if (input.equals(".playerTest") || input.equals(".weaponTest")) {
-                    movementTest(bottomContainerPanel.getInput());
+                if (input.equals("up") || input.equals("down") || input.equals("left")
+                        || input.equals("right")) {
+                    if (testingUser) {
+                        test.moveToken(bottomContainerPanel.getInput(), "White");
+                        if (!alerted) {
+                            InformationPanel.updateContent(false,
+                                    ">In order to start moving the weapon, type \"-1\" into the "
+                                            + "input!");
+                            alerted = true;
+                        }
+                    } else {
+                        test.moveToken(bottomContainerPanel.getInput(), "C");
+                    }
+                } else if (input.equals("-1")) {
+                    testingUser = false;
+                    InformationPanel.updateContent(false,
+                            ">You're now controlling a weapon.");
+
                 } else {
                     InformationPanel.updateContent(false,
                             "Mrs.White: " + bottomContainerPanel.getInput());
@@ -88,6 +107,11 @@ public class CluedoUI extends JFrame {
         });
 
         //bottomContainerPanel.submit.addActionListener(e -> test.playerMovementTest("white"));
+
+        InformationPanel.updateContent(false,
+                ">Hello Mr tester dude! \n>You're now controlling player Mrs.White! Type either up,"
+                        + "down,left or maybe even right to move him accordingly! Have fun!");
+
     }
 
     /**
@@ -101,40 +125,5 @@ public class CluedoUI extends JFrame {
         return picLabel;
     }
 
-    public void movementTest(String input) {
-        if (input.equals(".playerTest")) {
-            String direction = JOptionPane.showInputDialog(
-                    "Enter direction to move Player. Enter -1 to stop (up,down,left right)");
-            while (!direction.equals("-1")) {
-                if (direction.equals("up") || direction.equals("down") || direction.equals("right")
-                        || direction.equals("left")) {
-                    test.moveToken(direction, "White");
-                    direction = JOptionPane.showInputDialog(
-                            "Enter direction to move player. (up,down,left right)");
-                }else{
-                    JOptionPane.showMessageDialog(null, "Invalid Input");
-                    direction = JOptionPane.showInputDialog(
-                            "Enter direction to move player. (up,down,left right)");
-                }
-            }
-        }
-
-        if (input.equals(".weaponTest")) {
-            String direction = JOptionPane.showInputDialog(
-                    "Enter direction to move weapon.  (up,down,left right)");
-            while (!direction.equals("-1")) {
-                if (direction.equals("up") || direction.equals("down") || direction.equals("right")
-                        || direction.equals("left")) {
-                    test.moveToken(direction, "C");
-                    direction = JOptionPane.showInputDialog(
-                            "Enter direction to move weapon. (up,down,left right)");
-                }else {
-                    JOptionPane.showMessageDialog(null, "Invalid Input");
-                    direction = JOptionPane.showInputDialog(
-                            "Enter direction to move Weapon. (up,down,left right)");
-                }
-            }
-        }
-    }
 
 }

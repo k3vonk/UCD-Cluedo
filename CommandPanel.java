@@ -31,7 +31,7 @@ public class CommandPanel extends JPanel {
         // A container that holds the textbox and the submit button.
         JPanel inputPanel = new JPanel();
         inputPanel.setBorder(new EmptyBorder(50, 0, 0, 0));
-        inputPanel.add(new JLabel("To test player and weapon movement: .playerTest or .weaponTest"));
+        inputPanel.add(new JLabel("To test player and weapon movement: up/down/left/right"));
         inputPanel.add(inputText);
         inputPanel.add(submit);
 
@@ -44,7 +44,7 @@ public class CommandPanel extends JPanel {
         // Add the following as available inputs, although hardcoded now, it's made so that
         // it's going to be easier to implement a set of inputs into the panel later when we do
         // have them.
-        String[] listInputs = {".playerTest", ".weaponTest", ".hello", ".example", ".example"};
+        String[] listInputs = {"up", "down", "left", "right", ".hello"};
         for (String x : listInputs) {
             inputsAvailablePanel.add(new JLabel(x));
         }
