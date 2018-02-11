@@ -73,7 +73,7 @@ public class BoardPanel extends JPanel {
         boolean correctDirection = false;
 
         //Moving player up
-        if (direction.equals("up")) {
+        if (direction.equals("up") && correctName == false) {
             correctDirection = true;
             for (int j = 0; j < 6; j++) {
                 if (icon.get(j).getPlayerName().equals(name)) {
@@ -92,7 +92,7 @@ public class BoardPanel extends JPanel {
                 }
             }
             repaint();
-        } else if (direction.equals("right")) {
+        } else if (direction.equals("right") && correctName == false) {
             // move player right
             correctDirection = true;
             for (int j = 0; j < 6; j++) {
@@ -112,7 +112,7 @@ public class BoardPanel extends JPanel {
                 }
             }
             repaint();
-        } else if (direction.equals("down")) {
+        } else if (direction.equals("down") && correctName == false) {
             //Moving player down
             correctDirection = true;
             for (int j = 0; j < 6; j++) {
@@ -132,7 +132,7 @@ public class BoardPanel extends JPanel {
                 }
             }
             repaint();
-        } else if (direction.equals("left")) {
+        } else if (direction.equals("left") && correctName == false) {
             //Moving player left
             correctDirection = true;
             for (int j = 0; j < 6; j++) {
