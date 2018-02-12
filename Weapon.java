@@ -25,7 +25,7 @@ public class Weapon extends Token{
 	}
 	//Accessor method to obtain a weapon's name.
 	public String getWeaponName(){
-		return this.type;
+		return type.substring(0,2);
 	}
 
 	//Draw the initials of the weapon
@@ -36,7 +36,7 @@ public class Weapon extends Token{
 		g2.setColor(Color.blue);  //Blue color
 		
 		//Draw it on a specific location
-		g2.drawString(type,(int) position.getXCord() + adjustX,(int) position.getYCord() + adjustY);
+		g2.drawString(type.substring(0,2),(int) position.getXCord() + adjustX,(int) position.getYCord() + adjustY);
 	}
 	
 }

@@ -11,6 +11,7 @@ import javax.swing.JPanel;
  * @author Gajun
  *
  */
+@SuppressWarnings("serial")
 public class Tile extends JPanel{
 	
 	//Dimensions of the tile
@@ -57,10 +58,9 @@ public class Tile extends JPanel{
 		Rectangle2D rect = new Rectangle2D.Double(x, y, WIDTH, HEIGHT);
 		
 		//Set color of grid lines to be invisible
-		//Color color = new Color(0, 0, 0, 0.8f); //Black
-		Color color = Color.white;
+		Color color = new Color(0, 0, 0, 0.8f); //Black   - 0.0f for transparent 
 		g2.setPaint(color);
 		
-		//g2.draw(rect);
+		g2.draw(rect);
 	}
 }

@@ -1,25 +1,30 @@
-import javax.imageio.ImageIO;
+/**
+ * A class panel for the command panel on the bottom of the cluedo UI. For input commands
+ * 
+ * @author Royal, Gajun
+ */
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
+
 import java.io.IOException;
 
+@SuppressWarnings("serial")
 public class CommandPanel extends JPanel {
 
     public JButton submit = new JButton("Submit");
-    private JTextField inputText = new JTextField(".start", 30);
+    private JTextField inputText = new JTextField("", 30);
 
     public CommandPanel() {
+    	
         // Beautification.
         setPreferredSize(new Dimension(1000, 120));
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setBorder(new EmptyBorder(0, 10, 0, 0));
 
-        // Hardcoded current player's image.
-        // Change this later to fit the current player.
+        /* Hardcoded current player's image.
+         Change this later to fit the current player. */
         try {
             JLabel picLabel = CluedoUI.imageToLabel("Images/mrsPlumPlayer.png");
             add(picLabel);
@@ -31,9 +36,10 @@ public class CommandPanel extends JPanel {
         // A container that holds the textbox and the submit button.
         JPanel inputPanel = new JPanel();
         inputPanel.setBorder(new EmptyBorder(50, 0, 0, 0));
-        inputPanel.add(new JLabel("To test player and weapon movement: up/down/left/right"));
+        inputPanel.add(new JLabel("To test player and weapon movement on current player"));
         inputPanel.add(inputText);
         inputPanel.add(submit);
+        
 
         // Add a panel to make a list of labels and set its layout to allow for that.
         JPanel inputsAvailablePanel = new JPanel();
@@ -54,6 +60,9 @@ public class CommandPanel extends JPanel {
         add(inputsAvailablePanel);
     }
 
+    /** 
+     * @return the input text from the command panel
+     */
     public String getInput() {
         return inputText.getText();
     }

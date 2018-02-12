@@ -1,10 +1,13 @@
 /**
  * A class that contains the image of the board
+ * 
+ * @Author Gajun
  */
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -21,7 +24,7 @@ public class Board extends JPanel {
          * Catch any errors if the image doesnt exist
          */
         try {
-            boardImage = ImageIO.read(this.getClass().getResource("Board.jpg"));
+            boardImage = ImageIO.read(new File("Images/board.jpg"));
         } catch (IOException ex) {
             System.out.println("Couldn't find image...." + ex);
         }

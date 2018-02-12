@@ -1,7 +1,11 @@
-
+/**A class panel that draws out the board panel of the cluedo game
+ * 
+ * @author Gajun, Richard, Royal
+ */
 import java.awt.*;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
 /**
  * A board panel which draws all the images and sets up the token locations
  * @Author Richard, Gajun
@@ -11,168 +15,121 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class BoardPanel extends JPanel {
 
-    private ArrayList<Weapon> logo;
-    private ArrayList<Player> icon;
+    private ArrayList<Weapon> weapon;
+    private ArrayList<Player> player;
 
     //Graphic objects
-    private TileGrid test3;
-    private Board test;
+    private TileGrid grid;
+    private Board board;
+    
+    private static final int MAX_TOKEN = 6; //Amount of tokens available
 
     //Constructor panel
     public BoardPanel() {
-        logo = new ArrayList<Weapon>();
-        icon = new ArrayList<Player>();
-        test3 = new TileGrid();
-        test = new Board();
+        weapon = new ArrayList<Weapon>();
+        player = new ArrayList<Player>();
+        grid = new TileGrid();
+        board = new Board();
         createWeapons();
         createPlayers();
     }
 
     //Candlestick, Dagger, Lead Pipe, Revolver, Rope, Spanner
     public void createWeapons() {
-        logo.add(new Weapon("C", test3.map[21][1])); //Candlestick
-        logo.add(new Weapon("D", test3.map[2][21])); //Dagger
-        logo.add(new Weapon("L", test3.map[1][12])); //Lead pipe
-        logo.add(new Weapon("Re", test3.map[22][22])); //Revolver
-        logo.add(new Weapon("R", test3.map[19][16])); //Rope
-        logo.add(new Weapon("S", test3.map[2][2])); //Spanner
-
+        weapon.add(new Weapon("Candle Stick", grid.map[21][1])); 
+        weapon.add(new Weapon("Dagger", grid.map[2][21])); 
+        weapon.add(new Weapon("Lead Pipe", grid.map[1][12])); 
+        weapon.add(new Weapon("Revolver", grid.map[22][22])); 
+        weapon.add(new Weapon("Rope", grid.map[19][16])); 
+        weapon.add(new Weapon("Spanner", grid.map[2][2])); 
     }
 
     //Creating a list of players [Fixed starting location]
     public void createPlayers() {
-        icon.add(new Player("Plum", Color.magenta, test3.map[23][19]));
-        icon.add(new Player("White", Color.white, test3.map[9][0]));
-        icon.add(new Player("Scarlet", Color.red, test3.map[7][24]));
-        icon.add(new Player("Green", Color.green, test3.map[14][0]));
-        icon.add(new Player("Mustard", Color.yellow, test3.map[0][17]));
-        icon.add(new Player("Peacock", Color.blue, test3.map[23][6]));
+        player.add(new Player("Plum", Color.magenta, grid.map[23][19]));
+        player.add(new Player("White", Color.white, grid.map[9][0]));
+        player.add(new Player("Scarlet", Color.red, grid.map[7][24]));
+        player.add(new Player("Green", Color.green, grid.map[14][0]));
+        player.add(new Player("Mustard", Color.yellow, grid.map[0][17]));
+        player.add(new Player("Peacock", Color.blue, grid.map[23][6]));
     }
-
-    //Method for moving weapons that APPARENTLY isnt allowed. So i just put them with the player
-    // movements.
-    /*public void setWeaponTile(String name, int newRow, int newColumn){
-        for(int j = 0; j < 6; j++){
-			if(logo.get(j).getName() == name){
-				Tile tempTile = new Tile((23*newColumn), 23.5 + (23*newRow), newRow, newColumn);
-				logo.get(j).setTile(tempTile);
-			}
-		}
-		repaint();
-	}*/
-
-    //For now these move both players and weapons. The input is the direction to move and name of
-    // what to move.
-    //They work by cycling through directions then all 12 players/weapons and when the name
-    // matches, it moves it.
-    //Ive considered ending it after a name matches but 12 loops is literally NOTHING for the CPU!
-    //Method to move player/weapon.
+  
+    /**A movement class to move objects
+     * 
+     * @param direction -command panel input
+     * @param name - token or player 
+     * @return false - no move has been made, true - movement made
+     */
     public boolean moveToken(String direction, String name) {
-        boolean moved;
         boolean correctName = false;
         boolean correctDirection = false;
-
-        //Moving player up
-        if (direction.equals("up") && correctName == false) {
-            correctDirection = true;
-            for (int j = 0; j < 6; j++) {
-                if (icon.get(j).getPlayerName().equals(name)) {
-                    Tile tempTile = new Tile(icon.get(j).getTile().getXCord(), icon.get(
-                            j).getTile().getYCord() - 23, icon.get(j).getTile().getRow() - 1,
-                            icon.get(j).getTile().getColumn());
-                    icon.get(j).setTile(tempTile);
-                    correctName = true;
-                }
-                if (logo.get(j).getWeaponName().equals(name)) {
-                    Tile tempTile = new Tile(logo.get(j).getTile().getXCord(), logo.get(
-                            j).getTile().getYCord() - 23, logo.get(j).getTile().getRow() - 1,
-                            logo.get(j).getTile().getColumn());
-                    logo.get(j).setTile(tempTile);
-                    correctName = true;
-                }
-            }
-            repaint();
-        } else if (direction.equals("right") && correctName == false) {
-            // move player right
-            correctDirection = true;
-            for (int j = 0; j < 6; j++) {
-                if (icon.get(j).getPlayerName().equals(name)) {
-                    Tile tempTile = new Tile(icon.get(j).getTile().getXCord() + 23, icon.get(
-                            j).getTile().getYCord(), icon.get(j).getTile().getRow(), icon.get(
-                            j).getTile().getColumn() + 1);
-                    icon.get(j).setTile(tempTile);
-                    correctName = true;
-                }
-                if (logo.get(j).getWeaponName().equals(name)) {
-                    Tile tempTile = new Tile(logo.get(j).getTile().getXCord() + 23, logo.get(
-                            j).getTile().getYCord(), logo.get(j).getTile().getRow(), logo.get(
-                            j).getTile().getColumn() + 1);
-                    logo.get(j).setTile(tempTile);
-                    correctName = true;
-                }
-            }
-            repaint();
-        } else if (direction.equals("down") && correctName == false) {
-            //Moving player down
-            correctDirection = true;
-            for (int j = 0; j < 6; j++) {
-                if (icon.get(j).getPlayerName().equals(name)) {
-                    Tile tempTile = new Tile(icon.get(j).getTile().getXCord(), icon.get(
-                            j).getTile().getYCord() + 23, icon.get(j).getTile().getRow() + 1,
-                            icon.get(j).getTile().getColumn());
-                    icon.get(j).setTile(tempTile);
-                    correctName = true;
-                }
-                if (logo.get(j).getWeaponName().equals(name)) {
-                    Tile tempTile = new Tile(logo.get(j).getTile().getXCord(), logo.get(
-                            j).getTile().getYCord() + 23, logo.get(j).getTile().getRow() + 1,
-                            logo.get(j).getTile().getColumn());
-                    logo.get(j).setTile(tempTile);
-                    correctName = true;
-                }
-            }
-            repaint();
-        } else if (direction.equals("left") && correctName == false) {
-            //Moving player left
-            correctDirection = true;
-            for (int j = 0; j < 6; j++) {
-                if (icon.get(j).getPlayerName().equals(name)) {
-                    Tile tempTile = new Tile(icon.get(j).getTile().getXCord() - 23, icon.get(
-                            j).getTile().getYCord(), icon.get(j).getTile().getRow(), icon.get(
-                            j).getTile().getColumn() - 1);
-                    icon.get(j).setTile(tempTile);
-                    correctName = true;
-                }
-                if (logo.get(j).getWeaponName().equals(name)) {
-                    Tile tempTile = new Tile(logo.get(j).getTile().getXCord() - 23, logo.get(
-                            j).getTile().getYCord(), logo.get(j).getTile().getRow(), logo.get(
-                            j).getTile().getColumn() - 1);
-                    logo.get(j).setTile(tempTile);
-                    correctName = true;
-                }
-            }
-            repaint();
+        Tile currTile = null;
+        Token currToken = null;
+        int i = -1;
+        
+        //Search if the name is a player or a weapon
+        while((i <= MAX_TOKEN) && !correctName) {
+        	i++; //Starts searching value at 0
+        	 if (player.get(i).getPlayerName().equals(name)) {
+        		 currToken = player.get(i);
+        		 correctName = true;
+        	 }
+        	 else if(weapon.get(i).getWeaponName().equals(name)) {
+        		 currToken = weapon.get(i);
+        		 correctName = true;
+        	 }
         }
-        //When this is false, no move has been made and the info box should return an error to
-        // the player, prompting them to try again.
-        moved = correctDirection && correctName;
-        return moved;
+        
+        //Moving Token based on up, down, left, right
+        if(correctName) {
+        	
+        	//Catch if array is out of bounds
+        	try {
+		        if (direction.equals("up")) {
+		        	currTile = grid.map[currToken.getTile().getColumn()][currToken.getTile().getRow() - 1];
+		        	correctDirection = true;
+		        }
+		        else if(direction.equals("down")) {
+		        	currTile = grid.map[currToken.getTile().getColumn()][currToken.getTile().getRow() + 1];
+		        	correctDirection = true;
+		        }
+		        else if(direction.equals("left")) {
+		        	currTile = grid.map[currToken.getTile().getColumn() - 1][currToken.getTile().getRow()];
+		        	correctDirection = true;
+		        }
+		        else if (direction.equals("right")){
+		        	currTile = grid.map[currToken.getTile().getColumn() + 1][currToken.getTile().getRow()];
+		        	correctDirection = true;
+		        }
+        	}
+        	catch(ArrayIndexOutOfBoundsException e) {
+        		JOptionPane.showMessageDialog(null, "Invalid direction...Direction does not exist");
+        	}
+        }
+        
+        //New Location of token & draw it
+        if(correctDirection) {
+        	currToken.setTile(currTile);
+        	repaint();
+        }
+        
+        return correctDirection && correctName;
     }
 
 
     //Draw the objects together
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        test.paintComponent(g2); //Board image never changes
-        test3.drawGrid(g2); //Draw grid
-
+        board.paintComponent(g2); //Draws the board
+        
+        //grid.drawGrid(g2);    //draws a grid
         //Draw all the weapons in their current position
-        for (Weapon li : logo) {
+        for (Weapon li : weapon) {
             li.drawWeapon(g2);
         }
 
         //Draw all the players in their first location
-        for (Player pi : icon) {
+        for (Player pi : player) {
             pi.drawPlayer(g2);
         }
     }

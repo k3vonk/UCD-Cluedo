@@ -13,8 +13,8 @@ public class Player extends Token{
 
     //Adjusts player icon so it fits neatly into the middle of the tile like a good little girl :)
     private static final int ADJUST = 2;
-    private static final int ADJUSTX = 5;
-    private static final int ADJUSTY = 16;
+    private static final int ADJUST_X = 5;
+    private static final int ADJUST_Y = 16;
     
     //Oval size
     private static final int OVAL = 18;
@@ -43,7 +43,7 @@ public class Player extends Token{
         gg.fillOval((int) position.getXCord() + ADJUST, (int) position.getYCord()+ ADJUST, OVAL, OVAL); //Circle icon.
 
         gg.setColor(Color.black); //Colour for Initials.
-        gg.drawString(name.substring(0,1), (int) position.getXCord() + ADJUSTX, (int) position.getYCord() + ADJUSTY); //Initials.
+        gg.drawString(name.substring(0,1), (int) position.getXCord() + ADJUST_X, (int) position.getYCord() + ADJUST_Y); //Initials.
     }
 
 }

@@ -1,8 +1,14 @@
+/**
+ * A class panel that displays the echoed messages to user
+ * 
+ * @author Royal, Gajun
+ */
 import javax.swing.*;
 
 import java.awt.*;
 import java.io.IOException;
 
+@SuppressWarnings("serial")
 public class InformationPanel extends JPanel {
 
     JTextArea infArea = new JTextArea("", 34, 26);
@@ -35,7 +41,7 @@ public class InformationPanel extends JPanel {
         if (replace) {
             infArea.setText(value);
         } else {
-            infArea.insert(value + "\n", 0);
+            infArea.append("\n"  + value);
         }
     }
 
