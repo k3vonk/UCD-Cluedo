@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 @SuppressWarnings("serial")
 public class CluedoUI extends JFrame {
@@ -133,7 +134,7 @@ public class CluedoUI extends JFrame {
      * Used to show current player and player's cards for the time being.
      */
     public static JLabel imageToLabel(String path) throws IOException {
-        BufferedImage myPicture = ImageIO.read(new File(path));
+        BufferedImage myPicture = ImageIO.read(CluedoUI.class.getResourceAsStream(path));
         JLabel picLabel = new JLabel(new ImageIcon(myPicture));
         return picLabel;
     }
