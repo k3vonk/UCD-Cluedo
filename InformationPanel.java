@@ -40,9 +40,10 @@ public class InformationPanel extends JPanel {
         * future assignments.
         */
         try {
-            add(CluedoUI.imageToLabel("Images/pplumm.png"));
-            add(CluedoUI.imageToLabel("Images/Dagger.png"));
-            add(CluedoUI.imageToLabel("Images/ballroom.png"));
+            add(CluedoUI.imageToLabel("pplumm.png"));
+            add(CluedoUI.imageToLabel("dagger.png"));
+            add(CluedoUI.imageToLabel("ballroom.png"));
+
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Unable to locate file(s)");
         }

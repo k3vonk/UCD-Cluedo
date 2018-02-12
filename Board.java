@@ -24,7 +24,8 @@ public class Board extends JPanel {
          * Catch any errors if the image doesnt exist
          */
         try {
-            boardImage = ImageIO.read(new File("Images/board.jpg"));
+            //boardImage = ImageIO.read(new File());
+            boardImage = ImageIO.read(CluedoUI.class.getResourceAsStream("Board.jpg"));
         } catch (IOException ex) {
             System.out.println("Couldn't find image...." + ex);
         }
