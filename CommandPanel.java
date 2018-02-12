@@ -26,7 +26,7 @@ public class CommandPanel extends JPanel {
         /* Hardcoded current player's image.
          Change this later to fit the current player. */
         try {
-            JLabel picLabel = CluedoUI.imageToLabel("Images/mrsPlumPlayer.png");
+            JLabel picLabel = CluedoUI.imageToLabel("mrsPlumPlayer.png");
             add(picLabel);
             picLabel.setBorder(BorderFactory.createTitledBorder("Current Player"));
         } catch (IOException ex) {
