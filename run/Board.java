@@ -1,8 +1,7 @@
 /**
- * @Team MAGA
- * @Author Gajun Young - 16440714
- * @Author Royal Thomas - 16326926
- * @Author Richard  Otroshchenko
+ * A class that contains the image of the board
+ * 
+ * @Author Gajun
  */
 
 import java.awt.Graphics;

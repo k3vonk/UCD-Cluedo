@@ -1,10 +1,8 @@
 /**
- * @Team MAGA
- * @Author Gajun Young - 16440714
- * @Author Royal Thomas - 16326926
- * @Author Richard  Otroshchenko
+ * A cluedoUI that consists of board panel, command panel, information panel
+ * 
+ * @author Royal, Richard, Gajun
  */
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -16,13 +14,13 @@ import java.io.IOException;
 
 @SuppressWarnings("serial")
 public class CluedoUI extends JFrame {
-
-    //Panel & Frame of the cluedo board
+	
+	//Panel & Frame of the cluedo board
     private JPanel mainPanel;
     private JFrame frame;
     private BoardPanel board;
-
-
+    
+    
     private Boolean testingUser = true;
     private Boolean alerted = false;
 
@@ -30,9 +28,9 @@ public class CluedoUI extends JFrame {
         frame = new JFrame();
         mainPanel = new JPanel();
         this.board = board;
-
+       
         DrawMainPanel();// initialize panel and add it to the frame
-
+     
         // Set up main frame
         frame.add(mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,7 +59,7 @@ public class CluedoUI extends JFrame {
      * Method that draws the main panel and the panels within it.
      */
     public void DrawMainPanel() {
-
+    	
         // Set up the three panels.
         CommandPanel bottomContainerPanel = new CommandPanel();
         JPanel containerPanel = new JPanel();
@@ -69,12 +67,10 @@ public class CluedoUI extends JFrame {
 
         // Set up the main panel to look good, this panel contains all other panels.
         containerPanel.setPreferredSize(new Dimension(1000, 750));
-        containerPanel.setBorder(
-                BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Cluedo"));
+        containerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),"Cluedo"));
         containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.X_AXIS));
 
-        // GUI things, setting elements up to look their best. Y_AXIS layout for a top-down
-        // structure
+        // GUI things, setting elements up to look their best. Y_AXIS layout for a top-down structure
         board.setPreferredSize(new Dimension(600, 700));
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
@@ -92,31 +88,32 @@ public class CluedoUI extends JFrame {
         bottomContainerPanel.submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String input = bottomContainerPanel.getInput();
+            	String input = bottomContainerPanel.getInput();
+            	
+            	//move player else move weapon
+            	if(testingUser) {
+            		board.moveToken(input, "White");
+            		
+            		//Display this message if not shown before when moving
+            		 if (!alerted) {
+                         InformationPanel.updateContent(false,
+                                 ">In order to start moving the weapon, type \"-1\" into the "
+                                         + "input!");
+                         alerted = true;
+                     }
 
-                //move player else move weapon
-                if (testingUser) {
-                    board.moveToken(input, "White");
-
-                    //Display this message if not shown before when moving
-                    if (!alerted) {
-                        InformationPanel.updateContent(false,
-                                ">In order to start moving the weapon, type \"-1\" into the "
-                                        + "input!");
-                        alerted = true;
-                    }
-
-                    InformationPanel.updateContent(false, "Mrs.White: " + input);
-                } else { //move weapon
-                    board.moveToken(input, "Ca");
-                    InformationPanel.updateContent(false, "Candle Stick: " + input);
-                }
-
-                //Change from player to weapon
-                if (input.equals("-1")) {
-                    testingUser = false;
-                    InformationPanel.updateContent(false, ">You're now controlling a weapon.");
-                }
+            		 InformationPanel.updateContent(false, "Mrs.White: " + input);
+            	}
+            	else { //move weapon
+            		board.moveToken(input, "Ca");
+            		 InformationPanel.updateContent(false, "Candle Stick: " + input);
+            	}
+            	
+            	//Change from player to weapon
+            	if(input.equals("-1")) {
+            		testingUser = false;
+            		InformationPanel.updateContent(false,">You're now controlling a weapon.");
+            	}
             }
         });
 

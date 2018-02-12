@@ -1,8 +1,7 @@
 /**
- * @Team MAGA
- * @Author Gajun Young - 16440714
- * @Author Royal Thomas - 16326926
- * @Author Richard  Otroshchenko
+ * A class panel that displays the echoed messages to user
+ *
+ * @author Royal, Gajun
  */
 
 import javax.swing.*;

@@ -1,10 +1,8 @@
 /**
- * @Team MAGA
- * @Author Gajun Young - 16440714
- * @Author Royal Thomas - 16326926
- * @Author Richard  Otroshchenko
+ * A class panel for the command panel on the bottom of the cluedo UI. For input commands
+ * 
+ * @author Royal, Gajun
  */
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -19,7 +17,7 @@ public class CommandPanel extends JPanel {
     private JTextField inputText = new JTextField("", 30);
 
     public CommandPanel() {
-
+    	
         // Beautification.
         setPreferredSize(new Dimension(1000, 120));
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -41,7 +39,7 @@ public class CommandPanel extends JPanel {
         inputPanel.add(new JLabel("To test player and weapon movement on current player"));
         inputPanel.add(inputText);
         inputPanel.add(submit);
-
+        
 
         // Add a panel to make a list of labels and set its layout to allow for that.
         JPanel inputsAvailablePanel = new JPanel();
@@ -62,7 +60,7 @@ public class CommandPanel extends JPanel {
         add(inputsAvailablePanel);
     }
 
-    /**
+    /** 
      * @return the input text from the command panel
      */
     public String getInput() {
