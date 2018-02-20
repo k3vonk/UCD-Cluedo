@@ -6,6 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
+/**
+ * A panel that allows users to type information which in turns interacts with the board
+ * 
+ * @Team MAGA
+ * @Author Gajun Young - 16440714
+ * @Author Royal Thomas - 16326926
+ * @Author Richard  Otroshchenko
+ */
 public class CommandPanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
@@ -16,10 +24,12 @@ public class CommandPanel extends JPanel {
 //	private JButton submit = new JButton("Submit");
 	private final LinkedList<String> commandBuffer = new LinkedList<>();
 	
+	//Constructor
 	public CommandPanel() {
-		JPanel inputPanel = new JPanel();
-		JPanel availableInput = new JPanel();
+		JPanel inputPanel = new JPanel(); //Panel that displays input 
+		JPanel availableInput = new JPanel(); //Panel that displays available commands that users can use
 		
+		//A Label that contains the current player icon
 		JLabel picLabel = new JLabel();
 		picLabel.setPreferredSize(new Dimension(200, 0));
 		picLabel.setBorder(BorderFactory.createTitledBorder("Current Player"));
@@ -43,43 +53,50 @@ public class CommandPanel extends JPanel {
         for (String x : listInputs) {
             availableInput.add(new JLabel(x));
         }
-	    
         add(inputPanel);
         add(availableInput);
         
-		 class AddActionListener implements ActionListener {
-	            public void actionPerformed(ActionEvent event)	{
-	                synchronized (commandBuffer) {
-	                    commandBuffer.add(commandField.getText());
-	                    commandField.setText("");
-	                    commandBuffer.notify();
-	                }
-	            }
+        //An actionListener to listen for user inputs and respond
+        class AddActionListener implements ActionListener {
+        	public void actionPerformed(ActionEvent event)	{
+        		synchronized (commandBuffer) {
+        			commandBuffer.add(commandField.getText());
+        			commandField.setText("");
+        			commandBuffer.notify();
+        		}
+        	}
 
-	        }
-	        ActionListener listener = new AddActionListener();
-	        commandField.addActionListener(listener);
-	        commandField.setFont(new Font("Times New Roman", Font.PLAIN, FONT_SIZE));
-	        inputPanel.add(commandField);
+        }
+        
+        ActionListener listener = new AddActionListener();
+        commandField.addActionListener(listener);
+        commandField.setFont(new Font("Times New Roman", Font.PLAIN, FONT_SIZE));
+        inputPanel.add(commandField);
 	        
-	      //border style
+        //border style
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Command Panel"));
 		
-      
 	}
 	
-	 public String getCommand() {
-	        String command;
-	        synchronized(commandBuffer) {
-	            while (commandBuffer.isEmpty()) {
-	                try {
-	                    commandBuffer.wait();
-	                } catch (InterruptedException e) {
-	                    e.printStackTrace();
-	                }
-	            }
-	            command = commandBuffer.pop();
-	        }
-	        return command;
-	    }
+	/**
+	 * A method that takes in a string of information
+	 * 
+	 * @return A string that user typed
+	 */
+	public String getCommand() {
+		String command;
+		synchronized(commandBuffer) {
+			while (commandBuffer.isEmpty()) {
+				try {
+					commandBuffer.wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		command = commandBuffer.pop();
+		}
+	    
+		return command;
+	}
 }

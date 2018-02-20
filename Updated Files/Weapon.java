@@ -4,6 +4,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+/**
+ * A weapon class which represents the possible murder weapon
+ * 
+ * @Team MAGA
+ * @Author Gajun Young - 16440714
+ * @Author Royal Thomas - 16326926
+ * @Author Richard  Otroshchenko
+ */
 public class Weapon {
     private String type; //Type of weapon
     private Tile position; //Position of weapon

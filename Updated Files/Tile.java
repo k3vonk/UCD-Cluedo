@@ -3,6 +3,15 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+
+/**
+ * A Tile class that represents a tile on the board
+ * 
+ * @Team MAGA
+ * @Author Gajun Young - 16440714
+ * @Author Royal Thomas - 16326926
+ * @Author Richard  Otroshchenko
+ */
 public class Tile {
 
     //Dimensions of the tile

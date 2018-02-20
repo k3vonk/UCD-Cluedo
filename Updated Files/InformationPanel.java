@@ -8,6 +8,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+/**
+ * An information panel that displays information to users
+ * 
+ * @Team MAGA
+ * @Author Gajun Young - 16440714
+ * @Author Royal Thomas - 16326926
+ * @Author Richard  Otroshchenko
+ */
 public class InformationPanel extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
@@ -16,6 +24,7 @@ public class InformationPanel extends JPanel{
 
 	private JTextArea infoArea = new JTextArea("", HEIGHT, WIDTH);
 	
+	//Constructor
 	public InformationPanel() {
 		JScrollPane scroll = new JScrollPane(infoArea);
 		setPreferredSize(new Dimension(300, 700));
@@ -23,7 +32,7 @@ public class InformationPanel extends JPanel{
 		//border style
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Information Panel"));
 		
-		//Ensures textarea doesnt expand to the right, but pushes text downwards
+		//Ensures text area doesn't expand to the right, but pushes text downwards
 		infoArea.setLineWrap(true);
 		infoArea.setEditable(false); //Non editable, so players can't text here
 		infoArea.setMaximumSize(infoArea.getPreferredSize());

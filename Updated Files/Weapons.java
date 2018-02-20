@@ -1,6 +1,15 @@
 import java.util.Iterator;
 import java.util.ArrayList;
 
+/**
+ * A weapons class which initializes all the possible types of weapons. It also allows for weapons to be iterable and searched 
+ * through their names.
+ * 
+ * @Team MAGA
+ * @Author Gajun Young - 16440714
+ * @Author Royal Thomas - 16326926
+ * @Author Richard  Otroshchenko
+ */
 public class Weapons implements Iterable<Weapon>, Iterator<Weapon>{
 
     private final ArrayList<Weapon> weapons = new ArrayList<>();

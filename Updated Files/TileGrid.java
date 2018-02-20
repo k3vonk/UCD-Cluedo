@@ -1,8 +1,16 @@
 import java.awt.Graphics;
 
+/**
+ * A grid created by an array of Tiles that represents the board space
+ * 
+ * @Team MAGA
+ * @Author Gajun Young - 16440714
+ * @Author Royal Thomas - 16326926
+ * @Author Richard  Otroshchenko
+ */
 public class TileGrid {
 	public Tile[][] map; //Array of Tiles
-
+	
 	//Array size
 	private static final int COLUMN = 24;
 	private static final int ROW = 25;

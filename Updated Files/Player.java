@@ -3,6 +3,14 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+/**
+ * A player class that contains the token and the player name associated with the token
+ * 
+ * @Team MAGA
+ * @Author Gajun Young - 16440714
+ * @Author Royal Thomas - 16326926
+ * @Author Richard  Otroshchenko
+ */
 public class Player {
 
 
@@ -29,20 +37,23 @@ public class Player {
     public String getPlayerName() {
         return this.name;
     }
-       
+     
+    //Tile accessor
     public Tile getPosition() {
     	return position;
     }
+    
+    //Moving Tiles
+    public void moveBy(Tile position) {
+    	this.position = position;
+    }
+
     
     //Returns true if matching name
     public boolean hasName(String name) {
         return this.name.toLowerCase().equals(name.toLowerCase().trim());
     }
     
-    public void moveBy(Tile position) {
-    	this.position = position;
-    }
-
     //Method to create the player icon.
     public void drawPlayer(Graphics g) {
         Graphics2D gg = (Graphics2D) g;
@@ -59,8 +70,8 @@ public class Player {
         gg.setColor(colour);
         gg.fillOval((int) position.getXCord() + ADJUST + 1, (int) position.getYCord() + ADJUST + 1, OVAL - 2,OVAL - 2);
         
-
-        gg.setColor(Color.black); //Colour for Initials.
+        //Draw initial onto the Oval
+        gg.setColor(Color.black); 
         gg.drawString(name.substring(0, 1), position.getXCord() + ADJUST_X, position.getYCord() + ADJUST_Y); //Initials.
     }
 }
