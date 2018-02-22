@@ -18,12 +18,12 @@ public class BoardPanel extends JPanel{
 	
 	private BufferedImage boardImage; //Image of the board
 	private TileGrid grid = new TileGrid(); //The game grid
-	private final Weapons weapons;
-	private final Players players;
+	private Weapons weapons;
+	private Tokens tokens;
 	
-	public BoardPanel(Players players, Weapons weapons){	
+	public BoardPanel(Tokens tokens, Weapons weapons){	
 		this.weapons = weapons;
-		this.players = players;
+		this.tokens = tokens;
 		
 		//Check if image input is available [Exceptions]
 		 try {
@@ -36,6 +36,10 @@ public class BoardPanel extends JPanel{
 		 setPreferredSize(new Dimension(boardImage.getHeight(), boardImage.getWidth()));
 	}
 	
+	public void set(Tokens tokens, Weapons weapons) {
+		this.weapons = weapons;
+		this.tokens = tokens;
+	}
 	@Override
 	/**
 	 * A paint component to draw tokens onto the board
@@ -50,8 +54,8 @@ public class BoardPanel extends JPanel{
         	weapon.drawWeapon(g2);
         }
         
-        for(Player player: players) {
-        	player.drawPlayer(g2);
+        for(Token player: tokens) {
+        	player.drawToken(g2);
         }
 	}
 

@@ -27,10 +27,10 @@ public class CluedoUI {
 	private CommandPanel command;
 	
 	//Constructor
-	public CluedoUI(Players players, Weapons weapons) {
+	public CluedoUI(Tokens tokens, Weapons weapons) {
 		JFrame frame = new JFrame();
 		JPanel mainPanel = new JPanel();
-		board = new BoardPanel(players, weapons);
+		board = new BoardPanel(tokens, weapons);
 		command = new CommandPanel();
 		info = new InformationPanel();
 	
@@ -53,6 +53,15 @@ public class CluedoUI {
 	}
 	
 	/**
+	 * Sets the board with weapons[default] and tokens which depends on the user inputs
+	 * @param tokens
+	 * @param weapons
+	 */
+	public void setBoard(Tokens tokens, Weapons weapons) {
+			board.set(tokens, weapons);
+	}
+	
+	/**
 	 * @return A String that the user types
 	 */
 	public String getCommand() {
@@ -68,7 +77,7 @@ public class CluedoUI {
 
 	/**
 	 * Takes a string in which it gets updated onto the information panel
-	 * @param string contains information of a players turn
+	 * @param string contains information of a tokens turn
 	 */
 	public void displayString(String string) {
 	       info.updateContent(string);
