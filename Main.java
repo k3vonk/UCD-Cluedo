@@ -144,21 +144,24 @@ public class Main {
 		do{
 			direction = ui.getCommand();
 			//Catch if array is out of bounds
+			// players.getPlayer(curr).getToken().getPosition().getColumn()
+			//players.getPlayer(curr).getToken().getPosition().getRow() - 1
+			
         	try {
 		        if (direction.equalsIgnoreCase("u")) {
-		        	currTile = grid.map[players.getPlayer(curr).getToken().getPosition().getColumn()][players.getPlayer(curr).getToken().getPosition().getRow() - 1];
+		        	currTile = grid.map[players.getPlayer(curr).getToken().getPosition().getRow() - 1][players.getPlayer(curr).getToken().getPosition().getColumn()];
 		        	dice--;
 		        }
 		        else if(direction.equalsIgnoreCase("d")) {
-		        	currTile = grid.map[players.getPlayer(curr).getToken().getPosition().getColumn()][players.getPlayer(curr).getToken().getPosition().getRow() + 1];
+		        	currTile = grid.map[players.getPlayer(curr).getToken().getPosition().getRow() + 1][players.getPlayer(curr).getToken().getPosition().getColumn()];
 		        	dice--;
 		        }
 		        else if(direction.equalsIgnoreCase("l")) {
-		        	currTile = grid.map[players.getPlayer(curr).getToken().getPosition().getColumn() - 1][players.getPlayer(curr).getToken().getPosition().getRow()];
+		        	currTile = grid.map[players.getPlayer(curr).getToken().getPosition().getRow()][players.getPlayer(curr).getToken().getPosition().getColumn() - 1];
 		        	dice--;
 		        }
 		        else if (direction.equalsIgnoreCase("r")){
-		        	currTile = grid.map[players.getPlayer(curr).getToken().getPosition().getColumn() + 1][players.getPlayer(curr).getToken().getPosition().getRow()];
+		        	currTile = grid.map[players.getPlayer(curr).getToken().getPosition().getRow()][players.getPlayer(curr).getToken().getPosition().getColumn() + 1];
 		        	dice--;
 		        }
 		        else {
