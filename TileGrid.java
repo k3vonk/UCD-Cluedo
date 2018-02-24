@@ -31,7 +31,7 @@ public class TileGrid {
 	
 	//Constructor that builds the array of tiles
 	public TileGrid() {
-		map = new Tile[COLUMN][ROW];  //Dimension of the Board
+	/*	map = new Tile[COLUMN][ROW];  //Dimension of the Board
 		for (int i = 0; i < map.length; i++) {
 			y = 24f;
 			for (int j = 0; j < map[i].length; j++) {
@@ -40,7 +40,17 @@ public class TileGrid {
 			}
 
 			x += 23;
-		}
+		} */
+		
+		map = new Tile[ROW][COLUMN];  //Dimension of the Board
+		for (int i = 0; i < map.length; i++) {
+			y += 23;
+			x = 42.5f;
+			for (int j = 0; j < map[i].length; j++) {
+				map[i][j] = new Tile(x, y, i, j);
+				x += 23;
+			}
+		} 
 	}
 
 	//Draw the grid tiles onto the map
