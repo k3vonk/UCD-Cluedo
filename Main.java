@@ -181,6 +181,7 @@ public class Main {
 		boolean validDirection = false; //if a valid direction
 		Tile currTile = players.getPlayer(curr).getToken().getPosition();
 	
+		ui.displayString(players.currPlayer(curr) + "make your move :0");
 		do{
 			direction = ui.getCommand();
 			ui.displayString(players.currPlayer(curr) + ": " + direction);
@@ -215,7 +216,7 @@ public class Main {
         	
         	//Ensures no two players are on the same slot
         	for(int i = 0; i < players.getCapacity(); i++) {
-        		if(currTile == players.getTile(i)) {
+        		if(currTile == players.getTile(i) && validDirection && players.getPlayer(i) != players.getPlayer(curr)) {
         			validDirection = false;
         			ui.displayString(players.currPlayer(curr) + " cannot move onto an occupied tile :<");
         		}
@@ -229,8 +230,8 @@ public class Main {
         	else if(currTile.getSlot() == 3 && validDirection) {
         		
         	}
-        	else if(currTile.getSlot() != 1) {
-        		ui.displayString("Cannot walk through walls");
+        	else if(currTile.getSlot() != 1 && validDirection) {
+        		ui.displayString("Can't walk through walls mate");
         	}
 		}while(dice > 0);
 	}

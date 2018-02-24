@@ -23,10 +23,11 @@ public class CluedoUI {
     private BoardPanel board;
     private InformationPanel info;
     private CommandPanel command;
+    private JFrame frame;
 
     //Constructor
     public CluedoUI(Players players, Weapons weapons) {
-        JFrame frame = new JFrame();
+    	frame = new JFrame();
         JPanel mainPanel = new JPanel();
         board = new BoardPanel(players, weapons);
         command = new CommandPanel();
@@ -65,6 +66,10 @@ public class CluedoUI {
      * @return A String that the user types
      */
     public String getCommand() {
+    	if(command.getCommand().equalsIgnoreCase("quit")) {
+    		frame.setVisible(false);
+    		frame.dispose();
+    	}
         return command.getCommand();
     }
 
