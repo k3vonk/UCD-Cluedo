@@ -40,15 +40,11 @@ public class Token {
         return this.token;
     }
     
-   /* //Returns the players name
+    //Returns the token name
     public String getTokenName() {
-    	return this.name;
+    	return this.token;
     }
     
-    public void setTokenName(String name) {
-    	this.name = name;
-    }
-      */
     //Tile accessor
     public Tile getPosition() {
     	return position;

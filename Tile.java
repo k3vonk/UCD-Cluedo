@@ -21,13 +21,15 @@ public class Tile {
     
     private float x, y; 	  //Coordinates of the tile
     private int row, column;  //Row and column of the array
+    private int slot;
 
     //Tile constructor
-	public Tile(float x, float y, int row, int column) {
+	public Tile(float x, float y, int row, int column, int slot) {
         this.x = x;
         this.y = y;
         this.row = row;
         this.column = column;
+        this.slot = slot;
     }
 
     //Accessors for (x,y) coordinates
@@ -47,6 +49,11 @@ public class Tile {
     public int getColumn() {
         return column;
     }
+    
+    //Returns what type of slot the tile is 
+    public int getSlot() {
+    	return slot;
+    }
 
     //A method to draw a tile in a given position
     public void drawTile(Graphics g) {
@@ -57,5 +64,15 @@ public class Tile {
         Color color = new Color(0, 0, 0, 0.8f); //Black   - 0.0f for transparent
         g2.setPaint(color);
         g2.draw(rect);
+        
+      /* (test to see if slots are in the right places in the matrix)
+       	float X_OFFSET = 6f;
+    	float Y_OFFSET = 16f;
+    
+        g2.setColor(Color.yellow);
+       	Font font = new Font("Comic Sans MS", Font.BOLD, 14); //Font Comic Sans
+        g2.setFont(font);
+     
+        g2.drawString(Integer.toString(slot),  getXCord() + X_OFFSET, getYCord() + Y_OFFSET); */
     }
 }

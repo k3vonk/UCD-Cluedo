@@ -19,7 +19,7 @@ public class BoardPanel extends JPanel{
 	private BufferedImage boardImage; //Image of the board
 	private TileGrid grid = new TileGrid(); //The game grid
 	private Weapons weapons;
-	//private Tokens tokens;
+	//private Tokens tokens = new Tokens(); (test)
 	private Players players;
 	
 	public BoardPanel(Players players, Weapons weapons){	
@@ -58,6 +58,11 @@ public class BoardPanel extends JPanel{
         for(Player player: players) {
         	player.getToken().drawToken(g2);
         }
+      /* (test)  
+        for(Token tok: tokens) {
+        	tok.drawToken(g2);
+        }
+       */
 	}
 
 }
