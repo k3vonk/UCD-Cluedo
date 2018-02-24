@@ -16,7 +16,6 @@ public class Main {
 	private final Weapons weapons = new Weapons();	 		//Fixed set of weapons on board
 	private CluedoUI ui = new CluedoUI(players, weapons); 	//Starts with an empty board with no players
 	private TileGrid grid = new TileGrid();
-	private Dice dice = new Dice();
 	
 	public enum Token {PLUM, WHITE, SCARLET, GREEN, MUSTARD, PEACOCK}
 	
@@ -64,13 +63,12 @@ public class Main {
 	 * Finds name and choice of player and sets their token
 	 */
 	private void addPlayers() {
-		String name; 	//Name of player
+		String name; 		//Name of player
 		String verifyName; 	//If they want to change their name
-		String choice; 	//The token they want to choose
+		String choice; 		//The token they want to choose
 		
 		//Iterates through each player and allows each one to choose their name and token
 		for(int i = 0; i < Integer.parseInt(capacity); i++) {
-			int j  = 0;
 			
 			//Acquire players name
 			ui.displayString("Player " + (i+1) + " name: ");
@@ -89,6 +87,7 @@ public class Main {
 			
 			//Character choice 
 			ui.displayString("Player " + (i+1) + "(" + name + "): "+ " Please choose a character");
+			int j = 0;
 			for(Token p: Token.values()) {
 				ui.displayString(++j +". " + p.toString());
 			}
@@ -97,7 +96,7 @@ public class Main {
 			do { //Ensures valid choice
 				do { //Ensures choice is a number
 					choice = ui.getCommand();
-					ui.displayString(choice);
+					ui.displayString("Player " + (i+1) + ": " + choice);
 				
 					if(!isNum(choice)) { //Error message for non numbers
 						ui.displayString("\'" + choice + "\'" + " is not a valid choice...");
@@ -107,7 +106,7 @@ public class Main {
 				for(Player p: players) { //Ensures theres no two players having the same token
 					valid = p.hasChoice(Integer.parseInt(choice));
 					if(!valid) {
-						ui.displayString("Not available character, retry....");
+						ui.displayString("Not available character, retry. :(((");
 						break;
 					}
 				}
@@ -120,27 +119,34 @@ public class Main {
 				
 			//Create the players & give them tokens
 			players.createPlayers(name, Integer.parseInt(choice));
-			players.createTokens(i);
+			players.createTokens(i);			
+			
 		}
+		
+		weapons.createWeapons(); //Instantiates the weapons
 		
 		//Update and display the board
 		ui.setBoard(players, weapons);
 		ui.display();
 	}
 	
-	
+	/**
+	 * Each player takes turns
+	 */
 	public void turns() {
-		String command;
-		boolean valid;
+		String command; //Text that is entered
+		Dice dice = new Dice();
+		boolean valid;  //Check if action is valid
 		do {
 			for(int i = 0; i < players.getCapacity(); i++) {
-
-
+				valid = false;
+				
+				//First prompt for first board action
 				ui.displayString(players.currPlayer(i) + " turn to move.\nType roll to roll the dice.");
 				CommandPanel.updateUserImage(players.getPlayer(i).getImagePath());
 
 				do {
-					valid = false;
+					
 					command = ui.getCommand();
 					ui.displayString(players.currPlayer(i) + ": " + command);
 
@@ -165,9 +171,14 @@ public class Main {
 		}while(true);
 	}
 	
+	/**
+	 * A movement method to move a character
+	 * @param dice
+	 * @param curr
+	 */
 	public void movement(int dice, int curr) {
 		String direction;
-		boolean validDirection = false;
+		boolean validDirection = false; //if a valid direction
 		Tile currTile = players.getPlayer(curr).getToken().getPosition();
 	
 		do{
@@ -201,6 +212,15 @@ public class Main {
         	catch(ArrayIndexOutOfBoundsException e) {
         		JOptionPane.showMessageDialog(null, "Invalid direction...Direction does not exist[Off the board]");
         	}
+        	
+        	//Ensures no two players are on the same slot
+        	for(int i = 0; i < players.getCapacity(); i++) {
+        		if(currTile == players.getTile(i)) {
+        			validDirection = false;
+        			ui.displayString(players.currPlayer(curr) + " cannot move onto an occupied tile :<");
+        		}
+        		
+        	}
         	if(currTile.getSlot() == 1 && validDirection) {
 	        	players.getPlayer(curr).getToken().moveBy(currTile);
 	        	ui.display();
@@ -209,7 +229,7 @@ public class Main {
         	else if(currTile.getSlot() == 3 && validDirection) {
         		
         	}
-        	else {
+        	else if(currTile.getSlot() != 1) {
         		ui.displayString("Cannot walk through walls");
         	}
 		}while(dice > 0);

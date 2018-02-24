@@ -37,10 +37,12 @@ public class BoardPanel extends JPanel{
 		 setPreferredSize(new Dimension(boardImage.getHeight(), boardImage.getWidth()));
 	}
 	
+	//Sets the board with different players & weapons
 	public void set(Players players, Weapons weapons) {
 		this.weapons = weapons;
 		this.players = players;
 	}
+	
 	@Override
 	/**
 	 * A paint component to draw tokens onto the board

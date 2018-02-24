@@ -24,16 +24,16 @@ public class CommandPanel extends JPanel {
 	private static final int FONT_SIZE = 14;
 	
 	private JTextField commandField = new JTextField("", SIZE);
-//	private JButton submit = new JButton("Submit");
+	//private JButton submit = new JButton("Submit");
 	private final LinkedList<String> commandBuffer = new LinkedList<>();
     public static JLabel picLabel;
+    
 	//Constructor
 	public CommandPanel() {
 		JPanel inputPanel = new JPanel(); //Panel that displays input 
 		JPanel availableInput = new JPanel(); //Panel that displays available commands that users can use
 		
 		//A Label that contains the current player icon
-
 		try {
             picLabel = CluedoUI.imageToLabel("Profiler/default.png");
             picLabel.setBorder(BorderFactory.createTitledBorder("Current Player"));
@@ -42,7 +42,6 @@ public class CommandPanel extends JPanel {
 		}catch(IOException ex){
 			System.out.println("Unable to load ballroom image.");
 		}
-
 		
 		//Beautification
 		setPreferredSize(new Dimension(1000, 145));
@@ -109,6 +108,10 @@ public class CommandPanel extends JPanel {
 		return command.replaceAll("\\s+","");
 	}
 
+	/**
+	 * Updates current user image on the command panel
+	 * @param path
+	 */
 	public static void updateUserImage(String path) {
         try {
             System.out.println(path);

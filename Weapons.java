@@ -17,7 +17,6 @@ public class Weapons implements Iterable<Weapon>, Iterator<Weapon>{
     private TileGrid grid = new TileGrid();
     
     public Weapons() {
-       createWeapons();
     }
     
     //Creates a bunch of weapons for the game

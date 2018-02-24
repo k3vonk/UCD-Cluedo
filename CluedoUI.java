@@ -84,6 +84,12 @@ public class CluedoUI {
         info.updateContent(string);
     }
 
+    /**
+     * Finds the path of an image
+     * @param path
+     * @return
+     * @throws IOException
+     */
     public static JLabel imageToLabel(String path) throws IOException {
         BufferedImage myPicture = ImageIO.read(CluedoUI.class.getClassLoader().getResourceAsStream(path));
         JLabel picLabel = new JLabel(new ImageIcon(myPicture));

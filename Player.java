@@ -10,35 +10,13 @@ public class Player {
 	private String name; 	//Name of player
 	private int choice;  	//player's choice
 	private Token token;   	//Token of a player
-	private String imagePath;
+	private String imagePath;	//tokens image
 
 	
 	//Constructor
 	public Player(String name, int choice) {
 		this.name = name;
 		this.choice = choice;
-		switch(choice){
-			case 1:
-				imagePath = "Profiler/Plum.png";
-				break;
-			case 2:
-				imagePath = "Profiler/White.png";
-				break;
-			case 3:
-				imagePath = "Profiler/Scarlet.png";
-				break;
-			case 4:
-				imagePath = "Profiler/Green.png";
-				break;
-			case 5:
-				imagePath = "Profiler/Mustard.png";
-				break;
-			case 6:
-				imagePath = "Profiler/Peacock.png";
-				break;
-			default:
-				break;
-		}
 	}
 	
 	//Accessor of player name
@@ -61,11 +39,13 @@ public class Player {
 		return token;
 	}
 
+	//Sets the path of the token image
 	public void setImagePath(String path) {this.imagePath = path;}
 
+	//Returns the tokens image
 	public String getImagePath() {return imagePath;}
 	
-	//Returns true if matching player
+	//Returns true if matching token
     public boolean hasName(String name) {
         return this.name.toLowerCase().equals(name.toLowerCase().trim());
     }

@@ -1,7 +1,11 @@
 /**
- * A class which simulates a dice roll
+ * A class that simulates a dice
+ * 
+ * @Team MAGA
+ * @Author Gajun Young - 16440714
+ * @Author Royal Thomas - 16326926
+ * @Author Richard  Otroshchenko
  */
-
 import java.util.Random;
 
 public class Dice {
@@ -13,6 +17,7 @@ public class Dice {
    public void rollDice(){
         roll = rand.nextInt(numSides) + 1;
     }
+   
     //Method to display the roll result
     public int getRoll(){
        return roll;
