@@ -27,7 +27,7 @@ public class TileGrid {
 
 	//Grid offset
 	private float x = 42.5f;
-	private float y = 24f;
+	private float y;
 	
 	//Constructor that builds the array of tiles
 	public TileGrid() {

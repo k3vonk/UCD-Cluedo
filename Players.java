@@ -32,22 +32,22 @@ public class Players implements Iterable<Player>, Iterator<Player> {
 		
 		switch(choice) {
 		case 1:
-			players.get(curr).setToken(new Token("Plum", Color.magenta, grid.map[23][19]));
+			players.get(curr).setToken(new Token("Plum", Color.magenta, grid.map[19][23]));
 			break;
 		case 2:
-			players.get(curr).setToken(new Token("White", Color.white, grid.map[9][0]));
+			players.get(curr).setToken(new Token("White", Color.white, grid.map[0][9]));
 			break;
 		case 3:
-			players.get(curr).setToken(new Token("Scarlet", Color.red, grid.map[7][24]));
+			players.get(curr).setToken(new Token("Scarlet", Color.red, grid.map[24][7]));
 			break;
 		case 4:
-			players.get(curr).setToken(new Token("Green", Color.green, grid.map[14][0]));
+			players.get(curr).setToken(new Token("Green", Color.green, grid.map[0][14]));
 			break;
 		case 5:
-			players.get(curr).setToken(new Token("Mustard", Color.yellow, grid.map[0][17]));
+			players.get(curr).setToken(new Token("Mustard", Color.yellow, grid.map[17][0]));
 			break;
 		case 6:
-			players.get(curr).setToken(new Token("Peacock", Color.blue, grid.map[23][6]));
+			players.get(curr).setToken(new Token("Peacock", Color.blue, grid.map[6][23]));
 			break;
 		default:
 			break;
