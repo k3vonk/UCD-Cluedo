@@ -72,6 +72,14 @@ public class Players implements Iterable<Player>, Iterator<Player> {
 	public Player getPlayer(int index) {
 		return players.get(index);
 	}
+	
+	public Tile getTile(int index) {
+		return players.get(index).getToken().getPosition();
+	}
+	
+	public String currPlayer(int index) {
+		return "Player " + players.get(index).getToken().getTokenName() + "(" + players.get(index).getName() + ")";
+	}
 	    
 	@Override
 	public Iterator<Player> iterator() {

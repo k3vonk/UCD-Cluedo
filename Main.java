@@ -131,6 +131,7 @@ public class Main {
 		String command;
 		do {
 			for(int i = 0; i < players.getCapacity(); i++) {
+				ui.displayString(players.currPlayer(i) + " turn.....");
 				movement(6, i);
 				System.out.println(i);
 			}
@@ -140,40 +141,44 @@ public class Main {
 	public void movement(int dice, int curr) {
 		String direction;
 		Tile currTile = players.getPlayer(curr).getToken().getPosition();
-		
+	
 		do{
 			direction = ui.getCommand();
-			//Catch if array is out of bounds
-			// players.getPlayer(curr).getToken().getPosition().getColumn()
-			//players.getPlayer(curr).getToken().getPosition().getRow() - 1
+			ui.displayString(players.currPlayer(curr) + ": " + direction);
 			
+			//Catch if array is out of bounds
         	try {
 		        if (direction.equalsIgnoreCase("u")) {
-		        	currTile = grid.map[players.getPlayer(curr).getToken().getPosition().getRow() - 1][players.getPlayer(curr).getToken().getPosition().getColumn()];
-		        	dice--;
+		        	currTile = grid.map[players.getTile(curr).getRow() - 1][players.getTile(curr).getColumn()];
+		  
 		        }
 		        else if(direction.equalsIgnoreCase("d")) {
-		        	currTile = grid.map[players.getPlayer(curr).getToken().getPosition().getRow() + 1][players.getPlayer(curr).getToken().getPosition().getColumn()];
-		        	dice--;
+		        	currTile = grid.map[players.getTile(curr).getRow() + 1][players.getTile(curr).getColumn()];
+		        	
 		        }
 		        else if(direction.equalsIgnoreCase("l")) {
-		        	currTile = grid.map[players.getPlayer(curr).getToken().getPosition().getRow()][players.getPlayer(curr).getToken().getPosition().getColumn() - 1];
-		        	dice--;
+		        	currTile = grid.map[players.getTile(curr).getRow()][players.getTile(curr).getColumn() - 1];
+		        	
 		        }
 		        else if (direction.equalsIgnoreCase("r")){
-		        	currTile = grid.map[players.getPlayer(curr).getToken().getPosition().getRow()][players.getPlayer(curr).getToken().getPosition().getColumn() + 1];
-		        	dice--;
+		        	currTile = grid.map[players.getTile(curr).getRow()][players.getTile(curr).getColumn() + 1];
+		      
 		        }
 		        else {
 		        	ui.displayString("Invalid direction... retry");
 		        }
         	}
         	catch(ArrayIndexOutOfBoundsException e) {
-        		JOptionPane.showMessageDialog(null, "Invalid direction...Direction does not exist");
+        		JOptionPane.showMessageDialog(null, "Invalid direction...Direction does not exist[Off the board]");
         	}
-        	
-        	players.getPlayer(curr).getToken().moveBy(currTile);
-        	ui.display();
+        	if(currTile.getSlot() == 1) {
+	        	players.getPlayer(curr).getToken().moveBy(currTile);
+	        	ui.display();
+	        	dice--;
+        	}
+        	else {
+        		ui.displayString("Cannot walk through walls");
+        	}
 		}while(dice > 0);
 	}
 	
