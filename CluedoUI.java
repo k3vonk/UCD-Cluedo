@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -18,7 +17,7 @@ import javax.swing.*;
 public class CluedoUI {
 
     //Size of the frame
-    private static final int FRAME_WIDTH = 1000;
+    private static final int FRAME_WIDTH = 1015;
     private static final int FRAME_HEIGHT = 830;
 
     private BoardPanel board;

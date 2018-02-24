@@ -20,7 +20,7 @@ import javax.swing.JTextArea;
 public class InformationPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    private static final int HEIGHT = 34;
+    private static final int HEIGHT = 33;
     private static final int WIDTH = 28;
 
     private JTextArea infoArea = new JTextArea("", HEIGHT, WIDTH);
@@ -28,7 +28,8 @@ public class InformationPanel extends JPanel {
     //Constructor
     public InformationPanel() {
         JScrollPane scroll = new JScrollPane(infoArea);
-        setPreferredSize(new Dimension(350, 700));
+       // setPreferredSize(new Dimension(350, 700));
+        setPreferredSize(new Dimension(300,690));
 
         //border style
         setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
