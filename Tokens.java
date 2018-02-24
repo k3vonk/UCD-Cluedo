@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -15,7 +14,7 @@ public class Tokens implements Iterable<Token>, Iterator<Token> {
 	private static final int DEFAULT_CAPACITY = 6;
 	private final ArrayList<Token> tokens;
 	private Iterator<Token> iterator;
-	private TileGrid grid = new TileGrid();
+	
 	    
 	 
 	public Tokens() {
@@ -26,33 +25,6 @@ public class Tokens implements Iterable<Token>, Iterator<Token> {
 		tokens = new ArrayList<Token>(capacity);
 	}
 	 
-	//Creating a list of playerss [Fixed starting location]
-	public void createPlayers(String name, int choice) {
-		
-		switch(choice) {
-		case 1:
-			tokens.add(new Token("Plum", Color.magenta, grid.map[23][19], name));
-			break;
-		case 2:
-			tokens.add(new Token("White", Color.white, grid.map[9][0], name));
-			break;
-		case 3:
-			tokens.add(new Token("Scarlet", Color.red, grid.map[7][24], name));
-			break;
-		case 4:
-			tokens.add(new Token("Green", Color.green, grid.map[14][0], name));
-			break;
-		case 5:
-			tokens.add(new Token("Mustard", Color.yellow, grid.map[0][17], name));
-			break;
-		case 6:
-			tokens.add(new Token("Peacock", Color.blue, grid.map[23][6], name));
-			break;
-		default:
-			break;
-		}
-		
-	}
 	  
 	//Iterates to get a specific Token
 	public Token get(String name) {

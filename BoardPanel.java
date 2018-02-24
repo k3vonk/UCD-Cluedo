@@ -1,140 +1,63 @@
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.io.IOException;
+import java.awt.image.BufferedImage;
+import java.awt.*;
+
 /**
- *
+ * A panel that displays the gameboard
+ * 
  * @Team MAGA
  * @Author Gajun Young - 16440714
  * @Author Royal Thomas - 16326926
  * @Author Richard  Otroshchenko
  */
-import java.awt.*;
-import java.util.ArrayList;
+public class BoardPanel extends JPanel{
 
-import javax.swing.JOptionPane;
-/**
- * A board panel which draws all the images and sets up the token locations
- * @Author Richard, Gajun
- */
-import javax.swing.JPanel;
-
-@SuppressWarnings("serial")
-public class BoardPanel extends JPanel {
-
-    private ArrayList<Weapon> weapon;
-    private ArrayList<Player> player;
-
-    //Graphic objects
-    private TileGrid grid;
-    private Board board;
-    
-    private static final int MAX_TOKEN = 6; //Amount of tokens available
-
-    //Constructor panel
-    public BoardPanel() {
-        weapon = new ArrayList<Weapon>();
-        player = new ArrayList<Player>();
-        grid = new TileGrid();
-        board = new Board();
-        createWeapons();
-        createPlayers();
-    }
-
-    //Candlestick, Dagger, Lead Pipe, Revolver, Rope, Spanner
-    public void createWeapons() {
-        weapon.add(new Weapon("Candle Stick", grid.map[21][1])); 
-        weapon.add(new Weapon("Dagger", grid.map[2][21])); 
-        weapon.add(new Weapon("Lead Pipe", grid.map[1][12])); 
-        weapon.add(new Weapon("Revolver", grid.map[22][22])); 
-        weapon.add(new Weapon("Rope", grid.map[19][16])); 
-        weapon.add(new Weapon("Spanner", grid.map[2][2])); 
-    }
-
-    //Creating a list of players [Fixed starting location]
-    public void createPlayers() {
-        player.add(new Player("Plum", Color.magenta, grid.map[23][19]));
-        player.add(new Player("White", Color.white, grid.map[9][0]));
-        player.add(new Player("Scarlet", Color.red, grid.map[7][24]));
-        player.add(new Player("Green", Color.green, grid.map[14][0]));
-        player.add(new Player("Mustard", Color.yellow, grid.map[0][17]));
-        player.add(new Player("Peacock", Color.blue, grid.map[23][6]));
-    }
-  
-    /**A movement class to move objects
-     * 
-     * @param direction -command panel input
-     * @param name - token or player 
-     * @return false - no move has been made, true - movement made
-     */
-    public boolean moveToken(String direction, String name) {
-        boolean correctName = false;
-        boolean correctDirection = false;
-        Tile currTile = null;
-        Token currToken = null;
-        int i = -1;
+	private static final long serialVersionUID = 1L;
+	
+	private BufferedImage boardImage; //Image of the board
+	private TileGrid grid = new TileGrid(); //The game grid
+	private Weapons weapons;
+	//private Tokens tokens;
+	private Players players;
+	
+	public BoardPanel(Players players, Weapons weapons){	
+		this.weapons = weapons;
+		this.players = players;
+		
+		//Check if image input is available [Exceptions]
+		 try {
+	            boardImage = ImageIO.read(this.getClass().getResource("Images/Board.jpg"));
+	     }catch (IOException ex) {
+	            System.out.println("Couldn't find image...." + ex);
+	     }
+		 
+		 //Set the size of the panel
+		 setPreferredSize(new Dimension(boardImage.getHeight(), boardImage.getWidth()));
+	}
+	
+	public void set(Players players, Weapons weapons) {
+		this.weapons = weapons;
+		this.players = players;
+	}
+	@Override
+	/**
+	 * A paint component to draw tokens onto the board
+	 */
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2 =(Graphics2D) g;
+        g2.drawImage(boardImage, 0, 0, boardImage.getHeight(), boardImage.getWidth(), this);
+        grid.drawGrid(g);
         
-        //Search if the name is a player or a weapon
-        while((i <= MAX_TOKEN) && !correctName) {
-        	i++; //Starts searching value at 0
-        	 if (player.get(i).getPlayerName().equals(name)) {
-        		 currToken = player.get(i);
-        		 correctName = true;
-        	 }
-        	 else if(weapon.get(i).getWeaponName().equals(name)) {
-        		 currToken = weapon.get(i);
-        		 correctName = true;
-        	 }
+        for(Weapon weapon: weapons) {
+        	weapon.drawWeapon(g2);
         }
         
-        //Moving Token based on up, down, left, right
-        if(correctName) {
-        	
-        	//Catch if array is out of bounds
-        	try {
-		        if (direction.equals("up")) {
-		        	currTile = grid.map[currToken.getTile().getColumn()][currToken.getTile().getRow() - 1];
-		        	correctDirection = true;
-		        }
-		        else if(direction.equals("down")) {
-		        	currTile = grid.map[currToken.getTile().getColumn()][currToken.getTile().getRow() + 1];
-		        	correctDirection = true;
-		        }
-		        else if(direction.equals("left")) {
-		        	currTile = grid.map[currToken.getTile().getColumn() - 1][currToken.getTile().getRow()];
-		        	correctDirection = true;
-		        }
-		        else if (direction.equals("right")){
-		        	currTile = grid.map[currToken.getTile().getColumn() + 1][currToken.getTile().getRow()];
-		        	correctDirection = true;
-		        }
-        	}
-        	catch(ArrayIndexOutOfBoundsException e) {
-        		JOptionPane.showMessageDialog(null, "Invalid direction...Direction does not exist");
-        	}
+        for(Player player: players) {
+        	player.getToken().drawToken(g2);
         }
-        
-        //New Location of token & draw it
-        if(correctDirection) {
-        	currToken.setTile(currTile);
-        	repaint();
-        }
-        
-        return correctDirection && correctName;
-    }
-
-
-    //Draw the objects together
-    public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        board.paintComponent(g2); //Draws the board
-        
-        //grid.drawGrid(g2);    //draws a grid
-        //Draw all the weapons in their current position
-        for (Weapon li : weapon) {
-            li.drawWeapon(g2);
-        }
-
-        //Draw all the players in their first location
-        for (Player pi : player) {
-            pi.drawPlayer(g2);
-        }
-    }
+	}
 
 }

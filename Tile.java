@@ -3,29 +3,27 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-import javax.swing.JPanel;
 
 /**
+ * A Tile class that represents a tile on the board
+ * 
  * @Team MAGA
  * @Author Gajun Young - 16440714
  * @Author Royal Thomas - 16326926
  * @Author Richard  Otroshchenko
  */
-@SuppressWarnings("serial")
-public class Tile extends JPanel {
+
+public class Tile {
 
     //Dimensions of the tile
     private static final double WIDTH = 21.5;
     private static final double HEIGHT = 21.5;
-
-    //Coordinates of the tile
-    private double x, y;
-
-    //Row and column of the array
-    private int row, column;
+    
+    private float x, y; 	  //Coordinates of the tile
+    private int row, column;  //Row and column of the array
 
     //Tile constructor
-    public Tile(double x, double y, int row, int column) {
+	public Tile(float x, float y, int row, int column) {
         this.x = x;
         this.y = y;
         this.row = row;
@@ -33,12 +31,12 @@ public class Tile extends JPanel {
     }
 
     //Accessors for (x,y) coordinates
-    public double getYCord() {
-        return y;
+    public float getXCord() {
+        return x;
     }
 
-    public double getXCord() {
-        return x;
+    public float getYCord() {
+        return y;
     }
 
     //Accessors for [row,column]
@@ -53,14 +51,11 @@ public class Tile extends JPanel {
     //A method to draw a tile in a given position
     public void drawTile(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-
-        //Draw a square
-        Rectangle2D rect = new Rectangle2D.Double(x, y, WIDTH, HEIGHT);
+        Rectangle2D rect = new Rectangle2D.Double(x, y, WIDTH, HEIGHT); //Draw a square
 
         //Set color of grid lines to be invisible
         Color color = new Color(0, 0, 0, 0.8f); //Black   - 0.0f for transparent
         g2.setPaint(color);
-
         g2.draw(rect);
     }
 }
