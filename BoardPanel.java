@@ -28,7 +28,7 @@ public class BoardPanel extends JPanel{
 		
 		//Check if image input is available [Exceptions]
 		 try {
-	            boardImage = ImageIO.read(this.getClass().getResource("Images/Board.jpg"));
+	            boardImage = ImageIO.read(this.getClass().getResource("Board.jpg"));
 	     }catch (IOException ex) {
 	            System.out.println("Couldn't find image...." + ex);
 	     }
