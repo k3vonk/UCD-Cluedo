@@ -79,11 +79,11 @@ public class Main {
 				ui.displayString("\'" + name + "\'" + ", Are you sure with this name [Y/N]");
 				verifyName = ui.getCommand();
 				
-				if(verifyName.equals("N")) { //Allows users to change name
+				if(verifyName.equalsIgnoreCase("N")) { //Allows users to change name
 					ui.displayString("Player " + (i+1) + " choose a new name:");
 					name = ui.getCommand();
 				}
-			}while(!verifyName.equals("Y"));
+			}while(!verifyName.equalsIgnoreCase("Y"));
 			
 			
 			//Character choice 
@@ -145,19 +145,19 @@ public class Main {
 			direction = ui.getCommand();
 			//Catch if array is out of bounds
         	try {
-		        if (direction.equals("u")) {
+		        if (direction.equalsIgnoreCase("u")) {
 		        	currTile = grid.map[players.getPlayer(curr).getToken().getPosition().getColumn()][players.getPlayer(curr).getToken().getPosition().getRow() - 1];
 		        	dice--;
 		        }
-		        else if(direction.equals("d")) {
+		        else if(direction.equalsIgnoreCase("d")) {
 		        	currTile = grid.map[players.getPlayer(curr).getToken().getPosition().getColumn()][players.getPlayer(curr).getToken().getPosition().getRow() + 1];
 		        	dice--;
 		        }
-		        else if(direction.equals("l")) {
+		        else if(direction.equalsIgnoreCase("l")) {
 		        	currTile = grid.map[players.getPlayer(curr).getToken().getPosition().getColumn() - 1][players.getPlayer(curr).getToken().getPosition().getRow()];
 		        	dice--;
 		        }
-		        else if (direction.equals("r")){
+		        else if (direction.equalsIgnoreCase("r")){
 		        	currTile = grid.map[players.getPlayer(curr).getToken().getPosition().getColumn() + 1][players.getPlayer(curr).getToken().getPosition().getRow()];
 		        	dice--;
 		        }

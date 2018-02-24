@@ -97,6 +97,6 @@ public class CommandPanel extends JPanel {
 		command = commandBuffer.pop();
 		}
 	    
-		return command;
+		return command.replaceAll("\\s+","");
 	}
 }
