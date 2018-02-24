@@ -22,12 +22,12 @@ public class Weapons implements Iterable<Weapon>, Iterator<Weapon>{
     
     //Creates a bunch of weapons for the game
     public void createWeapons() {
-        weapons.add(new Weapon("Candle Stick", grid.map[11][2])); 
+        weapons.add(new Weapon("Candle Stick", grid.map[12][1])); 
         weapons.add(new Weapon("Dagger", grid.map[2][11])); 
-        weapons.add(new Weapon("Lead Pipe", grid.map[1][2])); 
-        weapons.add(new Weapon("Revolver", grid.map[22][2])); 
-        weapons.add(new Weapon("Rope", grid.map[15][20])); 
-        weapons.add(new Weapon("Spanner", grid.map[9][20])); 
+        weapons.add(new Weapon("Lead Pipe", grid.map[2][1])); 
+        weapons.add(new Weapon("Revolver", grid.map[23][1])); 
+        weapons.add(new Weapon("Rope", grid.map[16][19])); 
+        weapons.add(new Weapon("Spanner", grid.map[10][19])); 
     }
     
     //Iterates to get a specific weapon

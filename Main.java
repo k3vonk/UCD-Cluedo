@@ -98,19 +98,20 @@ public class Main {
 				do { //Ensures choice is a number
 					choice = ui.getCommand();
 					ui.displayString(choice);
-					
-					for(Player p: players) { //Ensures theres no two players having the same token
-						valid = p.hasChoice(Integer.parseInt(choice));
-						if(!valid) {
-							ui.displayString("Not available character, retry....");
-							break;
-						}
-					}
-					
+				
 					if(!isNum(choice)) { //Error message for non numbers
 						ui.displayString("\'" + choice + "\'" + " is not a valid choice...");
 					}
 				}while(!isNum(choice));
+				
+				for(Player p: players) { //Ensures theres no two players having the same token
+					valid = p.hasChoice(Integer.parseInt(choice));
+					if(!valid) {
+						ui.displayString("Not available character, retry....");
+						break;
+					}
+				}
+				
 				
 				if(Integer.parseInt(choice) > 6 || Integer.parseInt(choice) < 1) { //Error message for out of bound
 					ui.displayString("Not available character, retry....");
@@ -153,13 +154,20 @@ public class Main {
 				}while(!valid);
 
 				movement(dice.getRoll(), i);
-
+				
+				
+				//After all actions
+				do {
+					ui.displayString(players.currPlayer(i) + " no actions left. Type 'done' to pass turn");
+					command = ui.getCommand();
+				}while(!command.equalsIgnoreCase("done"));
 			}
 		}while(true);
 	}
 	
 	public void movement(int dice, int curr) {
 		String direction;
+		boolean validDirection = false;
 		Tile currTile = players.getPlayer(curr).getToken().getPosition();
 	
 		do{
@@ -170,19 +178,21 @@ public class Main {
         	try {
 		        if (direction.equalsIgnoreCase("u")) {
 		        	currTile = grid.map[players.getTile(curr).getRow() - 1][players.getTile(curr).getColumn()];
+		        	validDirection = true;
 		  
 		        }
 		        else if(direction.equalsIgnoreCase("d")) {
 		        	currTile = grid.map[players.getTile(curr).getRow() + 1][players.getTile(curr).getColumn()];
+		        	validDirection = true;
 		        	
 		        }
 		        else if(direction.equalsIgnoreCase("l")) {
 		        	currTile = grid.map[players.getTile(curr).getRow()][players.getTile(curr).getColumn() - 1];
-		        	
+		        	validDirection = true;
 		        }
 		        else if (direction.equalsIgnoreCase("r")){
 		        	currTile = grid.map[players.getTile(curr).getRow()][players.getTile(curr).getColumn() + 1];
-		      
+		        	validDirection = true;
 		        }
 		        else {
 		        	ui.displayString("Invalid direction... retry");
@@ -191,10 +201,13 @@ public class Main {
         	catch(ArrayIndexOutOfBoundsException e) {
         		JOptionPane.showMessageDialog(null, "Invalid direction...Direction does not exist[Off the board]");
         	}
-        	if(currTile.getSlot() == 1) {
+        	if(currTile.getSlot() == 1 && validDirection) {
 	        	players.getPlayer(curr).getToken().moveBy(currTile);
 	        	ui.display();
 	        	dice--;
+        	}
+        	else if(currTile.getSlot() == 3 && validDirection) {
+        		
         	}
         	else {
         		ui.displayString("Cannot walk through walls");

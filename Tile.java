@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
@@ -64,8 +65,9 @@ public class Tile {
         Color color = new Color(0, 0, 0, 0.8f); //Black   - 0.0f for transparent
         g2.setPaint(color);
         g2.draw(rect);
-        
-      /* (test to see if slots are in the right places in the matrix)
+       
+        /*
+       //(test to see if slots are in the right places in the matrix)
        	float X_OFFSET = 6f;
     	float Y_OFFSET = 16f;
     
