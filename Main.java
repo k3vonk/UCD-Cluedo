@@ -131,6 +131,7 @@ public class Main {
 		String command;
 		do {
 			for(int i = 0; i < players.getCapacity(); i++) {
+				CommandPanel.updateUserImage(players.getPlayer(i).getImagePath());
 				movement(6, i);
 				System.out.println(i);
 			}
