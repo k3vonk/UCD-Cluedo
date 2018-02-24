@@ -16,6 +16,7 @@ public class Main {
 	private final Weapons weapons = new Weapons();	 		//Fixed set of weapons on board
 	private CluedoUI ui = new CluedoUI(players, weapons); 	//Starts with an empty board with no players
 	private TileGrid grid = new TileGrid();
+	private Dice dice = new Dice();
 	
 	public enum Token {PLUM, WHITE, SCARLET, GREEN, MUSTARD, PEACOCK}
 	
@@ -129,13 +130,31 @@ public class Main {
 	
 	public void turns() {
 		String command;
-		do {
+		boolean valid;
 			for(int i = 0; i < players.getCapacity(); i++) {
+<<<<<<< HEAD
 				ui.displayString(players.currPlayer(i) + " turn.....");
 				movement(6, i);
+=======
+				ui.displayString(players.getPlayer(i).getName() + "'s turn to move. Type roll to roll the dice.");
+				do {
+					valid = false;
+					command = ui.getCommand();
+					ui.displayString(command);
+
+					if(command.equalsIgnoreCase("roll")){
+						dice.rollDice();
+						ui.displayString(String.valueOf(dice.getRoll()));
+						valid = true;
+					}else{
+						ui.displayString("Whoops! Wrong command. Try 'roll' this time :)");
+					}
+				}while(!valid);
+
+				movement(dice.getRoll(), i);
+>>>>>>> 4d333f00a9c0945b93acd39880f6e2c7bb03056e
 				System.out.println(i);
 			}
-		}while(true);
 	}
 	
 	public void movement(int dice, int curr) {
