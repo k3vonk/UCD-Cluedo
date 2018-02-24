@@ -1,9 +1,12 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.LinkedList;
 
 /**
@@ -23,20 +26,26 @@ public class CommandPanel extends JPanel {
 	private JTextField commandField = new JTextField("", SIZE);
 //	private JButton submit = new JButton("Submit");
 	private final LinkedList<String> commandBuffer = new LinkedList<>();
-	
+    public static JLabel picLabel;
 	//Constructor
 	public CommandPanel() {
 		JPanel inputPanel = new JPanel(); //Panel that displays input 
 		JPanel availableInput = new JPanel(); //Panel that displays available commands that users can use
 		
 		//A Label that contains the current player icon
-		JLabel picLabel = new JLabel();
-		picLabel.setPreferredSize(new Dimension(200, 0));
-		picLabel.setBorder(BorderFactory.createTitledBorder("Current Player"));
-        add(picLabel);
+
+		try {
+            picLabel = CluedoUI.imageToLabel("Profiler/default.png");
+            picLabel.setBorder(BorderFactory.createTitledBorder("Current Player"));
+            add(picLabel);
+
+		}catch(IOException ex){
+			System.out.println("Unable to load ballroom image.");
+		}
+
 		
 		//Beautification
-		setPreferredSize(new Dimension(1000, 120));
+		setPreferredSize(new Dimension(1000, 145));
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		setBorder(new EmptyBorder(0, 10, 0, 0));
 		
@@ -49,7 +58,7 @@ public class CommandPanel extends JPanel {
 		availableInput.setLayout(new BoxLayout(availableInput, BoxLayout.Y_AXIS));
 	    availableInput.setPreferredSize(new Dimension(300, 0));
 	    availableInput.setBorder(BorderFactory.createTitledBorder("Available Inputs"));
-	    String[] listInputs = {"up", "down", "left", "right"};
+	    String[] listInputs = {"u(up)", "d(down)", "l(left)", "r(right)"};
         for (String x : listInputs) {
             availableInput.add(new JLabel(x));
         }
@@ -99,4 +108,17 @@ public class CommandPanel extends JPanel {
 	    
 		return command.replaceAll("\\s+","");
 	}
+
+	public static void updateUserImage(String path) {
+        try {
+            System.out.println(path);
+            BufferedImage myPicture = ImageIO.read(CluedoUI.class.getClassLoader().getResourceAsStream(path));
+            picLabel.setIcon(new ImageIcon(myPicture));
+            picLabel.revalidate();
+            picLabel.repaint();
+            picLabel.update(picLabel.getGraphics());
+        }catch(IOException ex){
+            System.out.println("Unable to load user image.");
+        }
+    }
 }

@@ -133,9 +133,14 @@ public class Main {
 		boolean valid;
 		do {
 			for(int i = 0; i < players.getCapacity(); i++) {
+<<<<<<< HEAD
 
 				ui.displayString(players.currPlayer(i) + " turn to move.\nType roll to roll the dice.");
 
+=======
+				CommandPanel.updateUserImage(players.getPlayer(i).getImagePath());
+				ui.displayString(players.getPlayer(i).getName() + "'s turn to move. Type roll to roll the dice.");
+>>>>>>> 5635771f04ae798b2aa2342b319af17394a9520a
 				do {
 					valid = false;
 					command = ui.getCommand();
@@ -151,6 +156,10 @@ public class Main {
 				}while(!valid);
 
 				movement(dice.getRoll(), i);
+<<<<<<< HEAD
+=======
+				System.out.println(i);
+>>>>>>> 5635771f04ae798b2aa2342b319af17394a9520a
 			}
 		}while(true);
 	}
