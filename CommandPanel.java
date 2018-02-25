@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
@@ -27,11 +29,12 @@ public class CommandPanel extends JPanel {
 	//private JButton submit = new JButton("Submit");
 	private final LinkedList<String> commandBuffer = new LinkedList<>();
     public static JLabel picLabel;
-    
+	private static JTextArea availableInputs = new JTextArea("", 5, 10);
+    private static JPanel availableInput;
 	//Constructor
 	public CommandPanel() {
 		JPanel inputPanel = new JPanel(); //Panel that displays input 
-		JPanel availableInput = new JPanel(); //Panel that displays available commands that users can use
+		availableInput = new JPanel(); //Panel that displays available commands that users can use
 		
 		//A Label that contains the current player icon
 		try {
@@ -52,14 +55,16 @@ public class CommandPanel extends JPanel {
 		inputPanel.add(new JLabel("Input Area:"));
 		//inputPanel.add(submit);
 		
-		//Add a panel to make a list of labels and set its layout to allow for that
-		availableInput.setLayout(new BoxLayout(availableInput, BoxLayout.Y_AXIS));
+		//Add a panel to make a list of actions and set its layout to allow for that
+
+		JScrollPane scroll = new JScrollPane(availableInputs);
+		availableInput.setLayout(new BoxLayout(availableInput, BoxLayout.X_AXIS));
 	    availableInput.setPreferredSize(new Dimension(300, 0));
 	    availableInput.setBorder(BorderFactory.createTitledBorder("Available Inputs"));
-	    String[] listInputs = {"u(up)", "d(down)", "l(left)", "r(right)"};
-        for (String x : listInputs) {
-            availableInput.add(new JLabel(x));
-        }
+		availableInput.add(scroll);
+		availableInputs.setMaximumSize(new Dimension(290,200));
+		availableInputs.setLineWrap(true);
+
         add(inputPanel);
         add(availableInput);
         
@@ -84,7 +89,19 @@ public class CommandPanel extends JPanel {
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Command Panel"));
 		
 	}
-	
+
+	// Methods to control the textbox in the command panel that lets users know what inputs are available
+	public static void updateCommands(String[] x){
+			availableInputs.setText("");
+			for(String y: x){
+				availableInputs.append(y + "\n");
+			}
+	}
+
+	// Used to clear the textbox.
+	public static void updateCommands(){
+		availableInputs.setText("");
+	}
 	/**
 	 * A method that takes in a string of information
 	 * 

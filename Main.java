@@ -1,4 +1,6 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
@@ -44,6 +46,7 @@ public class Main {
      */
     private void capacity() {
         ui.displayString("Enter the number of players: [min: 2, max: 6]");
+        CommandPanel.updateCommands();
 
         //Ensures choice is within the [min, max] range
         do {
@@ -174,6 +177,8 @@ public class Main {
                 ui.displayString(
                         players.currPlayer(i) + "'s turn to move.\nType roll to roll the dice.");
                 CommandPanel.updateUserImage(players.getPlayer(i).getImagePath());
+				String[] commands = {"roll"};
+				CommandPanel.updateCommands(commands);
 
                 do {
 
@@ -181,8 +186,10 @@ public class Main {
                     ui.displayString(players.currPlayer(i) + ": " + command);
 
                     if (command.equalsIgnoreCase("roll")) {
+
                         //Rolls the dice and displays the result onscreen
                         dice.rollDice();
+						CommandPanel.updateCommands();
 						ui.drawDice(dice.getRoll1(),dice.getRoll2());
                         ui.displayString(players.currPlayer(i) + " rolled " + (dice.getRoll1()+dice.getRoll2()));
                         ui.display();
@@ -206,6 +213,8 @@ public class Main {
                     ui.displayString(players.currPlayer(i)
                             + " no actions left. Type 'done' to pass turn, or 'quit' to end the "
                             + "game");
+					String[] commandsEnd = {"done","quit"};
+					CommandPanel.updateCommands(commandsEnd);
                     command = ui.getCommand();
                     ui.displayString(players.currPlayer(i) + ": " + command);
                 } while (!command.equalsIgnoreCase("done"));
@@ -327,6 +336,8 @@ public class Main {
 		Tile currTile = players.getPlayer(curr).getToken().getPosition();
 	
 		ui.displayString(players.currPlayer(curr) + "make your move :0");
+		String[] commands = {"u(up)", "d(down)", "l(left)", "r(right)"};
+		CommandPanel.updateCommands(commands);
 		do{
 			direction = ui.getCommand();
 			ui.displayString(players.currPlayer(curr) + ": " + direction);
