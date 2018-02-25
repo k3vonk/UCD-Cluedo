@@ -14,12 +14,14 @@ public class StartUp {
      *
      * @return true = string consists of numbers only, false = string consists of non-numbers
      */
-    public static boolean isNum(String str) {
-        for (char c : str.toCharArray()) {
-            if (!Character.isDigit(c)) return false;
-        }
-        return true;
-    }
+      public static boolean isNum(String str) {
+          if(str.equals(""))
+              return false;
+          for (char c : str.toCharArray()) {
+              if (!Character.isDigit(c)) return false;
+          }
+          return true;
+      }
 
     /**
      * Asks the users, the number of players playing the game
@@ -76,11 +78,19 @@ public class StartUp {
 
             //Character choice text
             ui.displayString("Player " + (i + 1) + "(" + name + "): " + " Please choose a character");
-            
-            //Tokens a player can choose
-            int tokenList = 0;
-            for (Token token : Token.values()) {
-                ui.displayString(++tokenList + ". " + token.toString());
+
+            int j = 0;
+
+            // Method to show only the character options available to the user.
+            for (Token p : Token.values()) {
+                j++; boolean playerExists = false;
+                for (Player x : players) { //Ensures theres no two players having the same token
+                    if(!x.hasChoice(j))
+                        playerExists = true;
+                }
+                if(!playerExists){
+                    ui.displayString(j + ". " + p.toString());
+                }
             }
 
             boolean valid = true;

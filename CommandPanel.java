@@ -62,6 +62,7 @@ public class CommandPanel extends JPanel {
 		availableInput.add(scroll);
 		availableInputs.setMaximumSize(new Dimension(290,200));
 		availableInputs.setLineWrap(true);
+		availableInputs.setEditable(false);
 
         add(inputPanel);
         add(availableInput);
@@ -128,7 +129,6 @@ public class CommandPanel extends JPanel {
 	 */
 	public static void updateUserImage(String path) {
         try {
-            System.out.println(path);
             BufferedImage myPicture = ImageIO.read(CluedoUI.class.getClassLoader().getResourceAsStream(path));
             picLabel.setIcon(new ImageIcon(myPicture));
             picLabel.revalidate();
