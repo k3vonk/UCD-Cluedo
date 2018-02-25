@@ -143,8 +143,17 @@ public class Main {
             ui.displayString(
                     "Player " + (i + 1) + "(" + name + "): " + " Please choose a character");
             int j = 0;
+
+            // Method to show only the character options available to the user.
             for (Token p : Token.values()) {
-                ui.displayString(++j + ". " + p.toString());
+            	j++; boolean playerExists = false;
+				for (Player x : players) { //Ensures theres no two players having the same token
+					if(!x.hasChoice(j))
+						playerExists = true;
+				}
+				if(!playerExists){
+					ui.displayString(j + ". " + p.toString());
+				}
             }
 
             boolean valid = true;

@@ -38,7 +38,6 @@ public class CommandPanel extends JPanel {
             picLabel = CluedoUI.imageToLabel("Profiler/default.png");
             picLabel.setBorder(BorderFactory.createTitledBorder("Current Player"));
             add(picLabel);
-
 		}catch(IOException ex){
 			System.out.println("Unable to load ballroom image.");
 		}
@@ -50,7 +49,7 @@ public class CommandPanel extends JPanel {
 		
 		//A container that holds the textbox and the submit button
 		inputPanel.setBorder(new EmptyBorder(50, 0, 0, 0));
-		inputPanel.add(new JLabel("To test player and weapon movement on the current player"));
+		inputPanel.add(new JLabel("Input Area:"));
 		//inputPanel.add(submit);
 		
 		//Add a panel to make a list of labels and set its layout to allow for that
