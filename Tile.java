@@ -22,15 +22,24 @@ public class Tile {
     
     private float x, y; 	  //Coordinates of the tile
     private int row, column;  //Row and column of the array
-    private int slot;
+    private int slot, room;
 
+    public Tile() {
+    	this.x = 0;
+    	this.y = 0;
+    	this.row = 0;
+    	this.column = 0;
+    	this.slot = 0;
+    	this.room = 0;
+    }
     //Tile constructor
-	public Tile(float x, float y, int row, int column, int slot) {
+	public Tile(float x, float y, int row, int column, int slot, int room) {
         this.x = x;
         this.y = y;
         this.row = row;
         this.column = column;
         this.slot = slot;
+        this.room = room;
     }
 
     //Accessors for (x,y) coordinates
@@ -55,6 +64,14 @@ public class Tile {
     public int getSlot() {
     	return slot;
     }
+    
+    public int getRoom() {
+    	return room;
+    }
+    
+    public String showRoom() {
+    	return "[" + row + ", " + column + "]";
+    }
 
     //A method to draw a tile in a given position
     public void drawTile(Graphics g) {
@@ -66,8 +83,8 @@ public class Tile {
         g2.setPaint(color);
         g2.draw(rect);
        
-        /*
-       //(test to see if slots are in the right places in the matrix)
+        
+     /*  //(test to see if slots are in the right places in the matrix)
        	float X_OFFSET = 6f;
     	float Y_OFFSET = 16f;
     
@@ -75,6 +92,6 @@ public class Tile {
        	Font font = new Font("Comic Sans MS", Font.BOLD, 14); //Font Comic Sans
         g2.setFont(font);
      
-        g2.drawString(Integer.toString(slot),  getXCord() + X_OFFSET, getYCord() + Y_OFFSET); */
+        g2.drawString(Integer.toString(room),  getXCord() + X_OFFSET, getYCord() + Y_OFFSET); */
     }
 }
