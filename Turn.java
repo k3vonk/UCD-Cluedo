@@ -27,6 +27,7 @@ public class Turn {
                     //Available commands
 	   				String[] commands = {"roll"};
 	   				CommandPanel.updateCommands(commands);
+	   				CommandPanel.updateMovesReamining(-1);
 
                    do {
                        command = ui.getCommand();
@@ -60,7 +61,7 @@ public class Turn {
                        ui.displayString(players.currPlayer(i)
                                + " no actions left. Type 'done' to pass turn, or 'quit' to end the "
                                + "game");
-   					String[] commandsEnd = {"done","quit"};
+   					String[] commandsEnd = {"done"};
    					CommandPanel.updateCommands(commandsEnd);
                        command = ui.getCommand();
                        ui.displayString(players.currPlayer(i) + ": " + command);
@@ -75,12 +76,13 @@ public class Turn {
     	int sentinel = 0; //Ensures right warning is displayed
     	Tile currTile = players.getTile(currPlayer); 
     	
-    	
+
     	ui.displayString(players.currPlayer(currPlayer) + "make your move :");
     	
     	//Set of commands a player could possibly use
 		String[] commands = {"u(up)", "d(down)", "l(left)", "r(right)"};
 		CommandPanel.updateCommands(commands);
+        CommandPanel.updateMovesReamining(dice);
 		
 		do {
 			validDirection = false; //Reset
@@ -146,6 +148,7 @@ public class Turn {
 		        	players.getPlayer(currPlayer).getToken().moveBy(currTile);
 		        	ui.display();
 		        	dice--;
+                    CommandPanel.updateMovesReamining(dice);
 	        	}
 	        	else if(currTile.getSlot() == 3 && validDirection) {
 	        		//Enter a room
@@ -155,6 +158,7 @@ public class Turn {
 		        	roomCenter(players, currPlayer, players.getTile(currPlayer).getRoom());
 		        	ui.display();
 		        	dice = 0;
+                    CommandPanel.updateMovesReamining(dice);
 	        	}
 	        	else if(sentinel == 0 && currTile.getSlot() != 3){
 	        		ui.displayString("Can't walk through walls matey");

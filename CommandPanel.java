@@ -24,11 +24,11 @@ public class CommandPanel extends JPanel {
 	private static final int FONT_SIZE = 14;
 	
 	private JTextField commandField = new JTextField("", SIZE);
-	//private JButton submit = new JButton("Submit");
 	private final LinkedList<String> commandBuffer = new LinkedList<>();
     public static JLabel picLabel;
-	private static JTextArea availableInputs = new JTextArea("", 5, 10);
+	private static JTextArea availableInputs = new JTextArea("quit", 5, 10);
     private static JPanel availableInput;
+    private static JLabel movesRemaining = new JLabel("");
 	//Constructor
 	public CommandPanel() {
 		JPanel inputPanel = new JPanel(); //Panel that displays input 
@@ -83,6 +83,8 @@ public class CommandPanel extends JPanel {
         commandField.addActionListener(listener);
         commandField.setFont(new Font("Times New Roman", Font.PLAIN, FONT_SIZE));
         inputPanel.add(commandField);
+
+        inputPanel.add(movesRemaining);
 	        
         //border style
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Command Panel"));
@@ -95,11 +97,23 @@ public class CommandPanel extends JPanel {
 			for(String y: x){
 				availableInputs.append(y + "\n");
 			}
+			availableInputs.append("quit");
 	}
 
 	// Used to clear the textbox.
 	public static void updateCommands(){
-		availableInputs.setText("");
+		availableInputs.setText("quit");
+	}
+
+	// Method to update label that shows how many moves the player has left
+	public static void updateMovesReamining(int x){
+		if(x == 0){
+			movesRemaining.setText("You've run out of moves! Enter 'done' to move to next player.");
+		}else if(x == -1){
+			movesRemaining.setText("");
+		} else {
+			movesRemaining.setText("Moves remaining for current player:" + x);
+		}
 	}
 	/**
 	 * A method that takes in a string of information
