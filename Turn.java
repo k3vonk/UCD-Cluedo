@@ -229,7 +229,7 @@ public class Turn {
     			}
     		}while(!StartUp.isNum(exitChoice) && !exitChoice.equalsIgnoreCase("passage"));
 
-    		if(exitChoice.equalsIgnoreCase("passage")){
+    		if(exitChoice.equalsIgnoreCase("passage") && (room == 9 || room == 7 || room == 1 || room  == 3)){
     		    break;
             }
     		if(Integer.parseInt(exitChoice) < 1 || Integer.parseInt(exitChoice) > exits.size()) {
