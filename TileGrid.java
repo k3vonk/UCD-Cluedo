@@ -6,7 +6,7 @@ import java.awt.Graphics;
  * @Team MAGA
  * @Author Gajun Young - 16440714
  * @Author Royal Thomas - 16326926
- * @Author Richard  Otroshchenko
+ * @Author Richard  Otroshchenko - 16353416
  */
 
 

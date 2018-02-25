@@ -1,5 +1,14 @@
 import java.util.ArrayList;
 
+/**
+ * A class that represents the turns of each player
+ *
+ * @Team MAGA
+ * @Author Gajun Young - 16440714
+ * @Author Royal Thomas - 16326926
+ * @Author Richard  Otroshchenko - 16353416
+ */
+
 public class Turn {
 	
 	private CluedoUI ui;
@@ -21,7 +30,7 @@ public class Turn {
                    valid = false;
 
                    //First prompt for first board action
-                   ui.displayString(players.currPlayer(i) + "'s turn to move.\nType roll to roll the dice.");
+                   ui.displayString(players.currPlayer(i) + "'s turn to move.\nType 'roll' to roll the dice.");
                    CommandPanel.updateUserImage(players.getPlayer(i).getImagePath());
                    
                     //Available commands
@@ -41,7 +50,7 @@ public class Turn {
    						ui.drawDice(dice.getRoll1(),dice.getRoll2());
                         ui.displayString(players.currPlayer(i) + " rolled " + (dice.getRoll1()+dice.getRoll2()));
                         ui.display();
-   						try {
+   						try { //The resulting dice roll is onscreen for 2 seconds
    							Thread.sleep(2000);
    						} catch (InterruptedException e) {
    							e.printStackTrace();
@@ -50,10 +59,11 @@ public class Turn {
    						ui.display();
                         valid = true;
                        } else {
-                           ui.displayString("Whoops! Wrong command. Try 'roll' this time :)");
+                           ui.displayString("Whoops! Wrong command. Try 'roll' this time.");
                        }
                    } while (!valid);
 
+                   //After rolling, the player decides where and how to move
                    movement(players, dice.getRoll1()+dice.getRoll2(), i);
 
                    //After all actions
@@ -90,7 +100,7 @@ public class Turn {
 			
 			if(players.getTile(currPlayer).getSlot() == 5 || players.getTile(currPlayer).getSlot() == 3 || players.getTile(currPlayer).getSlot() == 4) {
 				if(players.getTile(currPlayer).getSlot() == 3) {
-					ui.displayString("Choosing another exit buddy? Sure go ahead :)");
+					ui.displayString("Choose another exit");
 				}
 				Boolean tookSecretPath = exitRoom(players, currPlayer, players.getTile(currPlayer).getRoom());
 				ui.display();
@@ -141,7 +151,7 @@ public class Turn {
 	        	for(int i = 0; i < players.getCapacity(); i++) {
 	        		if(currTile == players.getTile(i) && validDirection && players.getPlayer(i) != players.getPlayer(currPlayer)) {
 	        			validDirection = false;
-	        			ui.displayString(players.currPlayer(currPlayer) + " cannot move onto an occupied tile :<");
+	        			ui.displayString(players.currPlayer(currPlayer) + " cannot move onto an occupied tile");
 	        			sentinel = -1;
 	        			break;
 	        		}
@@ -166,7 +176,7 @@ public class Turn {
                     CommandPanel.updateMovesReamining(dice);
 	        	}
 	        	else if(sentinel == 0 && currTile.getSlot() != 3){
-	        		ui.displayString("Can't walk through walls matey");
+	        		ui.displayString("There's a wall in your way...");
 	        	}
 			
 		}while(dice > 0);
@@ -228,7 +238,7 @@ public class Turn {
                     break;
                 }
     			if(!StartUp.isNum(exitChoice)) {
-    				ui.displayString("'" + exitChoice +"'" + " is not a choice...");
+    				ui.displayString("'" + exitChoice +"'" + " is not a valid choice");
     			}
     		}while(!StartUp.isNum(exitChoice));
 

@@ -15,7 +15,7 @@ import java.util.LinkedList;
  * @Team MAGA
  * @Author Gajun Young - 16440714
  * @Author Royal Thomas - 16326926
- * @Author Richard  Otroshchenko
+ * @Author Richard  Otroshchenko - 16353416
  */
 public class CommandPanel extends JPanel {
 	
@@ -40,7 +40,7 @@ public class CommandPanel extends JPanel {
             picLabel.setBorder(BorderFactory.createTitledBorder("Current Player"));
             add(picLabel);
 		}catch(IOException ex){
-			System.out.println("Unable to load ballroom image.");
+			System.out.println("Unable to load image.");
 		}
 		
 		//Beautification

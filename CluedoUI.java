@@ -13,7 +13,7 @@ import javax.swing.*;
  * @Team MAGA
  * @Author Gajun Young - 16440714
  * @Author Royal Thomas - 16326926
- * @Author Richard  Otroshchenko
+ * @Author Richard  Otroshchenko - 16353416
  */
 public class CluedoUI {
 
@@ -63,8 +63,11 @@ public class CluedoUI {
         board.set(players, weapons);
     }
 
+    /**
+     * Shows the dice rolling onscreen
+     */
     public void drawDice(int roll1, int roll2){
-        if(roll1!=0) { //The following code plays a nice roll animation
+        if(roll1!=0) { //If roll is 0, we are hiding the dice and thus no roll animation needs to be shown
             for (int i = 0; i < 8; i++) {
                 board.drawDice(rand.nextInt(6) + 1,rand.nextInt(6) + 1);
                 display();
@@ -83,7 +86,7 @@ public class CluedoUI {
      */
     public String getCommand() {
         String input = command.getCommand();
-    	if(input.equalsIgnoreCase("quit")) {
+    	if(input.equalsIgnoreCase("quit")) { //The program ends whenever quit is entered
     		System.exit(0);
     	}
         return input;

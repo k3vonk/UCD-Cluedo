@@ -1,4 +1,11 @@
-
+/**
+ * A class that takes in player information before the gameplay starts
+ *
+ * @Team MAGA
+ * @Author Gajun Young - 16440714
+ * @Author Royal Thomas - 16326926
+ * @Author Richard  Otroshchenko - 16353416
+ */
 
 public class StartUp {
 	
@@ -62,17 +69,17 @@ public class StartUp {
         for (int i = 0; i < players.getCapacity(); i++) {
 
             //Acquire players name
-            ui.displayString("Player " + (i + 1) + " name: ");
+            ui.displayString("Player " + (i + 1) + "'s name?: ");
             do{
                 name = ui.getCommand();
             }while(name.equals(""));
 
             do {//Ensures if the name they choose, is the name they want
-                ui.displayString("\'" + name + "\'" + ", Are you sure with this name [Y/N]");
+                ui.displayString("\'" + name + "\'" + ", Are you sure about this name? [Y/N]");
                 verifyName = ui.getCommand();
 
                 if (verifyName.equalsIgnoreCase("N")) { //Allows users to change name
-                    ui.displayString("Player " + (i + 1) + " choose a new name:");
+                    ui.displayString("Player " + (i + 1) + ", please choose a new name:");
                     name = ui.getCommand();
                 }
             } while (!verifyName.equalsIgnoreCase("Y"));
@@ -86,7 +93,7 @@ public class StartUp {
             // Method to show only the character options available to the user.
             for (Token p : Token.values()) {
                 j++; boolean playerExists = false;
-                for (Player x : players) { //Ensures theres no two players having the same token
+                for (Player x : players) { //Ensures there's no two players having the same token
                     if(!x.hasChoice(j))
                         playerExists = true;
                 }
@@ -102,7 +109,7 @@ public class StartUp {
                     ui.displayString("Player " + (i + 1) + ": " + choice);
 
                     if (!isNum(choice)) { //Error message for non numbers
-                        ui.displayString("\'" + choice + "\'" + " is not a valid choice...");
+                        ui.displayString("\'" + choice + "\'" + " is not a valid choice.");
                     }
                 } while (!isNum(choice));
 
@@ -110,7 +117,7 @@ public class StartUp {
                 for (Player p : players) { 
                     valid = p.hasChoice(Integer.parseInt(choice));
                     if (!valid) {
-                        ui.displayString("Not available character, retry. :(((");
+                        ui.displayString("Character unavailable, please retry.");
                         break;
                     }
                 }
@@ -118,7 +125,7 @@ public class StartUp {
 
                 if (Integer.parseInt(choice) > 6 || Integer.parseInt(choice)
                         < 1) { //Error message for out of bound
-                    ui.displayString("Not available character, retry....");
+                    ui.displayString("Character unavailable, please retry.");
                 }
             } while ((Integer.parseInt(choice) > 6 || Integer.parseInt(choice) < 1) || !valid);
 
