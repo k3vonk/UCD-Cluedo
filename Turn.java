@@ -2,6 +2,7 @@
 public class Turn {
 	
 	private CluedoUI ui;
+	private TileGrid grid = new TileGrid();
 	
 	public Turn(CluedoUI ui) {
 		this.ui = ui;
@@ -51,7 +52,7 @@ public class Turn {
                        }
                    } while (!valid);
 
-                   //movement(dice.getRoll1()+dice.getRoll2(), i);
+                   movement(players, dice.getRoll1()+dice.getRoll2(), i);
 
                    //After all actions
                    do {
@@ -65,5 +66,63 @@ public class Turn {
                    } while (!command.equalsIgnoreCase("done"));
                }
            } while (true);
+    }
+    
+    public void movement(Players players, int dice, int currPlayer) {
+    	String direction; //Contains direction of where the user wants to go
+    	boolean validDirection = false; //If direction is valid
+    	Tile currTile = players.getTile(currPlayer); 
+    	
+    	
+    	ui.displayString(players.currPlayer(currPlayer) + "make your move :");
+    	
+    	//Set of commands a player could possibly use
+		String[] commands = {"u(up)", "d(down)", "l(left)", "r(right)"};
+		CommandPanel.updateCommands(commands);
+		
+		do {
+			direction = ui.getCommand();
+			ui.displayString(players.currPlayer(currPlayer) + ": " + direction);
+			
+			//Catch if array is out of bounds
+        	try {
+		        if (direction.equalsIgnoreCase("u")) {
+		        	currTile = grid.map[players.getTile(currPlayer).getRow() - 1][players.getTile(currPlayer).getColumn()];
+		        	validDirection = true;
+		  
+		        }
+		        else if(direction.equalsIgnoreCase("d")) {
+		        	currTile = grid.map[players.getTile(currPlayer).getRow() + 1][players.getTile(currPlayer).getColumn()];
+		        	validDirection = true;
+		        	
+		        }
+		        else if(direction.equalsIgnoreCase("l")) {
+		        	currTile = grid.map[players.getTile(currPlayer).getRow()][players.getTile(currPlayer).getColumn() - 1];
+		        	validDirection = true;
+		        }
+		        else if (direction.equalsIgnoreCase("r")){
+		        	currTile = grid.map[players.getTile(currPlayer).getRow()][players.getTile(currPlayer).getColumn() + 1];
+		        	validDirection = true;
+		        }
+		        else {
+		        	ui.displayString("'" + direction + "'" + " is not a valid direction");
+		        }
+        	}
+        	catch(ArrayIndexOutOfBoundsException e) {
+        		ui.displayString("Invalid direction...[Off the board]");
+        	}
+        	
+        	if(currTile.getSlot() == 1 && validDirection) {
+	        	players.getPlayer(currPlayer).getToken().moveBy(currTile);
+	        	ui.display();
+	        	dice--;
+	        	validDirection = false;
+        	}
+        	else {
+        		ui.displayString("Can't walk through walls matey");
+        	}
+        	
+		}while(dice > 0);
+		
     }
 }
