@@ -6,15 +6,10 @@
  * @Author Royal Thomas - 16326926
  * @Author Richard  Otroshchenko
  */
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.ArrayList;
+
 import java.util.Random;
 
-public class Dice extends JPanel{
+public class Dice {
     private Random rand = new Random();
     private int numSides = 6;
     private int roll1, roll2;

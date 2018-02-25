@@ -28,7 +28,6 @@ public class InformationPanel extends JPanel {
     //Constructor
     public InformationPanel() {
         JScrollPane scroll = new JScrollPane(infoArea);
-       // setPreferredSize(new Dimension(350, 700));
         setPreferredSize(new Dimension(300,690));
 
         //border style

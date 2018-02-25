@@ -12,10 +12,7 @@ import java.awt.Graphics2D;
  * @Author Richard  Otroshchenko
  */
 public class Token {
-
-
     private String token; //Name of token
-   // private String name; //Name of player
     private Color colour; //Colour of icon on board.
     private Tile position; //Position of tile
 
