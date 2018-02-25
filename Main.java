@@ -335,7 +335,7 @@ public class Main {
 		boolean validDirection = false; //if a valid direction
 		Tile currTile = players.getPlayer(curr).getToken().getPosition();
 	
-		ui.displayString(players.currPlayer(curr) + "make your move :0");
+		ui.displayString(players.currPlayer(curr) + "make your move :");
 		String[] commands = {"u(up)", "d(down)", "l(left)", "r(right)"};
 		CommandPanel.updateCommands(commands);
 		do{
