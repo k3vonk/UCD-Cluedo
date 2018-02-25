@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -24,6 +25,7 @@ public class CluedoUI {
     private InformationPanel info;
     private CommandPanel command;
     private JFrame frame;
+    private Random rand = new Random();
 
     //Constructor
     public CluedoUI(Players players, Weapons weapons) {
@@ -44,7 +46,6 @@ public class CluedoUI {
 
         //Position all the panels into their correct places
 
-        frame.getContentPane().setBackground(Color.decode("#ebe0ca"));
         frame.add(mainPanel);
         frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         frame.setTitle("Cluedo");
@@ -61,15 +62,35 @@ public class CluedoUI {
     public void setBoard(Players players, Weapons weapons) {
         board.set(players, weapons);
     }
+<<<<<<< HEAD
     
+=======
+
+    public void drawDice(int roll1, int roll2){
+        if(roll1!=0) { //The following code plays a nice roll animation
+            for (int i = 0; i < 8; i++) {
+                board.drawDice(rand.nextInt(6) + 1);
+                board.drawDice2(rand.nextInt(6) + 1);
+                display();
+                try {
+                    Thread.sleep(250);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        board.drawDice(roll1); //Draws the final result
+        board.drawDice2(roll2);
+    }
+
+>>>>>>> 875672a3ffc83f49affdcef6167cdc13a7beaa62
     /**
      * @return A String that the user types
      */
     public String getCommand() {
         String input = command.getCommand();
     	if(input.equalsIgnoreCase("quit")) {
-    		frame.setVisible(false);
-    		frame.dispose();
+    		System.exit(0);
     	}
         return input;
     }

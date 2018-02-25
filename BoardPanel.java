@@ -16,7 +16,7 @@ public class BoardPanel extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	
-	private BufferedImage boardImage; //Image of the board
+	private BufferedImage boardImage, die, die2; //Image of the board
 	private TileGrid grid = new TileGrid(); //The game grid
 	private Weapons weapons;
 	//private Tokens tokens = new Tokens(); (test)
@@ -42,6 +42,49 @@ public class BoardPanel extends JPanel{
 		this.weapons = weapons;
 		this.players = players;
 	}
+	//This takes the roll value as input, and draws the correct die image accordingly
+	public void drawDice(int roll){
+		try {
+			if (roll == 1) {
+				die = ImageIO.read(this.getClass().getResource("die1.jpg"));
+			} else if (roll == 2) {
+				die = ImageIO.read(this.getClass().getResource("die2.jpg"));
+			} else if (roll == 3) {
+				die = ImageIO.read(this.getClass().getResource("die3.jpg"));
+			} else if (roll == 4) {
+				die = ImageIO.read(this.getClass().getResource("die4.jpg"));
+			} else if (roll == 5) {
+				die = ImageIO.read(this.getClass().getResource("die5.jpg"));
+			} else if (roll == 6) {
+				die = ImageIO.read(this.getClass().getResource("die6.jpg"));
+			}else if(roll == 0){ //Used to hide the die image
+				die = null;
+			}
+		}catch(IOException ex) {
+			System.out.println("Couldn't find image...." + ex);
+		}
+	}
+	public void drawDice2(int roll){
+		try {
+			if (roll == 1) {
+				die2 = ImageIO.read(this.getClass().getResource("die1.jpg"));
+			} else if (roll == 2) {
+				die2 = ImageIO.read(this.getClass().getResource("die2.jpg"));
+			} else if (roll == 3) {
+				die2 = ImageIO.read(this.getClass().getResource("die3.jpg"));
+			} else if (roll == 4) {
+				die2 = ImageIO.read(this.getClass().getResource("die4.jpg"));
+			} else if (roll == 5) {
+				die2 = ImageIO.read(this.getClass().getResource("die5.jpg"));
+			} else if (roll == 6) {
+				die2 = ImageIO.read(this.getClass().getResource("die6.jpg"));
+			}else if(roll == 0){ //Used to hide the die image
+				die2 = null;
+			}
+		}catch(IOException ex) {
+			System.out.println("Couldn't find image...." + ex);
+		}
+	}
 	
 	@Override
 	/**
@@ -60,6 +103,10 @@ public class BoardPanel extends JPanel{
         for(Player player: players) {
         	player.getToken().drawToken(g2);
         }
+		if(die != null){ //This is used to help ensure the die is only onscreen when needed.
+			g2.drawImage(die, 290, 255, die.getHeight()-90, die.getWidth()-90, this);
+			g2.drawImage(die2, 290, 335, die.getHeight()-90, die.getWidth()-90, this);
+		}
       /* (test)  
         for(Token tok: tokens) {
         	tok.drawToken(g2);
