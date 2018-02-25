@@ -67,44 +67,6 @@ public class Main {
     }
 
 
-    public Tile findSpot(int mRow, int mColumn) {
-
-        Tile currentGrid = grid.map[mRow][mColumn];
-        // First loop to keep track of blocks to move right and left.
-        for (int j = 0; j < players.getCapacity(); j++) {
-            // Keep track to see if we found a player at a given distance from center
-            Boolean lExists = false;
-            Boolean rExists = false;
-
-            //second loop to keep track of players.
-            for (int i = 0; i < players.getCapacity(); i++) {
-                Tile tileRight = grid.map[mRow][mColumn + j];
-                Tile tileLeft = grid.map[mRow][mColumn - j];
-
-                if (tileRight == players.getTile(i)) {
-                    rExists = true;
-                }
-                if (tileLeft == players.getTile(i)) {
-                    lExists = true;
-                }
-            }
-
-            if (!lExists) {
-                currentGrid = grid.map[mRow][mColumn - j];
-                break;
-            }
-
-            if (!rExists) {
-                currentGrid = grid.map[mRow][mColumn + j];
-                break;
-            }
-
-        }
-
-        return currentGrid;
-
-    }
-
 
     /**
      * Finds name and choice of player and sets their token
