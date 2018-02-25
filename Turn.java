@@ -92,11 +92,15 @@ public class Turn {
 				if(players.getTile(currPlayer).getSlot() == 3) {
 					ui.displayString("Choosing another exit buddy? Sure go ahead :)");
 				}
-				exitRoom(players, currPlayer, players.getTile(currPlayer).getRoom());
+				Boolean tookSecretPath = exitRoom(players, currPlayer, players.getTile(currPlayer).getRoom());
 				ui.display();
-				
-				ui.displayString(players.currPlayer(currPlayer) + " now choose a direction");
-				CommandPanel.updateMovesReamining(dice);
+				if(!tookSecretPath){
+                    ui.displayString(players.currPlayer(currPlayer) + " now choose a direction");
+                    CommandPanel.updateMovesReamining(dice);
+                }else{
+				    dice = 0;
+				    break;
+                }
 			}	
 			
 				direction = ui.getCommand();
@@ -191,7 +195,7 @@ public class Turn {
     	players.getPlayer(currPlayer).getToken().moveBy(currTile);
     }
     
-    public void exitRoom(Players players, int currPlayer, int room) {
+    public Boolean exitRoom(Players players, int currPlayer, int room) {
     	ArrayList<Tile> exits = new ArrayList<Tile>();
     	
     	//Searches for possible exits
@@ -210,6 +214,10 @@ public class Turn {
 		for(Tile t: exits) {
 			ui.displayString(++numExits + ". Exit location" + " " + t.showRoom());
 		}
+		if(room == 9 || room == 7 || room == 1 || room  == 3){
+		    ui.displayString(++numExits + ". Secret passageway");
+		    exits.add(grid.map[0][0]);
+        }
 		CommandPanel.updateMovesReamining(-2);
 		
 		//Player chooses an exit that isn't blocked
@@ -226,8 +234,29 @@ public class Turn {
     			ui.displayString(exitChoice + " is not a valid exit choice");
     		}
     	}while(Integer.parseInt(exitChoice) < 1 || Integer.parseInt(exitChoice) > exits.size());
-	   	
-	   	players.getPlayer(currPlayer).getToken().moveBy(exits.get(Integer.parseInt(exitChoice) - 1));
+
+	   	if(Integer.parseInt(exitChoice) == exits.size()){
+	   	    switch(room){
+                case 9:
+                    players.getPlayer(currPlayer).getToken().moveBy(grid.map[1][5]);
+                    break;
+                case 3:
+                    players.getPlayer(currPlayer).getToken().moveBy(grid.map[19][0]);
+                    break;
+                case 7:
+                    players.getPlayer(currPlayer).getToken().moveBy(grid.map[5][22]);
+                    break;
+                case 1:
+                    players.getPlayer(currPlayer).getToken().moveBy(grid.map[21][23]);
+                default:
+                    break;
+            }
+	   	return true;
+	   	}else {
+            players.getPlayer(currPlayer).getToken().moveBy(
+                    exits.get(Integer.parseInt(exitChoice) - 1));
+            return false;
+        }
 	   	
     }
 }
