@@ -224,10 +224,13 @@ public class Turn {
     		do {
     			exitChoice = ui.getCommand();	
     			ui.displayString(players.currPlayer(currPlayer) + ": " + exitChoice);
-    			if(!StartUp.isNum(exitChoice) && !exitChoice.equalsIgnoreCase("passage")) {
+                if(exitChoice.equalsIgnoreCase("passage") && (room == 9 || room == 7 || room == 1 || room  == 3)){
+                    break;
+                }
+    			if(!StartUp.isNum(exitChoice)) {
     				ui.displayString("'" + exitChoice +"'" + " is not a choice...");
     			}
-    		}while(!StartUp.isNum(exitChoice) && !exitChoice.equalsIgnoreCase("passage"));
+    		}while(!StartUp.isNum(exitChoice));
 
     		if(exitChoice.equalsIgnoreCase("passage") && (room == 9 || room == 7 || room == 1 || room  == 3)){
     		    break;
