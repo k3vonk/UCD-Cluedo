@@ -500,14 +500,25 @@ public class Main {
     				} 
     			}
         		
+        		//Exits
         		int numExits = 0;
         		String exitChoice;
+        		ui.displayString("Available exits for " + players.currPlayer(curr));
         		for(Tile t: exits) {
-        			ui.displayString(++numExits + "Exit location" + " " + t.showRoom());
+        			ui.displayString(++numExits + ". Exit location" + " " + t.showRoom());
         		}
-        		
-        		exitChoice = ui.getCommand();
+        	do {	
+        		do {
+        			exitChoice = ui.getCommand();	
+        			ui.displayString(players.currPlayer(curr) + ": " + exitChoice);
+        			if(!isNum(exitChoice)) {
+        				ui.displayString("'" + exitChoice +"'" + " is not a choice...");
+        			}
+        		}while(!isNum(exitChoice));
+        	}while(Integer.parseInt(exitChoice) < 1 || Integer.parseInt(exitChoice) > exits.size());
         	
+        	players.getPlayer(curr).getToken().moveBy(exits.get(Integer.parseInt(exitChoice) - 1));
+        	ui.display();
         	}
 		}while(dice > 0);
 	}
