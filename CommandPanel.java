@@ -128,7 +128,6 @@ public class CommandPanel extends JPanel {
 	 */
 	public static void updateUserImage(String path) {
         try {
-            System.out.println(path);
             BufferedImage myPicture = ImageIO.read(CluedoUI.class.getClassLoader().getResourceAsStream(path));
             picLabel.setIcon(new ImageIcon(myPicture));
             picLabel.revalidate();
