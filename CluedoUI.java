@@ -46,7 +46,6 @@ public class CluedoUI {
 
         //Position all the panels into their correct places
 
-        frame.getContentPane().setBackground(Color.decode("#ebe0ca"));
         frame.add(mainPanel);
         frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         frame.setTitle("Cluedo");
