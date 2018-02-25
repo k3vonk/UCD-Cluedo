@@ -88,7 +88,7 @@ public class Turn {
 			validDirection = false; //Reset
 			sentinel = 0;  //Reset 
 			
-			if(players.getTile(currPlayer).getSlot() == 5 || players.getTile(currPlayer).getSlot() == 3) {
+			if(players.getTile(currPlayer).getSlot() == 5 || players.getTile(currPlayer).getSlot() == 3 || players.getTile(currPlayer).getSlot() == 4) {
 				if(players.getTile(currPlayer).getSlot() == 3) {
 					ui.displayString("Choosing another exit buddy? Sure go ahead :)");
 				}
