@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class Turn {
 	
@@ -70,7 +71,8 @@ public class Turn {
     
     public void movement(Players players, int dice, int currPlayer) {
     	String direction; //Contains direction of where the user wants to go
-    	boolean validDirection = false; //If direction is valid
+    	boolean validDirection;//If direction is valid
+    	int sentinel = 0; //Ensures right warning is displayed
     	Tile currTile = players.getTile(currPlayer); 
     	
     	
@@ -81,48 +83,145 @@ public class Turn {
 		CommandPanel.updateCommands(commands);
 		
 		do {
-			direction = ui.getCommand();
-			ui.displayString(players.currPlayer(currPlayer) + ": " + direction);
+			validDirection = false; //Reset
+			sentinel = 0;  //Reset 
 			
-			//Catch if array is out of bounds
-        	try {
-		        if (direction.equalsIgnoreCase("u")) {
-		        	currTile = grid.map[players.getTile(currPlayer).getRow() - 1][players.getTile(currPlayer).getColumn()];
-		        	validDirection = true;
-		  
-		        }
-		        else if(direction.equalsIgnoreCase("d")) {
-		        	currTile = grid.map[players.getTile(currPlayer).getRow() + 1][players.getTile(currPlayer).getColumn()];
-		        	validDirection = true;
+			if(players.getTile(currPlayer).getSlot() == 5 || players.getTile(currPlayer).getSlot() == 3) {
+				if(players.getTile(currPlayer).getSlot() == 3) {
+					ui.displayString("Choosing another exit buddy? Sure go ahead :)");
+				}
+				exitRoom(players, currPlayer, players.getTile(currPlayer).getRoom());
+				ui.display();
+				
+				ui.displayString(players.currPlayer(currPlayer) + " now choose a direction");
+			}	
+			
+				direction = ui.getCommand();
+				ui.displayString(players.currPlayer(currPlayer) + ": " + direction);
+				//Catch if array is out of bounds
+				//Move character to another tile depending on direction choosen
+	        	try {
+	        		
+			        if (direction.equalsIgnoreCase("u")) {
+			        	currTile = grid.map[players.getTile(currPlayer).getRow() - 1][players.getTile(currPlayer).getColumn()];
+			        	validDirection = true;
+			  
+			        }
+			        else if(direction.equalsIgnoreCase("d")) {
+			        	currTile = grid.map[players.getTile(currPlayer).getRow() + 1][players.getTile(currPlayer).getColumn()];
+			        	validDirection = true;
+			        	
+			        }
+			        else if(direction.equalsIgnoreCase("l")) {
+			        	currTile = grid.map[players.getTile(currPlayer).getRow()][players.getTile(currPlayer).getColumn() - 1];
+			        	validDirection = true;
+			        }
+			        else if (direction.equalsIgnoreCase("r")){
+			        	currTile = grid.map[players.getTile(currPlayer).getRow()][players.getTile(currPlayer).getColumn() + 1];
+			        	validDirection = true;
+			        }
+			        else {
+			        	ui.displayString("'" + direction + "'" + " is not a valid direction");
+			        	sentinel = -1;
+			        }
+	        	}
+	        	catch(ArrayIndexOutOfBoundsException e) {
+	        		ui.displayString("Invalid direction...[Off the board]");
+	        		sentinel = -1;
+	        	}
+	        	
+	        	//Ensures no two players are on the same slot
+	        	for(int i = 0; i < players.getCapacity(); i++) {
+	        		if(currTile == players.getTile(i) && validDirection && players.getPlayer(i) != players.getPlayer(currPlayer)) {
+	        			validDirection = false;
+	        			ui.displayString(players.currPlayer(currPlayer) + " cannot move onto an occupied tile :<");
+	        			sentinel = -1;
+	        			break;
+	        		}
+	        		
+	        	}
+	        	
+	        	//If the moved tile is a path & the move is valid
+	        	if(currTile.getSlot() == 1 && validDirection) {
+		        	players.getPlayer(currPlayer).getToken().moveBy(currTile);
+		        	ui.display();
+		        	dice--;
+	        	}
+	        	else if(currTile.getSlot() == 3 && validDirection) {
+	        		//Enter a room
+	        		players.getPlayer(currPlayer).getToken().moveBy(currTile);
 		        	
-		        }
-		        else if(direction.equalsIgnoreCase("l")) {
-		        	currTile = grid.map[players.getTile(currPlayer).getRow()][players.getTile(currPlayer).getColumn() - 1];
-		        	validDirection = true;
-		        }
-		        else if (direction.equalsIgnoreCase("r")){
-		        	currTile = grid.map[players.getTile(currPlayer).getRow()][players.getTile(currPlayer).getColumn() + 1];
-		        	validDirection = true;
-		        }
-		        else {
-		        	ui.displayString("'" + direction + "'" + " is not a valid direction");
-		        }
-        	}
-        	catch(ArrayIndexOutOfBoundsException e) {
-        		ui.displayString("Invalid direction...[Off the board]");
-        	}
-        	
-        	if(currTile.getSlot() == 1 && validDirection) {
-	        	players.getPlayer(currPlayer).getToken().moveBy(currTile);
-	        	ui.display();
-	        	dice--;
-	        	validDirection = false;
-        	}
-        	else {
-        		ui.displayString("Can't walk through walls matey");
-        	}
-        	
+		        	//Move into center of room and no more movement
+		        	roomCenter(players, currPlayer, players.getTile(currPlayer).getRoom());
+		        	ui.display();
+		        	dice = 0;
+	        	}
+	        	else if(sentinel == 0 && currTile.getSlot() != 3){
+	        		ui.displayString("Can't walk through walls matey");
+	        	}
+			
 		}while(dice > 0);
 		
+    }
+    
+    
+    public void roomCenter(Players players, int currPlayer, int room) {
+    	Tile currTile = players.getTile(currPlayer);
+    	boolean invalidRoom = true;
+    	
+    	//Looks for the centre in which a character is positioned
+    	for(int i = 0; i < grid.map.length; i++) {
+    		//Quick escape from nested for loop if the value is found early.
+    		if(!invalidRoom) {
+    			break;
+    		}
+			for(int j = 0; j < grid.map[i].length; j++) {
+				if(grid.map[i][j].getSlot() == 5 && grid.map[i][j].getRoom() == room && invalidRoom) {
+					currTile = grid.map[i][j];
+					invalidRoom = players.getSameTile(currTile);
+				}
+			} 
+		}
+    	
+    	players.getPlayer(currPlayer).getToken().moveBy(currTile);
+    }
+    
+    public void exitRoom(Players players, int currPlayer, int room) {
+    	ArrayList<Tile> exits = new ArrayList<Tile>();
+    	
+    	//Searches for possible exits
+    	for(int i = 0; i < grid.map.length; i++) {
+			for(int j = 0; j < grid.map[i].length; j++) {
+				if(room == grid.map[i][j].getRoom() && grid.map[i][j].getSlot() == 3) {
+					exits.add(grid.map[i][j]);
+				}
+			} 
+		}
+    	
+    	//Displays an array of exits for players
+		int numExits = 0;
+		String exitChoice;
+		ui.displayString("Available exits for " + players.currPlayer(currPlayer));
+		for(Tile t: exits) {
+			ui.displayString(++numExits + ". Exit location" + " " + t.showRoom());
+		}
+		
+		//Player chooses an exit that isn't blocked
+	   	do {	
+    		do {
+    			exitChoice = ui.getCommand();	
+    			ui.displayString(players.currPlayer(currPlayer) + ": " + exitChoice);
+    			if(!StartUp.isNum(exitChoice)) {
+    				ui.displayString("'" + exitChoice +"'" + " is not a choice...");
+    			}
+    		}while(!StartUp.isNum(exitChoice));
+    			
+    		if(Integer.parseInt(exitChoice) < 1 || Integer.parseInt(exitChoice) > exits.size()) {
+    			ui.displayString(exitChoice + " is not a valid exit choice");
+    		}
+    	}while(Integer.parseInt(exitChoice) < 1 || Integer.parseInt(exitChoice) > exits.size());
+	   	
+	   	players.getPlayer(currPlayer).getToken().moveBy(exits.get(Integer.parseInt(exitChoice) - 1));
+	   	
     }
 }
