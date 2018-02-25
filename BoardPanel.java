@@ -68,7 +68,7 @@ public class BoardPanel extends JPanel{
 		super.paintComponent(g);
 		Graphics2D g2 =(Graphics2D) g;
         g2.drawImage(boardImage, 0, 0, boardImage.getHeight(), boardImage.getWidth(), this);
-        grid.drawGrid(g);
+       // grid.drawGrid(g);
         
         for(Weapon weapon: weapons) {
         	weapon.drawWeapon(g2);

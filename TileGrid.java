@@ -94,11 +94,11 @@ public class TileGrid {
 	}
 
 	//Draw the grid tiles onto the map
-	public void drawGrid(Graphics g) {
+	/* public void drawGrid(Graphics g) {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
 				map[i][j].drawTile(g);
 			}
 		}
-	}
+	}*/
 }
