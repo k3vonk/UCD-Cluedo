@@ -215,8 +215,7 @@ public class Turn {
 			ui.displayString(++numExits + ". Exit location" + " " + t.showRoom());
 		}
 		if(room == 9 || room == 7 || room == 1 || room  == 3){
-		    ui.displayString(++numExits + ". Secret passageway");
-		    exits.add(grid.map[0][0]);
+		    ui.displayString("Enter 'passage' to take the secret passage!");
         }
 		CommandPanel.updateMovesReamining(-2);
 		
@@ -225,29 +224,32 @@ public class Turn {
     		do {
     			exitChoice = ui.getCommand();	
     			ui.displayString(players.currPlayer(currPlayer) + ": " + exitChoice);
-    			if(!StartUp.isNum(exitChoice)) {
+    			if(!StartUp.isNum(exitChoice) && !exitChoice.equalsIgnoreCase("passage")) {
     				ui.displayString("'" + exitChoice +"'" + " is not a choice...");
     			}
-    		}while(!StartUp.isNum(exitChoice));
-    			
+    		}while(!StartUp.isNum(exitChoice) && !exitChoice.equalsIgnoreCase("passage"));
+
+    		if(exitChoice.equalsIgnoreCase("passage")){
+    		    break;
+            }
     		if(Integer.parseInt(exitChoice) < 1 || Integer.parseInt(exitChoice) > exits.size()) {
     			ui.displayString(exitChoice + " is not a valid exit choice");
     		}
     	}while(Integer.parseInt(exitChoice) < 1 || Integer.parseInt(exitChoice) > exits.size());
 
-	   	if(Integer.parseInt(exitChoice) == exits.size()){
+	   	if(exitChoice.equalsIgnoreCase("passage") && ((room == 9 || room == 7 || room == 1 || room  == 3))){
 	   	    switch(room){
                 case 9:
-                    players.getPlayer(currPlayer).getToken().moveBy(grid.map[1][5]);
+                    roomCenter(players, currPlayer, 1);
                     break;
                 case 3:
-                    players.getPlayer(currPlayer).getToken().moveBy(grid.map[19][0]);
+                    roomCenter(players, currPlayer, 7);
                     break;
                 case 7:
-                    players.getPlayer(currPlayer).getToken().moveBy(grid.map[5][22]);
+                    roomCenter(players, currPlayer, 3);
                     break;
                 case 1:
-                    players.getPlayer(currPlayer).getToken().moveBy(grid.map[21][23]);
+                    roomCenter(players, currPlayer, 9);
                 default:
                     break;
             }
