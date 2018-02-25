@@ -62,6 +62,7 @@ public class CommandPanel extends JPanel {
 		availableInput.add(scroll);
 		availableInputs.setMaximumSize(new Dimension(290,200));
 		availableInputs.setLineWrap(true);
+		availableInputs.setEditable(false);
 
         add(inputPanel);
         add(availableInput);
