@@ -67,7 +67,7 @@ public class CluedoUI {
         if(roll1!=0) { //The following code plays a nice roll animation
             for (int i = 0; i < 8; i++) {
                 board.drawDice(rand.nextInt(6) + 1);
-                board.drawDice2(rand.nextInt(6)+1);
+                board.drawDice2(rand.nextInt(6) + 1);
                 display();
                 try {
                     Thread.sleep(250);

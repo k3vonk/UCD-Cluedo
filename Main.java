@@ -187,7 +187,7 @@ public class Main {
                         ui.displayString(players.currPlayer(i) + " rolled " + (dice.getRoll1()+dice.getRoll2()));
                         ui.display();
 						try {
-							Thread.sleep(2500);
+							Thread.sleep(2000);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -356,7 +356,7 @@ public class Main {
 		        }
         	}
         	catch(ArrayIndexOutOfBoundsException e) {
-        		JOptionPane.showMessageDialog(null, "Invalid direction...Direction does not exist[Off the board]");
+        		ui.displayString("Invalid direction...[Off the board]");
         	}
         	
         	//Ensures no two players are on the same slot
@@ -496,8 +496,9 @@ public class Main {
         		for(Tile t: exits) {
         			ui.displayString(++numExits + "Exit location" + " " + t.showRoom());
         		}
-        		
-        		exitChoice = ui.getCommand();
+
+        		//exitChoice = ui.getCommand();
+				//You might need this but its causing an error where you have to write the same command twice.
         	
         	}
 		}while(dice > 0);
