@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -24,6 +25,7 @@ public class CluedoUI {
     private InformationPanel info;
     private CommandPanel command;
     private JFrame frame;
+    private Random rand = new Random();
 
     //Constructor
     public CluedoUI(Players players, Weapons weapons) {
@@ -62,14 +64,28 @@ public class CluedoUI {
         board.set(players, weapons);
     }
 
+    public void drawDice(int roll){
+        if(roll!=0) { //The following code plays a nice roll animation
+            for (int i = 0; i < 8; i++) {
+                board.drawDice(rand.nextInt(6) + 1);
+                display();
+                try {
+                    Thread.sleep(250);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        board.drawDice(roll); //Draws the final result
+    }
+
     /**
      * @return A String that the user types
      */
     public String getCommand() {
         String input = command.getCommand();
     	if(input.equalsIgnoreCase("quit")) {
-    		frame.setVisible(false);
-    		frame.dispose();
+    		System.exit(0);
     	}
         return input;
     }

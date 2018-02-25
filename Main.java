@@ -113,9 +113,18 @@ public class Main {
         //Iterates through each player and allows each one to choose their name and token
         for (int i = 0; i < Integer.parseInt(capacity); i++) {
 
-            //Acquire players name
-            ui.displayString("Player " + (i + 1) + " name: ");
-            name = ui.getCommand();
+            boolean uniqueName;
+            do {//Acquire players name and ensures it is unique
+                uniqueName = true;
+                ui.displayString("Player " + (i + 1) + " name: ");
+                name = ui.getCommand();
+                for (Player p : players) {
+                    if (name.equalsIgnoreCase(p.getName())) {
+                        ui.displayString("Sorry that name is already taken.");
+                        uniqueName = false;
+                    }
+                }
+            }while(!uniqueName);
 
             do {//Ensures if the name they choose, is the name they want
                 ui.displayString("\'" + name + "\'" + ", Are you sure with this name [Y/N]");
@@ -197,8 +206,11 @@ public class Main {
                     ui.displayString(players.currPlayer(i) + ": " + command);
 
                     if (command.equalsIgnoreCase("roll")) {
+                        //Rolls the dice and displays the result onscreen
                         dice.rollDice();
                         ui.displayString(players.currPlayer(i) + " rolled " + dice.getRoll());
+                        ui.drawDice(dice.getRoll());
+                        ui.display();
                         valid = true;
                     } else {
                         ui.displayString("Whoops! Wrong command. Try 'roll' this time :)");
@@ -206,7 +218,7 @@ public class Main {
                 } while (!valid);
 
                 movement(dice.getRoll(), i);
-
+                ui.drawDice(0); //This hides the die
 
                 //After all actions
                 do {
