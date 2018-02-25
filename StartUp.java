@@ -63,7 +63,9 @@ public class StartUp {
 
             //Acquire players name
             ui.displayString("Player " + (i + 1) + " name: ");
-            name = ui.getCommand();
+            do{
+                name = ui.getCommand();
+            }while(name.equals(""));
 
             do {//Ensures if the name they choose, is the name they want
                 ui.displayString("\'" + name + "\'" + ", Are you sure with this name [Y/N]");
