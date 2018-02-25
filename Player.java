@@ -1,3 +1,5 @@
+
+
 /**
  * A class that represents a player containing their name and player they choose
  * 
@@ -9,7 +11,7 @@
 public class Player {
 	private String name; 	//Name of player
 	private int choice;  	//player's choice
-	private Token token;   	//Token of a player
+	private Token token;
 	private String imagePath;	//tokens image
 
 	
@@ -54,4 +56,9 @@ public class Player {
     public boolean hasChoice(int choice) {
         return !(this.choice == choice);
     }
+    
+    public boolean hasTile(Tile tile) {
+    	return this.token.getPosition().equals(tile);
+    }
+    
 }

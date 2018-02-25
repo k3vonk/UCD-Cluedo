@@ -78,6 +78,15 @@ public class Players implements Iterable<Player>, Iterator<Player> {
 		return null;
 	}
 	
+	public boolean getSameTile(Tile tile) {
+		for(Player player: players) {
+			if(player.hasTile(tile)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	//Gets the number of people in the arraylist
 	public int getCapacity() {
 		return capacity;
