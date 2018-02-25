@@ -29,7 +29,7 @@ public class Turn {
 
                     if (command.equalsIgnoreCase("roll")) {
                         dice.rollDice();
-                        ui.displayString(players.currPlayer(i) + " rolled " + dice.getRoll());
+                        ui.displayString(players.currPlayer(i) + " rolled " + (dice.getRoll1() + dice.getRoll2()));
                         valid = true;
                     } else {
                         ui.displayString("Whoops! Wrong command. Try 'roll' this time :)");

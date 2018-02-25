@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
  */
 public class Main {
 
-    private int capacity;                                //Amount of players playing game.
+    private String capacity;                                //Amount of players playing game.
 
     private Players players;				 //Empty players (Default 6 players with no tokens)
     private Weapons weapons;         		//Fixed set of weapons on board
@@ -25,8 +25,7 @@ public class Main {
     private StartUp start;					//Start class for starting methods
     private Turn turn;
     private TileGrid grid = new TileGrid();
-<<<<<<< HEAD
-    
+
     public Main() {
     	this.players = new Players();
     	this.weapons = new Weapons();
@@ -39,13 +38,6 @@ public class Main {
     *
     * @return true = string consists of numbers only, false = string consists of non-numbers
     */
-   public static boolean isNum(String str) {
-       for (char c : str.toCharArray()) {
-           if (!Character.isDigit(c)) return false;
-       }
-       return true;
-   }
-=======
 
     public enum Token {PLUM, WHITE, SCARLET, GREEN, MUSTARD, PEACOCK}
 
@@ -93,19 +85,18 @@ public class Main {
     }
 
 
->>>>>>> 875672a3ffc83f49affdcef6167cdc13a7beaa62
-
     /**
      * Start of the game to find the number of players and add players and weapons to game
      */
-<<<<<<< HEAD
+
     public void start() {
-    	capacity = start.size(); 
-    	this.players = new Players(capacity);
-    	start.addPlayers(players);
-    	
-    	weapons.createWeapons(); //Instantiates the weapons
-=======
+        capacity = String.valueOf(start.size());
+        this.players = new Players(Integer.parseInt(capacity));
+        start.addPlayers(players);
+
+        weapons.createWeapons(); //Instantiates the weapons
+    }
+
     private void addPlayers() {
         String name;        //Name of player
         String verifyName;    //If they want to change their name
@@ -188,19 +179,16 @@ public class Main {
         }
 
         weapons.createWeapons(); //Instantiates the weapons
->>>>>>> 875672a3ffc83f49affdcef6167cdc13a7beaa62
 
         //Update and display the board
         ui.setBoard(players, weapons);
         ui.display();
         
     }
-<<<<<<< HEAD
     
     public void turn() {
-    	turn.turns(players);
-=======
-
+        turn.turns(players);
+    }
     /**
      * Each player takes turns
      */
@@ -245,7 +233,7 @@ public class Main {
                     }
                 } while (!valid);
 
-                movement(dice.getRoll1()+dice.getRoll2(), i);
+            //    movement(dice.getRoll1()+dice.getRoll2(), i);
 
                 //After all actions
                 do {
