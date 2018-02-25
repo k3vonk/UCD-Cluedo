@@ -30,6 +30,8 @@ public class Main {
      * @return true = string consists of numbers only, false = string consists of non-numbers
      */
     public static boolean isNum(String str) {
+    	if(str.equals(""))
+    		return false;
         for (char c : str.toCharArray()) {
             if (!Character.isDigit(c)) return false;
         }
@@ -51,7 +53,7 @@ public class Main {
                 capacity = ui.getCommand();
                 ui.displayString(capacity);
                 if (!isNum(capacity)) { //Error message
-                    ui.displayString("\'" + capacity + "\'" + " is not an integer.....");
+                    ui.displayString("\'" + capacity + "\'" + " is not a valid input!");
                 }
             } while (!isNum(capacity));
 
