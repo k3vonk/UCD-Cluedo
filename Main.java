@@ -210,9 +210,16 @@ public class Main {
                     if (command.equalsIgnoreCase("roll")) {
                         //Rolls the dice and displays the result onscreen
                         dice.rollDice();
+						ui.drawDice(dice.getRoll1(),dice.getRoll2());
                         ui.displayString(players.currPlayer(i) + " rolled " + (dice.getRoll1()+dice.getRoll2()));
-                        ui.drawDice(dice.getRoll1(),dice.getRoll2());
                         ui.display();
+						try {
+							Thread.sleep(2500);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						ui.drawDice(0,0); //This hides the dice
+						ui.display();
                         valid = true;
                     } else {
                         ui.displayString("Whoops! Wrong command. Try 'roll' this time :)");
@@ -220,7 +227,6 @@ public class Main {
                 } while (!valid);
 
                 movement(dice.getRoll1()+dice.getRoll2(), i);
-                ui.drawDice(0,0); //This hides the dice
 
                 //After all actions
                 do {
