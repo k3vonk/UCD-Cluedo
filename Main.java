@@ -142,7 +142,7 @@ public class Main {
 				valid = false;
 				
 				//First prompt for first board action
-				ui.displayString(players.currPlayer(i) + " turn to move.\nType roll to roll the dice.");
+				ui.displayString(players.currPlayer(i) + "'s turn to move.\nType roll to roll the dice.");
 				CommandPanel.updateUserImage(players.getPlayer(i).getImagePath());
 
 				do {
@@ -154,7 +154,10 @@ public class Main {
 						dice.rollDice();
 						ui.displayString(players.currPlayer(i) + " rolled "+ dice.getRoll());
 						valid = true;
-					}else{
+					}else if(command.equalsIgnoreCase("quit")){
+						return;
+					}
+					else{
 						ui.displayString("Whoops! Wrong command. Try 'roll' this time :)");
 					}
 				}while(!valid);
@@ -164,8 +167,12 @@ public class Main {
 				
 				//After all actions
 				do {
-					ui.displayString(players.currPlayer(i) + " no actions left. Type 'done' to pass turn");
+					ui.displayString(players.currPlayer(i) + " no actions left. Type 'done' to pass turn, or 'quit' to end the game");
 					command = ui.getCommand();
+					ui.displayString(players.currPlayer(i) + ": " + command);
+					if (command.equalsIgnoreCase("quit")){
+						return;
+				}
 				}while(!command.equalsIgnoreCase("done"));
 			}
 		}while(true);
