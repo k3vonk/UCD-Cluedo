@@ -66,11 +66,12 @@ public class CluedoUI {
      * @return A String that the user types
      */
     public String getCommand() {
-    	if(command.getCommand().equalsIgnoreCase("quit")) {
+        String input = command.getCommand();
+    	if(input.equalsIgnoreCase("quit")) {
     		frame.setVisible(false);
     		frame.dispose();
     	}
-        return command.getCommand();
+        return input;
     }
 
     /**
