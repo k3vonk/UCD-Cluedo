@@ -78,6 +78,7 @@ public class Players implements Iterable<Player>, Iterator<Player> {
 		return null;
 	}
 	
+	//Iterates to check if two tokens are on the same tile
 	public boolean getSameTile(Tile tile) {
 		for(Player player: players) {
 			if(player.hasTile(tile)) {
@@ -92,7 +93,7 @@ public class Players implements Iterable<Player>, Iterator<Player> {
 		return capacity;
 	}
 	
-	
+	//Returns the player at the index
 	public Player getPlayer(int index) {
 		return players.get(index);
 	}

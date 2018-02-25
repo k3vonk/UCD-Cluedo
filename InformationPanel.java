@@ -62,6 +62,7 @@ public class InformationPanel extends JPanel {
     public void updateContent(String value) {
         // Add string below current value.
         infoArea.append(value + "\n");
+        
         // Auto scroll down to current position.
         infoArea.setCaretPosition(infoArea.getDocument().getLength());
     }

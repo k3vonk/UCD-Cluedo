@@ -65,10 +65,12 @@ public class Tile {
     	return slot;
     }
     
+    //Returns if the tile is a room or not
     public int getRoom() {
     	return room;
     }
     
+    //Displays the coordinate of tile
     public String showRoom() {
     	return "[" + row + ", " + column + "]";
     }

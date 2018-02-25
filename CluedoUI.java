@@ -61,7 +61,7 @@ public class CluedoUI {
     public void setBoard(Players players, Weapons weapons) {
         board.set(players, weapons);
     }
-
+    
     /**
      * @return A String that the user types
      */
