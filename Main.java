@@ -154,8 +154,6 @@ public class Main {
 						dice.rollDice();
 						ui.displayString(players.currPlayer(i) + " rolled "+ dice.getRoll());
 						valid = true;
-					}else if(command.equalsIgnoreCase("quit")){
-						return;
 					}
 					else{
 						ui.displayString("Whoops! Wrong command. Try 'roll' this time :)");
@@ -170,9 +168,6 @@ public class Main {
 					ui.displayString(players.currPlayer(i) + " no actions left. Type 'done' to pass turn, or 'quit' to end the game");
 					command = ui.getCommand();
 					ui.displayString(players.currPlayer(i) + ": " + command);
-					if (command.equalsIgnoreCase("quit")){
-						return;
-				}
 				}while(!command.equalsIgnoreCase("done"));
 			}
 		}while(true);
