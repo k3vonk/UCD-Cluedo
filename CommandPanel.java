@@ -111,6 +111,8 @@ public class CommandPanel extends JPanel {
 			movesRemaining.setText("You've run out of moves! Enter 'done' to move to next player.");
 		}else if(x == -1){
 			movesRemaining.setText("");
+		}else if(x == -2){
+			movesRemaining.setText("Choose an exit from the available set in information panel.");
 		} else {
 			movesRemaining.setText("Moves remaining for current player:" + x);
 		}

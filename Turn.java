@@ -96,6 +96,7 @@ public class Turn {
 				ui.display();
 				
 				ui.displayString(players.currPlayer(currPlayer) + " now choose a direction");
+				CommandPanel.updateMovesReamining(dice);
 			}	
 			
 				direction = ui.getCommand();
@@ -209,6 +210,7 @@ public class Turn {
 		for(Tile t: exits) {
 			ui.displayString(++numExits + ". Exit location" + " " + t.showRoom());
 		}
+		CommandPanel.updateMovesReamining(-2);
 		
 		//Player chooses an exit that isn't blocked
 	   	do {	
