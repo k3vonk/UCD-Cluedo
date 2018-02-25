@@ -210,8 +210,8 @@ public class Main {
                     if (command.equalsIgnoreCase("roll")) {
                         //Rolls the dice and displays the result onscreen
                         dice.rollDice();
-                        ui.displayString(players.currPlayer(i) + " rolled " + dice.getRoll());
-                        ui.drawDice(dice.getRoll());
+                        ui.displayString(players.currPlayer(i) + " rolled " + (dice.getRoll1()+dice.getRoll2()));
+                        ui.drawDice(dice.getRoll1(),dice.getRoll2());
                         ui.display();
                         valid = true;
                     } else {
@@ -219,8 +219,8 @@ public class Main {
                     }
                 } while (!valid);
 
-                movement(dice.getRoll(), i);
-                ui.drawDice(0); //This hides the die
+                movement(dice.getRoll1()+dice.getRoll2(), i);
+                ui.drawDice(0,0); //This hides the dice
 
                 //After all actions
                 do {

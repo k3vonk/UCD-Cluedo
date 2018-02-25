@@ -17,17 +17,21 @@ import java.util.Random;
 public class Dice extends JPanel{
     private Random rand = new Random();
     private int numSides = 6;
-    private int roll;
+    private int roll1, roll2;
 
     public Dice(){}
 
     //Method to roll the dice
     public void rollDice() {
-        roll = rand.nextInt(numSides) + 1;
+        roll1 = rand.nextInt(numSides) + 1;
+        roll2 = rand.nextInt(numSides) + 1;
     }
 
     //Method to display the roll result
-    public int getRoll() {
-        return roll;
+    public int getRoll1() {
+        return roll1;
+    }
+    public int getRoll2(){
+        return roll2;
     }
 }

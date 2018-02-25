@@ -64,10 +64,11 @@ public class CluedoUI {
         board.set(players, weapons);
     }
 
-    public void drawDice(int roll){
-        if(roll!=0) { //The following code plays a nice roll animation
+    public void drawDice(int roll1, int roll2){
+        if(roll1!=0) { //The following code plays a nice roll animation
             for (int i = 0; i < 8; i++) {
                 board.drawDice(rand.nextInt(6) + 1);
+                board.drawDice2(rand.nextInt(6)+1);
                 display();
                 try {
                     Thread.sleep(250);
@@ -76,7 +77,8 @@ public class CluedoUI {
                 }
             }
         }
-        board.drawDice(roll); //Draws the final result
+        board.drawDice(roll1); //Draws the final result
+        board.drawDice2(roll2);
     }
 
     /**
