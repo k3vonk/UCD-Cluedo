@@ -43,49 +43,23 @@ public class BoardPanel extends JPanel{
 		this.players = players;
 	}
 	//This takes the roll value as input, and draws the correct die image accordingly
-	public void drawDice(int roll){
+	public void drawDice(int roll1, int roll2){
 		try {
-			if (roll == 1) {
-				die = ImageIO.read(this.getClass().getResource("die1.jpg"));
-			} else if (roll == 2) {
-				die = ImageIO.read(this.getClass().getResource("die2.jpg"));
-			} else if (roll == 3) {
-				die = ImageIO.read(this.getClass().getResource("die3.jpg"));
-			} else if (roll == 4) {
-				die = ImageIO.read(this.getClass().getResource("die4.jpg"));
-			} else if (roll == 5) {
-				die = ImageIO.read(this.getClass().getResource("die5.jpg"));
-			} else if (roll == 6) {
-				die = ImageIO.read(this.getClass().getResource("die6.jpg"));
-			}else if(roll == 0){ //Used to hide the die image
-				die = null;
+			if(roll1 == 0){ //Used to hide the die image
+			    die = null;
+		    }else {
+				die = ImageIO.read(this.getClass().getResource("die" + roll1 + ".jpg"));
 			}
-		}catch(IOException ex) {
-			System.out.println("Couldn't find image...." + ex);
-		}
-	}
-	public void drawDice2(int roll){
-		try {
-			if (roll == 1) {
-				die2 = ImageIO.read(this.getClass().getResource("die1.jpg"));
-			} else if (roll == 2) {
-				die2 = ImageIO.read(this.getClass().getResource("die2.jpg"));
-			} else if (roll == 3) {
-				die2 = ImageIO.read(this.getClass().getResource("die3.jpg"));
-			} else if (roll == 4) {
-				die2 = ImageIO.read(this.getClass().getResource("die4.jpg"));
-			} else if (roll == 5) {
-				die2 = ImageIO.read(this.getClass().getResource("die5.jpg"));
-			} else if (roll == 6) {
-				die2 = ImageIO.read(this.getClass().getResource("die6.jpg"));
-			}else if(roll == 0){ //Used to hide the die image
+			if(roll2 == 0){ //Used to hide the die image
 				die2 = null;
+			}else {
+				die2 = ImageIO.read(this.getClass().getResource("die" + roll2 + ".jpg"));
 			}
 		}catch(IOException ex) {
 			System.out.println("Couldn't find image...." + ex);
 		}
 	}
-	
+
 	@Override
 	/**
 	 * A paint component to draw tokens onto the board
