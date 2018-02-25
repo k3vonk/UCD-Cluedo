@@ -1,6 +1,10 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JOptionPane;
+
+
 
 /**
  * Main that is executed that displays everything and actions are taken here before being used by
@@ -13,14 +17,35 @@ import javax.swing.JOptionPane;
  */
 public class Main {
 
-    private String capacity;                                //Amount of players playing game.
+    private int capacity;                                //Amount of players playing game.
 
-    private Players players = new Players();
-            //Empty players (Default 6 players with no tokens)
-    private final Weapons weapons = new Weapons();            //Fixed set of weapons on board
-    private CluedoUI ui = new CluedoUI(players, weapons);
-            //Starts with an empty board with no players
+    private Players players;				 //Empty players (Default 6 players with no tokens)
+    private Weapons weapons;         		//Fixed set of weapons on board
+    private CluedoUI ui;     				//Starts with an empty board with no players
+    private StartUp start;					//Start class for starting methods
+    private Turn turn;
     private TileGrid grid = new TileGrid();
+<<<<<<< HEAD
+    
+    public Main() {
+    	this.players = new Players();
+    	this.weapons = new Weapons();
+    	this.ui 	 = new CluedoUI(players, weapons);
+    	this.start   = new StartUp(ui);
+    	this.turn    = new Turn(ui);
+    }
+    
+   /** A method that checks if a string contains a number
+    *
+    * @return true = string consists of numbers only, false = string consists of non-numbers
+    */
+   public static boolean isNum(String str) {
+       for (char c : str.toCharArray()) {
+           if (!Character.isDigit(c)) return false;
+       }
+       return true;
+   }
+=======
 
     public enum Token {PLUM, WHITE, SCARLET, GREEN, MUSTARD, PEACOCK}
 
@@ -44,6 +69,7 @@ public class Main {
      */
     private void capacity() {
         ui.displayString("Enter the number of players: [min: 2, max: 6]");
+        CommandPanel.updateCommands();
 
         //Ensures choice is within the [min, max] range
         do {
@@ -67,10 +93,19 @@ public class Main {
     }
 
 
+>>>>>>> 875672a3ffc83f49affdcef6167cdc13a7beaa62
 
     /**
-     * Finds name and choice of player and sets their token
+     * Start of the game to find the number of players and add players and weapons to game
      */
+<<<<<<< HEAD
+    public void start() {
+    	capacity = start.size(); 
+    	this.players = new Players(capacity);
+    	start.addPlayers(players);
+    	
+    	weapons.createWeapons(); //Instantiates the weapons
+=======
     private void addPlayers() {
         String name;        //Name of player
         String verifyName;    //If they want to change their name
@@ -153,11 +188,18 @@ public class Main {
         }
 
         weapons.createWeapons(); //Instantiates the weapons
+>>>>>>> 875672a3ffc83f49affdcef6167cdc13a7beaa62
 
         //Update and display the board
         ui.setBoard(players, weapons);
         ui.display();
+        
     }
+<<<<<<< HEAD
+    
+    public void turn() {
+    	turn.turns(players);
+=======
 
     /**
      * Each player takes turns
@@ -174,6 +216,8 @@ public class Main {
                 ui.displayString(
                         players.currPlayer(i) + "'s turn to move.\nType roll to roll the dice.");
                 CommandPanel.updateUserImage(players.getPlayer(i).getImagePath());
+				String[] commands = {"roll"};
+				CommandPanel.updateCommands(commands);
 
                 do {
 
@@ -181,8 +225,10 @@ public class Main {
                     ui.displayString(players.currPlayer(i) + ": " + command);
 
                     if (command.equalsIgnoreCase("roll")) {
+
                         //Rolls the dice and displays the result onscreen
                         dice.rollDice();
+						CommandPanel.updateCommands();
 						ui.drawDice(dice.getRoll1(),dice.getRoll2());
                         ui.displayString(players.currPlayer(i) + " rolled " + (dice.getRoll1()+dice.getRoll2()));
                         ui.display();
@@ -206,6 +252,8 @@ public class Main {
                     ui.displayString(players.currPlayer(i)
                             + " no actions left. Type 'done' to pass turn, or 'quit' to end the "
                             + "game");
+					String[] commandsEnd = {"done","quit"};
+					CommandPanel.updateCommands(commandsEnd);
                     command = ui.getCommand();
                     ui.displayString(players.currPlayer(i) + ": " + command);
                 } while (!command.equalsIgnoreCase("done"));
@@ -314,19 +362,22 @@ public class Main {
                 ui.displayString("Can't walk through walls mate");
             } 
         } while (dice > 0);
+>>>>>>> 875672a3ffc83f49affdcef6167cdc13a7beaa62
     }
-*/
+    
 	/**
 	 * A movement method to move a character
 	 * @param dice
 	 * @param curr
 	 */
-	public void movement(int dice, int curr) {
+/*	public void movement(int dice, int curr) {
 		String direction;
 		boolean validDirection = false; //if a valid direction
 		Tile currTile = players.getPlayer(curr).getToken().getPosition();
 	
-		ui.displayString(players.currPlayer(curr) + "make your move :0");
+		ui.displayString(players.currPlayer(curr) + "make your move :");
+		String[] commands = {"u(up)", "d(down)", "l(left)", "r(right)"};
+		CommandPanel.updateCommands(commands);
 		do{
 			direction = ui.getCommand();
 			ui.displayString(players.currPlayer(curr) + ": " + direction);
@@ -481,7 +532,7 @@ public class Main {
         	}
         	
         	}
-        	else {
+        	else{
         		ArrayList<Tile> exits = new ArrayList<Tile>();      
         		for(int i = 0; i < grid.map.length; i++) {
     				for(int j = 0; j < grid.map[i].length; j++) {
@@ -491,23 +542,42 @@ public class Main {
     				} 
     			}
         		
+        		//Exits
         		int numExits = 0;
         		String exitChoice;
+        		ui.displayString("Available exits for " + players.currPlayer(curr));
         		for(Tile t: exits) {
-        			ui.displayString(++numExits + "Exit location" + " " + t.showRoom());
+        			ui.displayString(++numExits + ". Exit location" + " " + t.showRoom());
         		}
+<<<<<<< HEAD
+        	do {	
+        		do {
+        			exitChoice = ui.getCommand();	
+        			ui.displayString(players.currPlayer(curr) + ": " + exitChoice);
+        			if(!isNum(exitChoice)) {
+        				ui.displayString("'" + exitChoice +"'" + " is not a choice...");
+        			}
+        		}while(!isNum(exitChoice));
+        	}while(Integer.parseInt(exitChoice) < 1 || Integer.parseInt(exitChoice) > exits.size());
+=======
 
         		//exitChoice = ui.getCommand();
 				//You might need this but its causing an error where you have to write the same command twice.
+>>>>>>> 875672a3ffc83f49affdcef6167cdc13a7beaa62
         	
+        	players.getPlayer(curr).getToken().moveBy(exits.get(Integer.parseInt(exitChoice) - 1));
+        	ui.display();
         	}
 		}while(dice > 0);
-	}
+	} 
+	*/
     public static void main(String[] args) {
         Main game = new Main();
-        game.capacity();
-        game.addPlayers();
-        game.turns();
+        game.start();
+       	game.turn();
+       /* game.capacity();
+        game.addPlayers(); */
+      //  game.turns();
     }
 
 }

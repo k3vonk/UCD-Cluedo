@@ -62,6 +62,9 @@ public class CluedoUI {
     public void setBoard(Players players, Weapons weapons) {
         board.set(players, weapons);
     }
+<<<<<<< HEAD
+    
+=======
 
     public void drawDice(int roll1, int roll2){
         if(roll1!=0) { //The following code plays a nice roll animation
@@ -78,6 +81,7 @@ public class CluedoUI {
         board.drawDice(roll1, roll2); //Draws the final result
     }
 
+>>>>>>> 875672a3ffc83f49affdcef6167cdc13a7beaa62
     /**
      * @return A String that the user types
      */

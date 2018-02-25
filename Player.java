@@ -19,6 +19,7 @@ public class Player {
 	public Player(String name, int choice) {
 		this.name = name;
 		this.choice = choice;
+		this.token = null;
 	}
 	
 	//Accessor of player name
@@ -42,10 +43,14 @@ public class Player {
 	}
 
 	//Sets the path of the token image
-	public void setImagePath(String path) {this.imagePath = path;}
+	public void setImagePath(String path) {
+		this.imagePath = path;
+	}
 
 	//Returns the tokens image
-	public String getImagePath() {return imagePath;}
+	public String getImagePath() {
+		return imagePath;
+	}
 	
 	//Returns true if matching token
     public boolean hasName(String name) {
@@ -57,6 +62,7 @@ public class Player {
         return !(this.choice == choice);
     }
     
+    //Checks if two tokens are on the same tile
     public boolean hasTile(Tile tile) {
     	return this.token.getPosition().equals(tile);
     }

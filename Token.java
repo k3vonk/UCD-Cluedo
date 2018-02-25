@@ -27,6 +27,7 @@ public class Token {
     //Oval size
     private static final int OVAL = 18;
 
+  
     //Constructor for token without players
     public Token(String token, Color colour, Tile position) {
         this.token = token;
@@ -58,7 +59,7 @@ public class Token {
     
     //Returns true if matching token
     public boolean hasName(String token) {
-        return this.token.toLowerCase().equals(token.toLowerCase().trim());
+        return this.token.equalsIgnoreCase((token.toLowerCase().trim()));
     }
     
     //Method to create the player icon.
