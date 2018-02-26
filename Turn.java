@@ -159,13 +159,18 @@ public class Turn {
 	        	}
 	        	
 	        	//If the moved tile is a path & the move is valid
-	        	if(currTile.getSlot() == 1 && validDirection) {
+	        	if((currTile.getSlot() == 1 || currTile.getSlot() == 7) && validDirection) {
+	        		
+	        		if(players.getTile(currPlayer).getSlot() == 3 && currTile.getSlot() == 7) {
+	        			ui.displayString("There's a wall in your way...");
+	        		}else {
 		        	players.getPlayer(currPlayer).getToken().moveBy(currTile);
 		        	ui.display();
 		        	dice--;
                     CommandPanel.updateMovesReamining(dice);
+	        		}
 	        	}
-	        	else if(currTile.getSlot() == 3 && validDirection) {
+	        	else if((currTile.getSlot() == 3 && players.getTile(currPlayer).getSlot() != 7) && validDirection) {
 	        		//Enter a room
 	        		players.getPlayer(currPlayer).getToken().moveBy(currTile);
 		        	
@@ -175,7 +180,8 @@ public class Turn {
 		        	dice = 0;
                     CommandPanel.updateMovesReamining(dice);
 	        	}
-	        	else if(sentinel == 0 && currTile.getSlot() != 3){
+	        	else if(sentinel == 0 && (currTile.getSlot() != 3 || (currTile.getSlot() == 3 && players.getTile(currPlayer).getSlot() == 7) 
+	        			|| currTile.getSlot() == 7 && players.getTile(currPlayer).getSlot() == 3)){
 	        		ui.displayString("There's a wall in your way...");
 	        	}
 			

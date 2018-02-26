@@ -17,7 +17,6 @@ public class BoardPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	
 	private BufferedImage boardImage, die, die2; //Image of the board
-	private TileGrid grid = new TileGrid(); //The game grid
 	private Weapons weapons;
 	//private Tokens tokens = new Tokens(); (test)
 	private Players players;
