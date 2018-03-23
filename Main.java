@@ -41,6 +41,84 @@ public class Main {
         ui.display();
     }
     
+    /*
+     * Player with highest roll moves first
+     */
+    public void position() {
+    	Dice dice = new Dice();
+    	int[] pos = new int[capacity];
+    	int position = 0;
+    	int highest = 0;
+    	
+    	//Set up everyones dice rolls first
+    	for(int i = 0; i < players.getCapacity(); i++) {
+    		//Rolls the dice and displays the result on screen
+            dice.rollDice();
+            
+            pos[i] = dice.getRoll1() + dice.getRoll2();
+			ui.drawDice(dice.getRoll1(),dice.getRoll2());
+            ui.displayString(players.currPlayer(i) + " rolled " + (dice.getRoll1()+dice.getRoll2()));
+            ui.display();
+			try { //The resulting dice roll is onscreen for 2 seconds
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			ui.drawDice(0,0); //This hides the dice
+			ui.display();	
+			
+			if(highest < pos[i]) {
+				highest = pos[i];
+				position = i;
+			}else if(highest == pos[i]) {
+				position = -1;
+			}
+    	}
+    	
+    	
+    	//Picks out the players with the highest roll (same value) and makes them reroll for next highest
+    	int newHighest = 0;
+    	boolean different = false;
+    	while(position == -1 && !different) {
+	    	ui.displayString("Player's with the same highest roll value, has to roll again");
+	    	for(int i = 0; i < capacity; i++) {
+	    		if(pos[i] == highest) {
+	    			//Rolls the dice and displays the result onscreen
+	                dice.rollDice();
+	                
+	                pos[i] = highest + dice.getRoll1() + dice.getRoll2(); //These values are higher than other players that didn't roll highest
+	    			ui.drawDice(dice.getRoll1(),dice.getRoll2());
+	                ui.displayString(players.currPlayer(i) + " rolled " + (dice.getRoll1()+dice.getRoll2()));
+	                ui.display();
+	    			try { //The resulting dice roll is onscreen for 2 seconds
+	    				Thread.sleep(2000);
+	    			} catch (InterruptedException e) {
+	    				e.printStackTrace();
+	    			}
+	    			ui.drawDice(0,0); //This hides the dice
+	    			ui.display();	
+	    			
+	    			//Sets highest value while storing their position
+	    			if(newHighest < pos[i]) {
+	    				newHighest = pos[i];
+	    				position = i;
+	    				different = true;
+	    			}
+	    			else if(newHighest == pos[i]) {
+	    				different = false;
+	    				position = -1;
+	    			}
+	    		}
+	    	}
+	    	
+	    	highest = newHighest; //ensures reroll will not be the same as the lower numbers
+    	}
+  
+   
+    	Player temp = players.getPlayer(position);
+    	players.addFirst(position, temp);
+    	
+    }
     //Takes players turns
     public void turn() {
         turn.turns(players);
@@ -50,6 +128,7 @@ public class Main {
     public static void main(String[] args) {
         Main game = new Main();
         game.start();
+        game.position();
        	game.turn();
 
     }
