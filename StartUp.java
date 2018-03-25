@@ -156,6 +156,11 @@ public class StartUp {
         return murderEnvelope;
     }
 
+<<<<<<< HEAD
+    public ArrayList<Card> divideCards(Players players) {
+        ArrayList<Card> tokenList = new ArrayList<Card>();
+        Random rand = new Random();
+=======
     /**
      * Method to divide the stack of cards among the players and choose three for the murder
      * envelope
@@ -166,13 +171,13 @@ public class StartUp {
     public void divideCards(Players players) {
         ArrayList<Card> tokenList = new ArrayList<Card>(); // Arraylist to store the entire deck
         Random rand = new Random(); // To pick out random cards from the deck
+>>>>>>> 6e7a70d9256f42c9a9503da68c02a6196a43f499
 
         /* ArrayLists of characters, weapons and rooms to pick a random from each to store into
          murder envelope */
         ArrayList<String> characters = new ArrayList<>(
                 Arrays.asList("Mustard", "Plum", "Green", "Peacock",
                         "Scarlet", "White"));
-
         ArrayList<String> weapons = new ArrayList<>(
                 Arrays.asList("Dagger", "Candle Stick", "Revolver", "Rope", "Lead Pipe",
                         "Spanner"));
@@ -216,6 +221,15 @@ public class StartUp {
                 tokenList.remove(chosenCard);
             }
         }
+<<<<<<< HEAD
+        
+        System.out.println("Murder Envelope Contents:" + murderEnvelope);
+        for (Player p : players) {
+            System.out.println(p.getName() + "'s cards:" + p.getCards());
+        }
+        System.out.println("Remaining Cards that didn't divide evenly:" + tokenList);
+        return tokenList;
+=======
 
         // Show the cards that didn't get divided to the user in the GUI
         InformationPanel.updateRemainingCards(tokenList);
@@ -280,6 +294,7 @@ public class StartUp {
     	ui.displayString("===" + players.currPlayer(position) + " HIGHEST ROLL===");
     	players.addFirst(position, players.getPlayer(position));
 
+>>>>>>> 6e7a70d9256f42c9a9503da68c02a6196a43f499
     }
 
 }

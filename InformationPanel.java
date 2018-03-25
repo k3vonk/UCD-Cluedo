@@ -40,15 +40,6 @@ public class InformationPanel extends JPanel {
         infoArea.setEditable(false); //Non editable, so players can't text here
         infoArea.setMaximumSize(infoArea.getPreferredSize());
         add(scroll);
-
-        remainingCards.add(new JLabel("Undealt Cards:"));
-        try {
-            remainingCards.add(imageToResizedLabel("empty.png"));
-            remainingCards.add(imageToResizedLabel("empty.png"));
-            remainingCards.add(imageToResizedLabel("empty.png"));
-        }catch(IOException ex){
-
-        }
         add(remainingCards);
     }
 
@@ -90,21 +81,21 @@ public class InformationPanel extends JPanel {
      * @return Nothing
      */
     public static void updateRemainingCards(ArrayList<Card> cards) {
-        if (!cards.isEmpty()) {
-            remainingCards.removeAll(); // Clean it up
-            remainingCards.add(new JLabel("Undealt Cards:"));
-            for (Card c : cards) { // Add each card to the panel one by one
-                try {
-                    // Fetch the image based on the card by removing spaces and
-                    // making it lower case
-                    String cardName = c.getName().toLowerCase().replaceAll(" ", "")
-                            + ".jpg";
-                    remainingCards.add(imageToResizedLabel(cardName)); // Add it to the panel
-                } catch (IOException ex) {
-                    System.out.println("Unable to locate files for undealt cards.");
-                }
+        remainingCards.removeAll(); // Clean it up
+        remainingCards.add(new JLabel("Undealt Cards:"));
+        for (Card c : cards) { // Add each card to the panel one by one
+            try {
+                // Fetch the image based on the card by removing spaces and
+                // making it lower case
+                String cardName = c.getName().toLowerCase().replaceAll(" ", "")
+                        + ".jpg";
+                remainingCards.add(imageToResizedLabel(cardName)); // Add it to the panel
+            } catch (IOException ex) {
+                System.out.println("Unable to locate files for undealt cards.");
             }
-            remainingCards.updateUI(); // Refresh the UI to show changes.
         }
+        remainingCards.updateUI(); // Refresh the UI to show changes.
     }
+
+
 }
