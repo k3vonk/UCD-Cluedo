@@ -39,9 +39,14 @@ public class Main {
         start.position(players);						//Reposition players in arraylist
         weapons.createWeapons();						//Instantiates the weapons
         CommandPanel.updateCommands();					//Shows users available commands
+<<<<<<< HEAD
         turn.setUnusedCards(start.divideCards(players)); //Divides cards according to the rules and shows undealt cards to turn class
         turn.setMurderEnvelope(start.getMurderEnvelope()); //Shows murder envelope contents to turn class
 
+=======
+        start.divideCards(players);						//Divides cards according to the rules
+        
+>>>>>>> Revert "Notes"
         //Update and display the board
         ui.setBoard(players, weapons);
         ui.display();

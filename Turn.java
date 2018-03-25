@@ -13,16 +13,17 @@ public class Turn {
 	
 	private CluedoUI ui;
 	private TileGrid grid = new TileGrid();
-	ArrayList<Card> murderEnvelope = new ArrayList<>();
-	ArrayList<Card> unusedCards = new ArrayList<>();
 	
 	public Turn(CluedoUI ui) {
 		this.ui = ui;
 	}
+<<<<<<< HEAD
 
 	String playerList[] = {"Plum","White","Scarlet","Green","Mustard","Peacock"};
 	String weaponsList[] = {"Candle Stick","Dagger","Lead Pipe","Revolver","Rope","Spanner"};
 	String roomList[] = {"Dining Room","Conservatory","Study","Billard Room","Lounge","Library","Ball Room","Kitchen","Hall"};
+=======
+>>>>>>> Revert "Notes"
 	
 	/**
      * Each player takes turns
@@ -67,6 +68,7 @@ public class Turn {
 						   ui.display();
 						   valid = true;
 					   } else if (command.equalsIgnoreCase("notes")) {
+<<<<<<< HEAD
 						   ArrayList<Card> arrayList = players.getPlayer(i).getCards();
 						   ui.displayString("People:");
 						   for(int count = 0; count < 6;count++) {
@@ -178,6 +180,11 @@ public class Turn {
 						   for(Card x: murderEnvelope){
 							   ui.displayString(x.toString());
 						   }
+=======
+						   //Im actually not sure how this stuff appears in-game, and i cannot check because the program doesn't compile :(
+					   } else if (command.equalsIgnoreCase("cheat")) {
+						   //
+>>>>>>> Revert "Notes"
 					   } else if(command.equalsIgnoreCase("help")){
 						   ui.displayString("'roll' - to roll the dice and begin your turn."
 								          + "\nA roll ranges from 1 to 6 and you can move that many spaces on the board."
@@ -206,6 +213,7 @@ public class Turn {
                }
            } while (true);
     }
+<<<<<<< HEAD
 
     public void setUnusedCards(ArrayList<Card> array){
     	unusedCards = array;
@@ -214,6 +222,8 @@ public class Turn {
 	public void setMurderEnvelope(ArrayList<Card> array){
     	murderEnvelope = array;
 	}
+=======
+>>>>>>> Revert "Notes"
     
     /**
      * Allows players to move depending on their dice roll
