@@ -47,6 +47,7 @@ public class Main {
      * Player with highest roll moves first
      */
     public void position() {
+    	ui.displayString("Deciding who goes first......");
     	Dice dice = new Dice();
     	int[] pos = new int[capacity];
     	int position = 0;
@@ -82,7 +83,7 @@ public class Main {
     	int newHighest = 0;
     	boolean different = false;
     	while(position == -1 && !different) {
-	    	ui.displayString("Player's with the same highest roll value, has to roll again");
+	    	ui.displayString("Player's with the same highest roll value,\n has to roll again");
 	    	for(int i = 0; i < capacity; i++) {
 	    		if(pos[i] == highest) {
 	    			//Rolls the dice and displays the result onscreen

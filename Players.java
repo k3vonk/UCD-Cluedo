@@ -107,6 +107,11 @@ public class Players implements Iterable<Player>, Iterator<Player> {
 	public String currPlayer(int index) {
 		return players.get(index).getName()  + " [" + players.get(index).getToken().getTokenName() + "] ";
 	}
+	
+	public void addFirst(int index, Player temp) {
+		players.remove(index);
+		players.add(0, temp);
+	}
 	    
 	@Override
 	public Iterator<Player> iterator() {
