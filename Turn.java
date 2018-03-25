@@ -30,36 +30,49 @@ public class Turn {
                    valid = false;
 
                    //First prompt for first board action
-                   ui.displayString(players.currPlayer(i) + "'s turn to move.\nType 'roll' to roll the dice.");
+                   ui.displayString(players.currPlayer(i) + "'s turn to move.\nType a command. Typing 'help' explains what each command does.");
                    CommandPanel.updateUserImage(players.getPlayer(i).getImagePath());
                    
                     //Available commands
-	   				String[] commands = {"roll"};
+	   				String[] commands = {"roll","notes","cheat","help"};
 	   				CommandPanel.updateCommands(commands);
 	   				CommandPanel.updateMovesReamining(-1);
 
                    do {
-                       command = ui.getCommand();
-                       ui.displayString(players.currPlayer(i) + ": " + command);
+					   command = ui.getCommand();
+					   ui.displayString(players.currPlayer(i) + ": " + command);
 
-                       if (command.equalsIgnoreCase("roll")) {
+					   if (command.equalsIgnoreCase("roll")) {
 
-                        //Rolls the dice and displays the result onscreen
-                        dice.rollDice();
-   					    CommandPanel.updateCommands();
-   						ui.drawDice(dice.getRoll1(),dice.getRoll2());
-                        ui.displayString(players.currPlayer(i) + " rolled " + (dice.getRoll1()+dice.getRoll2()));
-                        ui.display();
-   						try { //The resulting dice roll is onscreen for 2 seconds
-   							Thread.sleep(2000);
-   						} catch (InterruptedException e) {
-   							e.printStackTrace();
-   						}
-   						ui.drawDice(0,0); //This hides the dice
-   						ui.display();
-                        valid = true;
-                       } else {
-                           ui.displayString("Whoops! Wrong command. Try 'roll' this time.");
+						   //Rolls the dice and displays the result onscreen
+						   dice.rollDice();
+						   CommandPanel.updateCommands();
+						   ui.drawDice(dice.getRoll1(), dice.getRoll2());
+						   ui.displayString(players.currPlayer(i) + " rolled " + (dice.getRoll1() + dice.getRoll2()));
+						   ui.display();
+						   try { //The resulting dice roll is onscreen for 2 seconds
+							   Thread.sleep(2000);
+						   } catch (InterruptedException e) {
+							   e.printStackTrace();
+						   }
+						   ui.drawDice(0, 0); //This hides the dice
+						   ui.display();
+						   valid = true;
+					   } else if (command.equalsIgnoreCase("notes")) {
+						   //Im actually not sure how this stuff appears in-game, and i cannot check because the program doesent compile :(
+					   } else if (command.equalsIgnoreCase("cheat")) {
+						   /*
+						   ui.display( the MURDER envelope) Personally I think the envelope should appear onscreen as jpegs.
+						   */
+					   } else if(command.equalsIgnoreCase("help")){
+						   ui.displayString("'roll' - Type this to roll the dice and begin your turn."
+								          + "A roll ranges from 1 to 6 and you can move that many spaces on the board."
+						                  + "'notes' - Type this to inspect your notes."
+						                  + "This lists all players, weapons and rooms, and shows an 'X' mark for cards"
+						   				  + " you own and an 'A' mark for cards everybody sees."
+						                  + "'cheat' - Allows you to inspect the murder envelope cuz yous a cheat.");
+				   }else {
+                           ui.displayString("Whoops! Wrong command. Type 'help' if you're unsure what to do.");
                        }
                    } while (!valid);
 
