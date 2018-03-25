@@ -25,10 +25,11 @@ public class InformationPanel extends JPanel {
     private JTextArea infoArea = new JTextArea("", HEIGHT, WIDTH);
 
     private static JPanel remainingCards = new JPanel();
+
     //Constructor
     public InformationPanel() {
         JScrollPane scroll = new JScrollPane(infoArea);
-        setPreferredSize(new Dimension(300,690));
+        setPreferredSize(new Dimension(300, 690));
 
         //border style
         setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
@@ -50,39 +51,51 @@ public class InformationPanel extends JPanel {
     public void updateContent(String value) {
         // Add string below current value.
         infoArea.append(value + "\n");
-        
+
         // Auto scroll down to current position.
         infoArea.setCaretPosition(infoArea.getDocument().getLength());
     }
 
 
-
-
+    /**
+     * Method that converts an image into a jlabel object to easily place onto the panel
+     *
+     * @param path Location to the image
+     * @return A JLabel that contains the image
+     * @throws IOException When provided a path that doesn't exist
+     */
     public static JLabel imageToResizedLabel(String path) throws IOException {
-        BufferedImage myPicture = ImageIO.read(CluedoUI.class.getClassLoader().getResourceAsStream(path));
-        Image resizedImage =  myPicture.getScaledInstance(45, 70,
-                myPicture.SCALE_SMOOTH);
-        JLabel picLabel = new JLabel(new ImageIcon(resizedImage));
-        return picLabel;
+        BufferedImage myPicture = ImageIO.read(
+                CluedoUI.class.getClassLoader().getResourceAsStream(path)); // Reads the file
+        Image resizedImage = myPicture.getScaledInstance(45, 70,
+                myPicture.SCALE_SMOOTH); // Resize it so that it looks better.
+        JLabel picLabel = new JLabel(new ImageIcon(resizedImage)); // Convert to JLabel object
+        return picLabel; // Return
     }
 
 
-    public static void updateRemainingCards(ArrayList<Card> cards){
-        remainingCards.removeAll();
+    /**
+     * Updates the UI to show the cards that are not dealt to the players
+     *
+     * @param cards An ArrayList of cards that are not dealt to the players
+     * @return Nothing
+     */
+    public static void updateRemainingCards(ArrayList<Card> cards) {
+        remainingCards.removeAll(); // Clean it up
         remainingCards.add(new JLabel("Undealt Cards:"));
-        for (Card c : cards) {
+        for (Card c : cards) { // Add each card to the panel one by one
             try {
-                String cardName = c.getName().toLowerCase().replaceAll(" ", "") + ".jpg";
-                System.out.println(cardName);
-                remainingCards.add(imageToResizedLabel(cardName));
+                // Fetch the image based on the card by removing spaces and
+                // making it lower case
+                String cardName = c.getName().toLowerCase().replaceAll(" ", "")
+                        + ".jpg";
+                remainingCards.add(imageToResizedLabel(cardName)); // Add it to the panel
             } catch (IOException ex) {
-                System.out.println("Unable to locate files for player's hand.");
+                System.out.println("Unable to locate files for undealt cards.");
             }
         }
-        remainingCards.updateUI();
+        remainingCards.updateUI(); // Refresh the UI to show changes.
     }
-
-
 
 
 }
