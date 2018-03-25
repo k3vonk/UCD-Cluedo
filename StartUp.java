@@ -182,7 +182,7 @@ public class StartUp {
             tokenList.add(new Card(x, 3));
         }
 
-        while (tokenList.size() > players.getCapacity()) {
+        while (tokenList.size() >= players.getCapacity()) {
             for (int i = 0; i < players.getCapacity(); i++) {
                 Card chosenCard = tokenList.get(rand.nextInt(tokenList.size()));
                 players.getPlayer(i).giveCard(chosenCard);
