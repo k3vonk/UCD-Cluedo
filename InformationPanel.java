@@ -19,7 +19,7 @@ import javax.swing.*;
 public class InformationPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    private static final int HEIGHT = 33;
+    private static final int HEIGHT = 30;
     private static final int WIDTH = 24;
 
     private JTextArea infoArea = new JTextArea("", HEIGHT, WIDTH);
