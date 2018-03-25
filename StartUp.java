@@ -197,5 +197,64 @@ public class StartUp {
         System.out.println("Remaining Cards that didn't divide evenly:" + tokenList);
         return murderEnvelope;
     }
+    
+    /*
+     * Player with highest roll moves first
+     * The rest of the players are ordered in terms of who entered their names first
+     */
+    public void position(Players players) {
+    	Dice dice = new Dice();
+    	boolean unique = false;							//Unique highest roll
+    	int[] pos = new int[players.getCapacity()]; 	//Saves the roll of each player
+    	int position = 0; 								//memorizes position of highest roller
+    	int highest = 0; 								//memorizes highest roll
+    	int diff = 0;									//Keeps track of highest after everyone rolls
+    	ui.displayString("======DECIDING WHO GOES FIRST======");
+    	
+    	while(!unique) {
+    		
+	    	//Rolling dice
+	    	for(int i = 0; i < players.getCapacity(); i++) {
+	    		
+	    		//Only roll for players who hasn't rolled or with highest rolls
+	    		if(pos[i] == diff) {
+		    		dice.rollDice(); 											
+		    		pos[i] = diff + dice.getRoll1() + dice.getRoll2(); 			//Sum of dice for the ith player
+		    		
+		    		//Draw dice image onto the screen
+		    		ui.drawDice(dice.getRoll1(), dice.getRoll2());
+		    		ui.displayString(players.currPlayer(i) + " rolled " + (dice.getRoll1() + dice.getRoll2()));
+		    		ui.display();
+		    		try { //The resulting dice roll is onscreen for 2 seconds
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					ui.drawDice(0,0); //This hides the dice
+					ui.display();
+					
+					//Records highest roll and position
+					if(highest < pos[i]) {
+						highest = pos[i];
+						position = i;
+						unique = true;
+					}else if(highest == pos[i]) {
+						//if two or more players have the same highest roll,
+						//there is no set highest position -> they have to reroll
+						unique = false;
+					}
+	    		}
+	    	}
+	    	
+	    	if(!unique) {
+	    		ui.displayString("Players with the same highest roll value,\nhas to re-roll");
+	    	}
+	    	diff = highest; //ensures reroll will not be the same as the lower numbers
+    	}
+    	
+    	//Reposition players into their new order
+    	ui.displayString("======" + players.currPlayer(position) + " HIGHEST ROLL======");
+    	players.addFirst(position, players.getPlayer(position));
+    }
 
 }
