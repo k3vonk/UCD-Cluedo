@@ -147,8 +147,11 @@ public class StartUp {
         }
     }
 
-    public ArrayList<Card> getMurderEnvelope() {
-        return murderEnvelope;
+    public void getMurderEnvelope() {
+        for(Card x : murderEnvelope){
+            ui.displayString(x.toString());
+        }
+
     }
 
     public void divideCards(Players players) {
