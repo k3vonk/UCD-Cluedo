@@ -204,6 +204,7 @@ public class StartUp {
             System.out.println(p.getName() + "'s cards:" + p.getCards());
         }
         System.out.println("Remaining Cards that didn't divide evenly:" + tokenList);
+        InformationPanel.updateRemainingCards(tokenList);
     }
     
     /*

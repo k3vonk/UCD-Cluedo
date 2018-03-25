@@ -1,13 +1,12 @@
 
-import java.awt.Dimension;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
 /**
  * An information panel that displays information to users
@@ -25,6 +24,7 @@ public class InformationPanel extends JPanel {
 
     private JTextArea infoArea = new JTextArea("", HEIGHT, WIDTH);
 
+    private static JPanel remainingCards = new JPanel();
     //Constructor
     public InformationPanel() {
         JScrollPane scroll = new JScrollPane(infoArea);
@@ -39,18 +39,7 @@ public class InformationPanel extends JPanel {
         infoArea.setEditable(false); //Non editable, so players can't text here
         infoArea.setMaximumSize(infoArea.getPreferredSize());
         add(scroll);
-        add(new JLabel("Your Hand:"));
-
-        try {
-            add(CluedoUI.imageToLabel("pplumm.png"));
-            add(CluedoUI.imageToLabel("dagger.png"));
-            add(CluedoUI.imageToLabel("ballroom.png"));
-        } catch (IOException ex) {
-          System.out.println("Unable to locate files for player's hand.");
-        }
-
-
-
+        add(remainingCards);
     }
 
     /**
@@ -65,6 +54,35 @@ public class InformationPanel extends JPanel {
         // Auto scroll down to current position.
         infoArea.setCaretPosition(infoArea.getDocument().getLength());
     }
+
+
+
+
+    public static JLabel imageToResizedLabel(String path) throws IOException {
+        BufferedImage myPicture = ImageIO.read(CluedoUI.class.getClassLoader().getResourceAsStream(path));
+        Image resizedImage =  myPicture.getScaledInstance(45, 70,
+                myPicture.SCALE_SMOOTH);
+        JLabel picLabel = new JLabel(new ImageIcon(resizedImage));
+        return picLabel;
+    }
+
+
+    public static void updateRemainingCards(ArrayList<Card> cards){
+        remainingCards.removeAll();
+        remainingCards.add(new JLabel("Undealt Cards:"));
+        for (Card c : cards) {
+            try {
+                String cardName = c.getName().toLowerCase().replaceAll(" ", "") + ".jpg";
+                System.out.println(cardName);
+                remainingCards.add(imageToResizedLabel(cardName));
+            } catch (IOException ex) {
+                System.out.println("Unable to locate files for player's hand.");
+            }
+        }
+        remainingCards.updateUI();
+    }
+
+
 
 
 }
