@@ -17,6 +17,8 @@ public class StartUp {
 
     private enum Token {PLUM, WHITE, SCARLET, GREEN, MUSTARD, PEACOCK}
 
+    private ArrayList<Card> murderEnvelope = new ArrayList<>();
+
     public StartUp(CluedoUI ui) {
         this.ui = ui;
     }
@@ -145,9 +147,12 @@ public class StartUp {
         }
     }
 
-    public ArrayList<Card> divideCards(Players players) {
+    public ArrayList<Card> getMurderEnvelope() {
+        return murderEnvelope;
+    }
+
+    public void divideCards(Players players) {
         ArrayList<Card> tokenList = new ArrayList<Card>();
-        ArrayList<Card> murderEnvelope = new ArrayList<Card>();
         Random rand = new Random();
 
         ArrayList<String> characters = new ArrayList<>(
@@ -195,7 +200,6 @@ public class StartUp {
             System.out.println(p.getName() + "'s cards:" + p.getCards());
         }
         System.out.println("Remaining Cards that didn't divide evenly:" + tokenList);
-        return murderEnvelope;
     }
 
 }
