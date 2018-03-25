@@ -182,21 +182,19 @@ public class StartUp {
             tokenList.add(new Card(x, 3));
         }
 
-        while (!tokenList.isEmpty()) {
+        while (tokenList.size() > players.getCapacity()) {
             for (int i = 0; i < players.getCapacity(); i++) {
-                if (tokenList.isEmpty()) {
-                    break;
-                } else {
-                    Card chosenCard = tokenList.get(rand.nextInt(tokenList.size()));
-                    players.getPlayer(i).giveCard(chosenCard);
-                    tokenList.remove(chosenCard);
-                }
+                Card chosenCard = tokenList.get(rand.nextInt(tokenList.size()));
+                players.getPlayer(i).giveCard(chosenCard);
+                tokenList.remove(chosenCard);
             }
         }
+        
         System.out.println("Murder Envelope Contents:" + murderEnvelope);
         for (Player p : players) {
             System.out.println(p.getName() + "'s cards:" + p.getCards());
         }
+        System.out.println("Remaining Cards that didn't divide evenly:" + tokenList);
         return murderEnvelope;
     }
 
