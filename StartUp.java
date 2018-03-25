@@ -170,8 +170,8 @@ public class StartUp {
         /* ArrayLists of characters, weapons and rooms to pick a random from each to store into
          murder envelope */
         ArrayList<String> characters = new ArrayList<>(
-                Arrays.asList("Colonel Mustard", "Professor Plum", "Mr Green", "Mrs Peacock",
-                        "Miss Scarlet", "Mrs White"));
+                Arrays.asList("Mustard", "Plum", "Green", "Peacock",
+                        "Scarlet", "White"));
         ArrayList<String> weapons = new ArrayList<>(
                 Arrays.asList("Dagger", "Candle Stick", "Revolver", "Rope", "Lead Pipe",
                         "Spanner"));
