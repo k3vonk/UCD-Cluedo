@@ -14,11 +14,9 @@ import java.util.Random;
 public class StartUp {
 
     private CluedoUI ui; //Just a ui
-
     private enum Token {PLUM, WHITE, SCARLET, GREEN, MUSTARD, PEACOCK}
-
     private ArrayList<Card> murderEnvelope = new ArrayList<>();
-
+    
     public StartUp(CluedoUI ui) {
         this.ui = ui;
     }
@@ -43,6 +41,8 @@ public class StartUp {
      */
     public int size() {
         String size; //Holds the size of the players
+        
+        ui.displayString("=======GAME SETUP [CAPACITY]=======");
         ui.displayString("Enter the number of players: [min: 2, max: 6]");
 
         //Ensures choice is within the [min, max] range
@@ -73,11 +73,13 @@ public class StartUp {
         String verifyName;    //Y/N to the current name
         String choice;        //The token they want to choose
 
+        ui.displayString("======GAME SETUP [Name & Token]======");
+        
         //Iterates through each player and allows each one to choose their name and token
         for (int i = 0; i < players.getCapacity(); i++) {
-
+        	ui.displayString("======" + "PLAYER " + (i+1) + "======");
             //Acquire players name
-            ui.displayString("Player " + (i + 1) + "'s name?: ");
+            ui.displayString("Player " + (i + 1) + "'s name: ");
             do {
                 name = ui.getCommand();
             } while (name.equals(""));
@@ -94,12 +96,11 @@ public class StartUp {
 
 
             //Character choice text
-            ui.displayString(
-                    "Player " + (i + 1) + "(" + name + "): " + " Please choose a character");
+            ui.displayString("Player " + (i + 1) + "(" + name + "), " + " Please choose a character");
 
             int j = 0;
 
-            // Method to show only the character options available to the user.
+            //Method to show only the character options available to the user.
             for (Token p : Token.values()) {
                 j++;
                 boolean playerExists = false;
@@ -124,7 +125,7 @@ public class StartUp {
                     }
                 } while (!isNum(choice));
 
-                //Ensures theres no two players having the same token
+                //Ensures there is no two players having the same token
                 for (Player p : players) {
                     valid = p.hasChoice(Integer.parseInt(choice));
                     if (!valid) {
@@ -213,10 +214,11 @@ public class StartUp {
     	Dice dice = new Dice();
     	boolean unique = false;							//Unique highest roll
     	int[] pos = new int[players.getCapacity()]; 	//Saves the roll of each player
-    	int position = 0; 								//memorizes position of highest roller
-    	int highest = 0; 								//memorizes highest roll
+    	int position = 0; 								//memorises position of highest roller
+    	int highest = 0; 								//memorises highest roll
     	int diff = 0;									//Keeps track of highest after everyone rolls
-    	ui.displayString("======DECIDING WHO GOES FIRST======");
+    	
+    	ui.displayString("======GAME SETUP [HIGHEST ROLL]======");
     	
     	while(!unique) {
     		
@@ -260,7 +262,7 @@ public class StartUp {
     	}
     	
     	//Reposition players into their new order
-    	ui.displayString("======" + players.currPlayer(position) + " HIGHEST ROLL======");
+    	ui.displayString("===" + players.currPlayer(position) + " HIGHEST ROLL===");
     	players.addFirst(position, players.getPlayer(position));
     }
 

@@ -22,15 +22,17 @@ public class Turn {
      * Each player takes turns
      */
     public void turns(Players players) {
-    	   String command; //Text that is entered
+    	   String command; 				//Text that is entered
+    	   boolean valid;  				//Check if action is valid
            Dice dice = new Dice();
-           boolean valid;  //Check if action is valid
+          
            do {
                for (int i = 0; i < players.getCapacity(); i++) {
                    valid = false;
 
                    //First prompt for first board action
-                   ui.displayString(players.currPlayer(i) + "'s turn to move.\nType a command. Typing 'help' explains what each command does.");
+                   ui.displayString("===" + players.currPlayer(i) + "'s TURN===");
+                   ui.displayString("Type a command");
                    CommandPanel.updateUserImage(players.getPlayer(i).getImagePath());
                    
                     //Available commands
@@ -44,13 +46,13 @@ public class Turn {
 
 					   if (command.equalsIgnoreCase("roll")) {
 
-						   //Rolls the dice and displays the result onscreen
+						   //Rolls the dice and displays the result on-screen
 						   dice.rollDice();
 						   CommandPanel.updateCommands();
 						   ui.drawDice(dice.getRoll1(), dice.getRoll2());
 						   ui.displayString(players.currPlayer(i) + " rolled " + (dice.getRoll1() + dice.getRoll2()));
 						   ui.display();
-						   try { //The resulting dice roll is onscreen for 2 seconds
+						   try { //The resulting dice roll is on-screen for 2 seconds
 							   Thread.sleep(2000);
 						   } catch (InterruptedException e) {
 							   e.printStackTrace();
@@ -59,18 +61,18 @@ public class Turn {
 						   ui.display();
 						   valid = true;
 					   } else if (command.equalsIgnoreCase("notes")) {
-						   //Im actually not sure how this stuff appears in-game, and i cannot check because the program doesent compile :(
+						   //Im actually not sure how this stuff appears in-game, and i cannot check because the program doesn't compile :(
 					   } else if (command.equalsIgnoreCase("cheat")) {
 						   //
 					   } else if(command.equalsIgnoreCase("help")){
-						   ui.displayString("'roll' - Type this to roll the dice and begin your turn."
-								          + "A roll ranges from 1 to 6 and you can move that many spaces on the board."
-						                  + "\n'notes' - Type this to inspect your notes."
-						                  + "This lists all players, weapons and rooms, and shows an 'X' mark for cards"
+						   ui.displayString("'roll' - to roll the dice and begin your turn."
+								          + "\nA roll ranges from 1 to 6 and you can move that many spaces on the board."
+						                  + "\n\n'notes' - Type this to inspect your notes."
+						                  + "\nThis lists all players, weapons and rooms,\nand shows an 'X' mark for cards"
 						   				  + " you own and an 'A' mark for cards everybody sees."
-						                  + "\n'cheat' - Allows you to inspect the murder envelope.");
+						                  + "\n\n'cheat' - Allows you to inspect the murder envelope.");
 				   }else {
-                           ui.displayString("Whoops! Wrong command. Type 'help' if you're unsure what to do.");
+                           ui.displayString("Whoops! Wrong command.\nType 'help' if you're unsure what to do.");
                        }
                    } while (!valid);
 
@@ -80,7 +82,7 @@ public class Turn {
                    //After all actions
                    do {
                        ui.displayString(players.currPlayer(i)
-                               + " no actions left. Type 'done' to pass turn, or 'quit' to end the "
+                               + " no actions left.\nType 'done' to pass turn, or 'quit' to end the "
                                + "game");
    					String[] commandsEnd = {"done"};
    					CommandPanel.updateCommands(commandsEnd);
@@ -91,17 +93,24 @@ public class Turn {
            } while (true);
     }
     
+    /**
+     * Allows players to move depending on their dice roll
+     * 
+     * @param players
+     * @param dice
+     * @param currPlayer
+     */
     public void movement(Players players, int dice, int currPlayer) {
-    	String direction; //Contains direction of where the user wants to go
-    	boolean validDirection;//If direction is valid
-    	int sentinel = 0; //Ensures right warning is displayed
+    	String direction; 									//Contains direction of where the user wants to go
+    	boolean validDirection;								//If direction is valid
+    	int sentinel = 0; 									//Ensures right warning is displayed
     	Tile currTile = players.getTile(currPlayer); 
     	
 
-    	ui.displayString(players.currPlayer(currPlayer) + "make your move :");
+    	ui.displayString(players.currPlayer(currPlayer) + "make your move!");
     	
     	//Set of commands a player could possibly use
-		String[] commands = {"u(up)", "d(down)", "l(left)", "r(right)"};
+		String[] commands = {"u - up", "d - down", "l - left", "r - right"};
 		CommandPanel.updateCommands(commands);
         CommandPanel.updateMovesReamining(dice);
 		
@@ -200,7 +209,12 @@ public class Turn {
 		
     }
     
-    
+    /**
+     * Reposition players onto the centre of the room
+     * @param players
+     * @param currPlayer
+     * @param room
+     */
     public void roomCenter(Players players, int currPlayer, int room) {
     	Tile currTile = players.getTile(currPlayer);
     	boolean invalidRoom = true;
@@ -222,6 +236,13 @@ public class Turn {
     	players.getPlayer(currPlayer).getToken().moveBy(currTile);
     }
     
+    /**
+     * Gives a list of exits to players if there are exits
+     * @param players
+     * @param currPlayer
+     * @param room
+     * @return
+     */
     public Boolean exitRoom(Players players, int currPlayer, int room) {
     	ArrayList<Tile> exits = new ArrayList<Tile>();
     	
