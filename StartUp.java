@@ -16,9 +16,7 @@ public class StartUp {
     private CluedoUI ui; //Just a ui
 
     private enum Token {PLUM, WHITE, SCARLET, GREEN, MUSTARD, PEACOCK}
-
-    ;
-
+    
     public StartUp(CluedoUI ui) {
         this.ui = ui;
     }
