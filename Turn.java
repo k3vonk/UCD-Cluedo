@@ -13,17 +13,11 @@ public class Turn {
 	
 	private CluedoUI ui;
 	private TileGrid grid = new TileGrid();
-	ArrayList<Card> murderEnvelope = new ArrayList<>();
-	ArrayList<Card> unusedCards = new ArrayList<>();
 	
 	public Turn(CluedoUI ui) {
 		this.ui = ui;
 	}
-
-	String playerList[] = {"Plum","White","Scarlet","Green","Mustard","Peacock"};
-	String weaponsList[] = {"Candle Stick","Dagger","Lead Pipe","Revolver","Rope","Spanner"};
-	String roomList[] = {"Dining Room","Conservatory","Study","Billard Room","Lounge","Library","Ball Room","Kitchen","Hall"};
-
+	
 	/**
      * Each player takes turns
      */
@@ -67,134 +61,16 @@ public class Turn {
 						   ui.display();
 						   valid = true;
 					   } else if (command.equalsIgnoreCase("notes")) {
-<<<<<<< HEAD
-						   ArrayList<Card> arrayList = players.getPlayer(i).getCards();
-						   ui.displayString("People:");
-						   for(int count = 0; count < 6;count++) {
-							   boolean found = false;
-							   int count2 = 0;
-							   while (count2 < arrayList.size()) {
-								   if (arrayList.get(count2).toString() == playerList[count]) {
-									   ui.displayString(" " + playerList[count] + " X");
-									   found = true;
-								   }
-								   count2++;
-							   }
-							   if (found == false) {
-								   if (unusedCards.size() == 1) {
-									   if (unusedCards.get(0).toString() == playerList[count]) {
-										   ui.displayString(" " + playerList[count] + " A");
-										   found=true;
-									   }
-								   } else if (unusedCards.size() == 2) {
-									   if (unusedCards.get(0).toString() == playerList[count] ||
-											   unusedCards.get(1).toString() == playerList[count]) {
-										   ui.displayString(" " + playerList[count] + " A");
-										   found = true;
-									   }
-								   }else if (unusedCards.size() == 3) {
-										   if (unusedCards.get(0).toString() == playerList[count] ||
-												   unusedCards.get(1).toString() == playerList[count] ||
-												   unusedCards.get(2).toString() == playerList[count]) {
-											   ui.displayString(" " + playerList[count] + " A");
-											   found=true;
-										   }
-									   } if(found==false){
-										   ui.displayString(" " + playerList[count]);
-									   }
-								   }
-							   }
-
-						   ui.displayString("\nWeapons:");
-						   for(int count = 0; count < 6;count++) {
-							   boolean found = false;
-							   int count2 = 0;
-							   while (count2 < arrayList.size()) {
-								   if (arrayList.get(count2).toString() == weaponsList[count]) {
-									   ui.displayString(" " + weaponsList[count] + " X");
-									   found = true;
-								   }
-								   count2++;
-							   }
-							   if (found == false) {
-								   if (unusedCards.size() == 1) {
-									   if (unusedCards.get(0).toString() == weaponsList[count]) {
-										   ui.displayString(" " + weaponsList[count] + " A");
-										   found=true;
-									   }
-								   } else if (unusedCards.size() == 2) {
-									   if (unusedCards.get(0).toString() == weaponsList[count] ||
-											   unusedCards.get(1).toString() == weaponsList[count]) {
-										   ui.displayString(" " + weaponsList[count] + " A");
-										   found = true;
-									   }
-								   }else if (unusedCards.size() == 3) {
-										   if (unusedCards.get(0).toString() == weaponsList[count] ||
-												   unusedCards.get(1).toString() == weaponsList[count] ||
-												   unusedCards.get(2).toString() == weaponsList[count]) {
-											   ui.displayString(" " + weaponsList[count] + " A");
-											   found=true;
-										   }
-									   } if(found==false){
-										   ui.displayString(" " + weaponsList[count]);
-									   }
-								   }
-							   }
-						   ui.displayString("\nRooms:");
-						   for(int count = 0; count < 9;count++) {
-							   boolean found = false;
-							   int count2 = 0;
-							   while (count2 < arrayList.size()) {
-								   if (arrayList.get(count2).toString() == roomList[count]) {
-									   ui.displayString(" " + roomList[count] + " X");
-									   found = true;
-								   }
-								   count2++;
-							   }
-							   if (found == false) {
-								   if (unusedCards.size() == 1) {
-									   if (unusedCards.get(0).toString() == roomList[count]) {
-										   ui.displayString(" " + roomList[count] + " A");
-										   found=true;
-									   }
-								   } else if (unusedCards.size() == 2) {
-									   if (unusedCards.get(0).toString() == roomList[count] ||
-											   unusedCards.get(1).toString() == roomList[count]) {
-										   ui.displayString(" " + roomList[count] + " A");
-										   found = true;
-									   }
-								   } else if (unusedCards.size() == 3) {
-										   if (unusedCards.get(0).toString() == roomList[count] ||
-												   unusedCards.get(1).toString() == roomList[count] ||
-												   unusedCards.get(2).toString() == roomList[count]) {
-											   ui.displayString(" " + roomList[count] + " A");
-											   found=true;
-										   }
-									   }  if(found==false){
-										   ui.displayString(" " + roomList[count]);
-									   }
-								   }
-							   }
-
-=======
 						   //Im actually not sure how this stuff appears in-game, and i cannot check because the program doesn't compile :(
->>>>>>> 6e7a70d9256f42c9a9503da68c02a6196a43f499
 					   } else if (command.equalsIgnoreCase("cheat")) {
-						   for(Card x: murderEnvelope){
-						   	ui.displayString(x.toString());
-						   }
+						   //
 					   } else if(command.equalsIgnoreCase("help")){
 						   ui.displayString("'roll' - to roll the dice and begin your turn."
 								          + "\nA roll ranges from 1 to 6 and you can move that many spaces on the board."
 						                  + "\n\n'notes' - Type this to inspect your notes."
 						                  + "\nThis lists all players, weapons and rooms,\nand shows an 'X' mark for cards"
 						   				  + " you own and an 'A' mark for cards everybody sees."
-<<<<<<< HEAD
-						                  + "\n'cheat' - Allows you to inspect the murder envelope."
-						                  + "\n'quit' - Type this to end the game.");
-=======
 						                  + "\n\n'cheat' - Allows you to inspect the murder envelope.");
->>>>>>> 6e7a70d9256f42c9a9503da68c02a6196a43f499
 				   }else {
                            ui.displayString("Whoops! Wrong command.\nType 'help' if you're unsure what to do.");
                        }
@@ -216,14 +92,6 @@ public class Turn {
                }
            } while (true);
     }
-
-    public void setMurderEnvelope(ArrayList<Card> array){
-    	murderEnvelope = array;
-	}
-
-	public void setUnusedCards(ArrayList<Card> array){
-    	unusedCards = array;
-	}
     
     /**
      * Allows players to move depending on their dice roll

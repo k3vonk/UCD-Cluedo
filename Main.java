@@ -33,16 +33,6 @@ public class Main {
      * Divide card pile
      */
     public void start() {
-<<<<<<< HEAD
-        capacity = start.size(); //Asks the user for the number of players
-        this.players = new Players(capacity); //Instantiates the players
-        start.addPlayers(players); //Asks user for their name and the character they wish to play
-
-        weapons.createWeapons(); //Instantiates the weapons
-        CommandPanel.updateCommands(); //Shows users available commands
-        turn.setUnusedCards(start.divideCards(players));
-        turn.setMurderEnvelope(start.getMurderEnvelope());
-=======
         capacity = start.size();						//Asks the user for the number of players
         this.players = new Players(capacity);			//Instantiates the players
         start.addPlayers(players);						//Asks user for their name and the character they wish to play
@@ -51,7 +41,6 @@ public class Main {
         CommandPanel.updateCommands();					//Shows users available commands
         start.divideCards(players);						//Divides cards according to the rules
         
->>>>>>> 6e7a70d9256f42c9a9503da68c02a6196a43f499
         //Update and display the board
         ui.setBoard(players, weapons);
         ui.display();
