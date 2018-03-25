@@ -61,16 +61,14 @@ public class Turn {
 					   } else if (command.equalsIgnoreCase("notes")) {
 						   //Im actually not sure how this stuff appears in-game, and i cannot check because the program doesent compile :(
 					   } else if (command.equalsIgnoreCase("cheat")) {
-						   /*
-						   ui.display( the MURDER envelope) Personally I think the envelope should appear onscreen as jpegs.
-						   */
+						   //
 					   } else if(command.equalsIgnoreCase("help")){
 						   ui.displayString("'roll' - Type this to roll the dice and begin your turn."
 								          + "A roll ranges from 1 to 6 and you can move that many spaces on the board."
-						                  + "'notes' - Type this to inspect your notes."
+						                  + "\n'notes' - Type this to inspect your notes."
 						                  + "This lists all players, weapons and rooms, and shows an 'X' mark for cards"
 						   				  + " you own and an 'A' mark for cards everybody sees."
-						                  + "'cheat' - Allows you to inspect the murder envelope cuz yous a cheat.");
+						                  + "\n'cheat' - Allows you to inspect the murder envelope.");
 				   }else {
                            ui.displayString("Whoops! Wrong command. Type 'help' if you're unsure what to do.");
                        }

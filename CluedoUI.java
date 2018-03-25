@@ -119,4 +119,5 @@ public class CluedoUI {
         JLabel picLabel = new JLabel(new ImageIcon(myPicture));
         return picLabel;
     }
+
 }
