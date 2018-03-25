@@ -14,9 +14,11 @@ import java.util.Random;
 public class StartUp {
 
     private CluedoUI ui; //Just a ui
+
     private enum Token {PLUM, WHITE, SCARLET, GREEN, MUSTARD, PEACOCK}
+
     private ArrayList<Card> murderEnvelope = new ArrayList<>();
-    
+
     public StartUp(CluedoUI ui) {
         this.ui = ui;
     }
@@ -43,6 +45,7 @@ public class StartUp {
         String size; //Holds the size of the players
         
         ui.displayString("======GAME SETUP [CAPACITY]======");
+
         ui.displayString("Enter the number of players: [min: 2, max: 6]");
 
         //Ensures choice is within the [min, max] range
@@ -74,10 +77,10 @@ public class StartUp {
         String choice;        //The token they want to choose
 
         ui.displayString("=====GAME SETUP [Name & Token]=====");
-        
+
         //Iterates through each player and allows each one to choose their name and token
         for (int i = 0; i < players.getCapacity(); i++) {
-        	ui.displayString("======" + "PLAYER " + (i+1) + "======");
+            ui.displayString("======" + "PLAYER " + (i + 1) + "======");
             //Acquire players name
             ui.displayString("Player " + (i + 1) + "'s name: ");
             do {
@@ -96,7 +99,8 @@ public class StartUp {
 
 
             //Character choice text
-            ui.displayString("Player " + (i + 1) + "(" + name + "), " + " Please choose a character");
+            ui.displayString(
+                    "Player " + (i + 1) + "(" + name + "), " + " Please choose a character");
 
             int j = 0;
 
@@ -148,19 +152,25 @@ public class StartUp {
         }
     }
 
-    public void getMurderEnvelope() {
-        for(Card x : murderEnvelope){
-            ui.displayString(x.toString());
-        }
-
+    public ArrayList<Card> getMurderEnvelope() {
+        return murderEnvelope;
     }
 
+    /**
+     * Method to divide the stack of cards among the players and choose three for the murder
+     * envelope
+     *
+     * @param players an input of the current list of players of type Players
+     * @return nothing
+     */
     public void divideCards(Players players) {
-        ArrayList<Card> tokenList = new ArrayList<Card>();
-        Random rand = new Random();
+        ArrayList<Card> tokenList = new ArrayList<Card>(); // Arraylist to store the entire deck
+        Random rand = new Random(); // To pick out random cards from the deck
 
+        /* ArrayLists of characters, weapons and rooms to pick a random from each to store into
+         murder envelope */
         ArrayList<String> characters = new ArrayList<>(
-                Arrays.asList("Colonel Mustard", "Professor Plum", "Reverend Green", "Mrs Peacock",
+                Arrays.asList("Colonel Mustard", "Professor Plum", "Mr Green", "Mrs Peacock",
                         "Miss Scarlet", "Mrs White"));
         ArrayList<String> weapons = new ArrayList<>(
                 Arrays.asList("Dagger", "Candle Stick", "Revolver", "Rope", "Lead Pipe",
@@ -171,14 +181,20 @@ public class StartUp {
                         "Billard Room", "Library", "Study"));
 
 
+        // Pick out cards randomly for murder envelope
         Card characterChosen = new Card(characters.get(rand.nextInt(characters.size())), 1);
         Card weaponChosen = new Card(weapons.get(rand.nextInt(weapons.size())), 1);
         Card roomChosen = new Card(rooms.get(rand.nextInt(rooms.size())), 1);
+
+        // Put them into the envelope
         murderEnvelope.addAll(Arrays.asList(characterChosen, weaponChosen, roomChosen));
+
+        // Remove selected cards in the envelope from the main deck
         characters.remove(characterChosen.getName());
         weapons.remove(weaponChosen.getName());
         rooms.remove(roomChosen.getName());
 
+        // Add the remaining card to the ArrayList to divide among players.
         for (String x : characters) {
             tokenList.add(new Card(x, 1));
         }
@@ -191,6 +207,7 @@ public class StartUp {
             tokenList.add(new Card(x, 3));
         }
 
+        // Divides cards evenly among players
         while (tokenList.size() >= players.getCapacity()) {
             for (int i = 0; i < players.getCapacity(); i++) {
                 Card chosenCard = tokenList.get(rand.nextInt(tokenList.size()));
@@ -198,14 +215,11 @@ public class StartUp {
                 tokenList.remove(chosenCard);
             }
         }
-        
-        System.out.println("Murder Envelope Contents:" + murderEnvelope);
-        for (Player p : players) {
-            System.out.println(p.getName() + "'s cards:" + p.getCards());
-        }
-        System.out.println("Remaining Cards that didn't divide evenly:" + tokenList);
+
+        // Show the cards that didn't get divided to the user in the GUI
+        InformationPanel.updateRemainingCards(tokenList);
     }
-    
+
     /*
      * Player with highest roll moves first
      * The rest of the players are ordered in terms of who entered their names first
@@ -264,6 +278,7 @@ public class StartUp {
     	//Reposition players into their new order
     	ui.displayString("===" + players.currPlayer(position) + " HIGHEST ROLL===");
     	players.addFirst(position, players.getPlayer(position));
+
     }
 
 }
