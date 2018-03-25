@@ -11,8 +11,8 @@ import java.util.Random;
 
 public class Dice {
     private Random rand = new Random();
-    private int numSides = 6; //Our dice only have 6 sides
-    private int roll1, roll2; //Stores the values of each dice rolls
+    private int numSides = 6; 				//Our dice only have 6 sides
+    private int roll1, roll2; 				//Stores the values of each dice rolls
 
     public Dice(){}
 

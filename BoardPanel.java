@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.awt.*;
 
 /**
- * A panel that displays the gameboard
+ * A panel that displays the Game Board
  * 
  * @Team MAGA
  * @Author Gajun Young - 16440714
@@ -18,8 +18,9 @@ public class BoardPanel extends JPanel{
 	
 	private BufferedImage boardImage, die, die2; //Image of the board
 	private Weapons weapons;
-	//private Tokens tokens = new Tokens(); (test)
 	private Players players;
+	
+	//private Tokens tokens = new Tokens(); (test)
 	
 	public BoardPanel(Players players, Weapons weapons){	
 		this.weapons = weapons;
@@ -41,6 +42,7 @@ public class BoardPanel extends JPanel{
 		this.weapons = weapons;
 		this.players = players;
 	}
+	
 	//This takes the roll value as input, and draws the correct die image accordingly
 	public void drawDice(int roll1, int roll2){
 		try {
@@ -67,7 +69,7 @@ public class BoardPanel extends JPanel{
 		super.paintComponent(g);
 		Graphics2D g2 =(Graphics2D) g;
         g2.drawImage(boardImage, 0, 0, boardImage.getHeight(), boardImage.getWidth(), this);
-       // grid.drawGrid(g);
+       //grid.drawGrid(g); (test)
         
         for(Weapon weapon: weapons) {
         	weapon.drawWeapon(g2);
@@ -76,10 +78,11 @@ public class BoardPanel extends JPanel{
         for(Player player: players) {
         	player.getToken().drawToken(g2);
         }
-		if(die != null){ //This is used to help ensure the die is only onscreen when needed.
+		if(die != null){ //This is used to help ensure the die is only on-screen when needed.
 			g2.drawImage(die, 290, 255, die.getHeight()-90, die.getWidth()-90, this);
 			g2.drawImage(die2, 290, 335, die.getHeight()-90, die.getWidth()-90, this);
 		}
+		
       /* (test)  
         for(Token tok: tokens) {
         	tok.drawToken(g2);

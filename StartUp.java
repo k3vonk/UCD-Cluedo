@@ -42,7 +42,7 @@ public class StartUp {
     public int size() {
         String size; //Holds the size of the players
         
-        ui.displayString("=======GAME SETUP [CAPACITY]=======");
+        ui.displayString("======GAME SETUP [CAPACITY]======");
         ui.displayString("Enter the number of players: [min: 2, max: 6]");
 
         //Ensures choice is within the [min, max] range
@@ -73,7 +73,7 @@ public class StartUp {
         String verifyName;    //Y/N to the current name
         String choice;        //The token they want to choose
 
-        ui.displayString("======GAME SETUP [Name & Token]======");
+        ui.displayString("=====GAME SETUP [Name & Token]=====");
         
         //Iterates through each player and allows each one to choose their name and token
         for (int i = 0; i < players.getCapacity(); i++) {
@@ -218,7 +218,7 @@ public class StartUp {
     	int highest = 0; 								//memorises highest roll
     	int diff = 0;									//Keeps track of highest after everyone rolls
     	
-    	ui.displayString("======GAME SETUP [HIGHEST ROLL]======");
+    	ui.displayString("=====GAME SETUP [HIGHEST ROLL]=====");
     	
     	while(!unique) {
     		

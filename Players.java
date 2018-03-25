@@ -88,7 +88,7 @@ public class Players implements Iterable<Player>, Iterator<Player> {
 		return false;
 	}
 	
-	//Gets the number of people in the arraylist
+	//Gets the number of people in the array list
 	public int getCapacity() {
 		return capacity;
 	}

@@ -35,17 +35,15 @@ public class CluedoUI {
         command = new CommandPanel();
         info = new InformationPanel();
 
-        // Set up the main panel to look good, this panel contains two panels.
+        //Set up the main panel to look good, this panel contains two panels.
         mainPanel.add(board);
         mainPanel.add(info);
         mainPanel.setPreferredSize(new Dimension(1000, 750));
-        mainPanel.setBorder(
-                BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Cluedo"));
+        mainPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Cluedo"));
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
 
 
         //Position all the panels into their correct places
-
         frame.add(mainPanel);
         frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         frame.setTitle("Cluedo");
@@ -64,7 +62,7 @@ public class CluedoUI {
     }
 
     /**
-     * Shows the dice rolling onscreen
+     * Shows the dice rolling on-screen
      */
     public void drawDice(int roll1, int roll2){
         if(roll1!=0) { //If roll is 0, we are hiding the dice and thus no roll animation needs to be shown

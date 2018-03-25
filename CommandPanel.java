@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 /**
- * A panel that allows users to type information which in turns interacts with the board
+ * A panel that allows users to type information which interacts with the board
  * 
  * @Team MAGA
  * @Author Gajun Young - 16440714
@@ -29,10 +29,10 @@ public class CommandPanel extends JPanel {
 	private static JTextArea availableInputs = new JTextArea("quit", 5, 10);
     private static JPanel availableInput;
     private static JLabel movesRemaining = new JLabel("");
-	//Constructor
+	
 	public CommandPanel() {
-		JPanel inputPanel = new JPanel(); //Panel that displays input 
-		availableInput = new JPanel(); //Panel that displays available commands that users can use
+		JPanel inputPanel = new JPanel();		//Panel that displays input 
+		availableInput = new JPanel();			//Panel that displays available commands that users can use
 		
 		//A Label that contains the current player icon
 		try {
@@ -48,13 +48,11 @@ public class CommandPanel extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		setBorder(new EmptyBorder(0, 10, 0, 0));
 		
-		//A container that holds the textbox and the submit button
+		//A container that holds the text box and the submit button
 		inputPanel.setBorder(new EmptyBorder(50, 0, 0, 0));
 		inputPanel.add(new JLabel("Input Area:"));
-		//inputPanel.add(submit);
 		
 		//Add a panel to make a list of actions and set its layout to allow for that
-
 		JScrollPane scroll = new JScrollPane(availableInputs);
 		availableInput.setLayout(new BoxLayout(availableInput, BoxLayout.X_AXIS));
 	    availableInput.setPreferredSize(new Dimension(300, 0));
@@ -83,7 +81,6 @@ public class CommandPanel extends JPanel {
         commandField.addActionListener(listener);
         commandField.setFont(new Font("Times New Roman", Font.PLAIN, FONT_SIZE));
         inputPanel.add(commandField);
-
         inputPanel.add(movesRemaining);
 	        
         //border style
@@ -91,7 +88,7 @@ public class CommandPanel extends JPanel {
 		
 	}
 
-	// Methods to control the textbox in the command panel that lets users know what inputs are available
+	//Methods to control the text box in the command panel that lets users know what inputs are available
 	public static void updateCommands(String[] x){
 			availableInputs.setText("");
 			for(String y: x){
@@ -100,12 +97,12 @@ public class CommandPanel extends JPanel {
 			availableInputs.append("quit");
 	}
 
-	// Used to clear the textbox.
+	//Used to clear the text box.
 	public static void updateCommands(){
 		availableInputs.setText("quit");
 	}
 
-	// Method to update label that shows how many moves the player has left
+	//Method to update label that shows how many moves the player has left
 	public static void updateMovesReamining(int x){
 		if(x == 0){
 			movesRemaining.setText("You've run out of moves! Enter 'done' to move to next player.");
@@ -117,6 +114,7 @@ public class CommandPanel extends JPanel {
 			movesRemaining.setText("Moves remaining for current player:" + x);
 		}
 	}
+	
 	/**
 	 * A method that takes in a string of information
 	 * 
