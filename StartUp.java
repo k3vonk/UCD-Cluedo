@@ -16,7 +16,7 @@ public class StartUp {
     private CluedoUI ui; //Just a ui
 
     private enum Token {PLUM, WHITE, SCARLET, GREEN, MUSTARD, PEACOCK}
-    
+
     public StartUp(CluedoUI ui) {
         this.ui = ui;
     }
@@ -184,10 +184,10 @@ public class StartUp {
 
         while (!tokenList.isEmpty()) {
             for (int i = 0; i < players.getCapacity(); i++) {
-                Card chosenCard = tokenList.get(rand.nextInt(tokenList.size()));
                 if (tokenList.isEmpty()) {
                     break;
                 } else {
+                    Card chosenCard = tokenList.get(rand.nextInt(tokenList.size()));
                     players.getPlayer(i).giveCard(chosenCard);
                     tokenList.remove(chosenCard);
                 }
