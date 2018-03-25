@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Main that is executed that displays everything and actions are taken here before being used by
  * the classes
@@ -10,7 +12,7 @@
 public class Main {
 
     private int capacity;                     //Amount of players playing game.
-
+    private ArrayList<Card> murderEnvelope = new ArrayList<>();
     private Players players;				 //Empty players (Default 6 players with no tokens)
     private Weapons weapons;         		//Fixed set of weapons on board
     private CluedoUI ui;     				//Starts with an empty board with no players
@@ -35,7 +37,7 @@ public class Main {
 
         weapons.createWeapons(); //Instantiates the weapons
         CommandPanel.updateCommands(); //Shows users available commands
-        
+        murderEnvelope = start.divideCards(players);
         //Update and display the board
         ui.setBoard(players, weapons);
         ui.display();
@@ -116,7 +118,7 @@ public class Main {
   
    
     	Player temp = players.getPlayer(position);
-    	players.addFirst(position, temp);
+    	//players.addFirst(position, temp);
     	
     }
     //Takes players turns
