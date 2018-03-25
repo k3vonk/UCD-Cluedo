@@ -172,6 +172,7 @@ public class StartUp {
         ArrayList<String> characters = new ArrayList<>(
                 Arrays.asList("Mustard", "Plum", "Green", "Peacock",
                         "Scarlet", "White"));
+
         ArrayList<String> weapons = new ArrayList<>(
                 Arrays.asList("Dagger", "Candle Stick", "Revolver", "Rope", "Lead Pipe",
                         "Spanner"));
