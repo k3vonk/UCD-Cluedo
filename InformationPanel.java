@@ -74,8 +74,7 @@ public class InformationPanel extends JPanel {
      * @throws IOException When provided a path that doesn't exist
      */
     public static JLabel imageToResizedLabel(String path) throws IOException {
-        BufferedImage myPicture = ImageIO.read(
-                CluedoUI.class.getClassLoader().getResourceAsStream(path)); // Reads the file
+        BufferedImage myPicture = ImageIO.read(CluedoUI.class.getClassLoader().getResourceAsStream(path)); // Reads the file
         Image resizedImage = myPicture.getScaledInstance(45, 70,
                 myPicture.SCALE_SMOOTH); // Resize it so that it looks better.
         JLabel picLabel = new JLabel(new ImageIcon(resizedImage)); // Convert to JLabel object

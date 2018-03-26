@@ -1,8 +1,5 @@
-import java.awt.*;
 import java.util.ArrayList;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
 /**
  * A class that represents the turns of each player
@@ -18,16 +15,10 @@ public class Turn {
 	private CluedoUI ui;
 	private TileGrid grid = new TileGrid();
 	ArrayList<Card> murderEnvelope = new ArrayList<>(); //Holds the murder envelope contents
-	ArrayList<Card> unusedCards = new ArrayList<>(); //Holds the contents of undealt cards
 
 	public Turn(CluedoUI ui) {
 		this.ui = ui;
 	}
-
-	//Cards get compared to these lists when seeing if a player owns them or not
-	String playerList[] = {"Plum","White","Scarlet","Green","Mustard","Peacock"};
-	String weaponsList[] = {"Candle Stick","Dagger","Lead Pipe","Revolver","Rope","Spanner"};
-	String roomList[] = {"Dining Room","Conservatory","Study","Billard Room","Lounge","Library","Ball Room","Kitchen","Hall"};
 
 	/**
 	 * Each player takes turns
@@ -73,7 +64,7 @@ public class Turn {
 						valid = true;
 					} else if (command.equalsIgnoreCase("notes")) {
 						//Displays all cards apart from murder envelope ones, indicating cards they own or cards everyone can see
-						notes(players,i);
+						players.getPlayer(i).displayNote();
 					} else if (command.equalsIgnoreCase("cheat")) {
 						//Displays the murder envelope cards
 						cheat();
@@ -100,7 +91,7 @@ public class Turn {
 					if (command.equalsIgnoreCase("done")){
 						valid = true;
 					} else if (command.equalsIgnoreCase("notes")){
-						notes(players,i);
+						players.getPlayer(i).displayNote();
 					}else if(command.equalsIgnoreCase("cheat")){
 						cheat();
 					}else if(command.equalsIgnoreCase("help")){
@@ -114,12 +105,14 @@ public class Turn {
 	}
 	//The following method iterates through the contents of the murder envelope and displays it to the player
 	private void cheat(){
+		ui.displayString("======CHEATS======");
 		for(Card x: murderEnvelope){
 			ui.displayString(x.toString());
 		}
 	}
 	//The following method displays info about each command to the player
 	private void help(){
+		ui.displayString("======HELP======");
 		ui.displayString("'roll' - to roll the dice and begin your turn."
 				+ "\nA roll ranges from 1 to 6 and you can move that many spaces on the board."
 				+ "\n\n'notes' - Type this to inspect your notes."
@@ -130,150 +123,7 @@ public class Turn {
 				+ "\n\n'Passage' - Type to move from one corner of the board using a room to room passageway"
 				+ "\n\n'quit' - This ends the game immediately.");
 	}
-	//This method displays each card indicating if they own it, or everyone can see it.
-	private void notes(Players players, int i){
-
-
-		// Ovverride the columnclass so that it now supports checkboxes, will be required on later releases.
-		DefaultTableModel model = new DefaultTableModel() {
-			@Override
-			public Class getColumnClass(int column) {
-				return getValueAt(0, column).getClass();
-			}
-		};
-
-		// Create a new table to store notes. 
-		JTable table = new JTable(model);
-
-		// Add the column names one by one.
-		model.addColumn("TYPE");
-		model.addColumn("NAME");
-		model.addColumn("YOUR HAND");
-		model.addColumn("UNDEALT");
-
-
-		JScrollPane tata = new JScrollPane(table);
-		// set the size as it was being crowded and didn't look good at all.
-		tata.setPreferredSize(new Dimension(1000, 170));
-		// output the table within the pane using joptionpane with the object.
-		JFrame displayProperties = new JFrame();
-		// Add the table to the frame
-		displayProperties.add(tata);
-		displayProperties.setSize(900, 400);
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		displayProperties.setLocation(dim.width / 2 - displayProperties.getSize().width / 2, dim.height / 2 - displayProperties.getSize().height / 2);
-		displayProperties.setVisible(true);
-
-		ArrayList<Card> arrayList = players.getPlayer(i).getCards(); //This list holds the current player's cards
-		for(int count = 0; count < 6;count++) { //This loop iterates through each of the six characters
-			boolean found = false; //Checks if a card was found so we dont display it twice
-			int count2 = 0;
-			while (count2 < arrayList.size()) { //This loop iterates through every card owned by the player
-				if (arrayList.get(count2).toString().equalsIgnoreCase(playerList[count])) {
-					model.addRow(new Object[]{"Player",playerList[count],"X",""});
-					found = true;
-				}
-				count2++;
-			}
-			if (!found) { //The following if statements basically find and indicate undealt cards
-				if (unusedCards.size() == 1) {
-					if (unusedCards.get(0).toString().equalsIgnoreCase(playerList[count])) {
-						model.addRow(new Object[]{"Player",playerList[count],"","A"});
-						found=true;
-					}
-				} else if (unusedCards.size() == 2) {
-					if (unusedCards.get(0).toString().equalsIgnoreCase(playerList[count]) ||
-							unusedCards.get(1).toString().equalsIgnoreCase(playerList[count])) {
-						model.addRow(new Object[]{"Player",playerList[count],"","A"});
-						found = true;
-					}
-				}else if (unusedCards.size() == 3) {//There can only be at most 3 undealt cards with 2-6 players
-					if (unusedCards.get(0).toString().equalsIgnoreCase(playerList[count]) ||
-							unusedCards.get(1).toString().equalsIgnoreCase(playerList[count]) ||
-							unusedCards.get(2).toString().equalsIgnoreCase(playerList[count])) {
-						model.addRow(new Object[]{"Player",playerList[count],"","A"});
-						found=true;
-					}
-				} if(!found){ //If a card doesent match the player's cards and isn't undealt, it's added normally without a marker
-					model.addRow(new Object[]{"Player",playerList[count],"",""});
-				}
-			}
-		}
-		//The following is much like the previous except with weapon cards instead of players
-		for(int count = 0; count < 6;count++) {
-			boolean found = false;
-			int count2 = 0;
-			while (count2 < arrayList.size()) {
-				if (arrayList.get(count2).toString().equalsIgnoreCase(weaponsList[count])) {
-					model.addRow(new Object[]{"Weapon",weaponsList[count],"X",""});
-					found = true;
-				}
-				count2++;
-			}
-			if (!found) {
-				if (unusedCards.size() == 1) {
-					if (unusedCards.get(0).toString().equalsIgnoreCase(weaponsList[count])) {
-						model.addRow(new Object[]{"Weapon",weaponsList[count],"","A"});
-						found=true;
-					}
-				} else if (unusedCards.size() == 2) {
-					if (unusedCards.get(0).toString().equalsIgnoreCase(weaponsList[count]) ||
-							unusedCards.get(1).toString().equalsIgnoreCase(weaponsList[count])) {
-						model.addRow(new Object[]{"Weapon",weaponsList[count],"","A"});
-						found = true;
-					}
-				}else if (unusedCards.size() == 3) {
-					if (unusedCards.get(0).toString().equalsIgnoreCase(weaponsList[count]) ||
-							unusedCards.get(1).toString().equalsIgnoreCase(weaponsList[count]) ||
-							unusedCards.get(2).toString().equalsIgnoreCase(weaponsList[count])) {
-						model.addRow(new Object[]{"Weapon",weaponsList[count],"","A"});
-						found=true;
-					}
-				} if(!found){
-					model.addRow(new Object[]{"Weapon",weaponsList[count],"",""});
-				}
-			}
-		}
-		//The following is much like the previous except with room cards instead of players
-		for(int count = 0; count < 9;count++) {
-			boolean found = false;
-			int count2 = 0;
-			while (count2 < arrayList.size()) {
-				if (arrayList.get(count2).toString().equalsIgnoreCase(roomList[count])) {
-					model.addRow(new Object[]{"Room",roomList[count],"X",""});
-					found = true;
-				}
-				count2++;
-			}
-			if (!found) {
-				if (unusedCards.size() == 1) {
-					if (unusedCards.get(0).toString().equalsIgnoreCase(roomList[count])) {
-						model.addRow(new Object[]{"Room",roomList[count],"","A"});
-						found=true;
-					}
-				} else if (unusedCards.size() == 2) {
-					if (unusedCards.get(0).toString().equalsIgnoreCase(roomList[count]) ||
-							unusedCards.get(1).toString().equalsIgnoreCase(roomList[count])) {
-						model.addRow(new Object[]{"Room",roomList[count],"","A"});
-						found = true;
-					}
-				} else if (unusedCards.size() == 3) {
-					if (unusedCards.get(0).toString().equalsIgnoreCase(roomList[count]) ||
-							unusedCards.get(1).toString().equalsIgnoreCase(roomList[count]) ||
-							unusedCards.get(2).toString().equalsIgnoreCase(roomList[count])) {
-						model.addRow(new Object[]{"Room",roomList[count],"","A"});
-						found=true;
-					}
-				}  if(!found){
-					model.addRow(new Object[]{"Room",roomList[count],"",""});
-				}
-			}
-		}
-	}
-	//Method used in main to tell the turn class what cards were undealt
-	public void setUnusedCards(ArrayList<Card> array){
-		unusedCards = array;
-	}
+	
 	//Method used in main to tell the turn class the contents of the murder envelope
 	public void setMurderEnvelope(ArrayList<Card> array){
 		murderEnvelope = array;

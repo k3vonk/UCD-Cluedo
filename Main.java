@@ -40,7 +40,7 @@ public class Main {
         weapons.createWeapons();						//Instantiates the weapons
         CommandPanel.updateCommands();					//Shows users available commands
 
-        turn.setUnusedCards(start.divideCards(players)); //Divides cards according to the rules and shows undealt cards to turn class
+        start.divideCards(players); 					//Divides cards according to the rules and shows undealt cards to turn class
         turn.setMurderEnvelope(start.getMurderEnvelope()); //Shows murder envelope contents to turn class
 
         //Update and display the board
