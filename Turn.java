@@ -1,8 +1,5 @@
-import java.awt.*;
 import java.util.ArrayList;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
 /**
  * A class that represents the turns of each player
@@ -24,9 +21,6 @@ public class Turn {
 		this.ui = ui;
 	}
 
-	String playerList[] = {"Plum","White","Scarlet","Green","Mustard","Peacock"};
-	String weaponsList[] = {"Candle Stick","Dagger","Lead Pipe","Revolver","Rope","Spanner"};
-	String roomList[] = {"Dining Room","Conservatory","Study","Billard Room","Lounge","Library","Ball Room","Kitchen","Hall"};
 
 	/**
 	 * Each player takes turns
@@ -71,7 +65,7 @@ public class Turn {
 						ui.display();
 						valid = true;
 					} else if (command.equalsIgnoreCase("notes")) {
-						notes(players,i);
+						players.getPlayer(i).displayNote();
 					} else if (command.equalsIgnoreCase("cheat")) {
 						cheat();
 					} else if(command.equalsIgnoreCase("help")){
@@ -96,7 +90,7 @@ public class Turn {
 					if (command.equalsIgnoreCase("done")){
 						valid = true;
 					} else if (command.equalsIgnoreCase("notes")){
-						notes(players,i);
+						players.getPlayer(i).displayNote();
 					}else if(command.equalsIgnoreCase("cheat")){
 						cheat();
 					}else if(command.equalsIgnoreCase("help")){
@@ -127,148 +121,7 @@ public class Turn {
 				+ "\n\n'quit' - This ends the game immediately.");
 	}
 
-	private void notes(Players players, int i){
 
-
-		// Ovverride the columnclass so that it now supports checkboxes, will be required on later releases.
-		DefaultTableModel model = new DefaultTableModel() {
-			@Override
-			public Class getColumnClass(int column) {
-				return getValueAt(0, column).getClass();
-			}
-		};
-
-		// Create a new table to store notes. 
-		JTable table = new JTable(model);
-
-		// Add the column names one by one.
-		model.addColumn("TYPE");
-		model.addColumn("NAME");
-		model.addColumn("YOUR HAND");
-		model.addColumn("UNDEALT");
-
-
-		JScrollPane tata = new JScrollPane(table);
-		// set the size as it was being crowded and didn't look good at all.
-		tata.setPreferredSize(new Dimension(1000, 170));
-		// output the table within the pane using joptionpane with the object.
-		JFrame displayProperties = new JFrame();
-		// Add the table to the frame
-		displayProperties.add(tata);
-		displayProperties.setSize(900, 400);
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		displayProperties.setLocation(dim.width / 2 - displayProperties.getSize().width / 2, dim.height / 2 - displayProperties.getSize().height / 2);
-		displayProperties.setVisible(true);
-
-		ArrayList<Card> arrayList = players.getPlayer(i).getCards();
-		for(int count = 0; count < 6;count++) {
-			boolean found = false;
-			int count2 = 0;
-			while (count2 < arrayList.size()) {
-				if (arrayList.get(count2).toString() == playerList[count]) {
-					model.addRow(new Object[]{"Player",playerList[count],"X",""});
-					found = true;
-				}
-				count2++;
-			}
-			if (found == false) {
-				if (unusedCards.size() == 1) {
-					if (unusedCards.get(0).toString() == playerList[count]) {
-						model.addRow(new Object[]{"Player",playerList[count],"","A"});
-						found=true;
-					}
-				} else if (unusedCards.size() == 2) {
-					if (unusedCards.get(0).toString() == playerList[count] ||
-							unusedCards.get(1).toString() == playerList[count]) {
-						model.addRow(new Object[]{"Player",playerList[count],"","A"});
-						found = true;
-					}
-				}else if (unusedCards.size() == 3) {
-					if (unusedCards.get(0).toString() == playerList[count] ||
-							unusedCards.get(1).toString() == playerList[count] ||
-							unusedCards.get(2).toString() == playerList[count]) {
-						model.addRow(new Object[]{"Player",playerList[count],"","A"});
-						found=true;
-					}
-				} if(found==false){
-					model.addRow(new Object[]{"Player",playerList[count],"",""});
-				}
-			}
-		}
-
-		for(int count = 0; count < 6;count++) {
-			boolean found = false;
-			int count2 = 0;
-			while (count2 < arrayList.size()) {
-				if (arrayList.get(count2).toString() == weaponsList[count]) {
-					model.addRow(new Object[]{"Weapon",weaponsList[count],"X",""});
-					found = true;
-				}
-				count2++;
-			}
-			if (found == false) {
-				if (unusedCards.size() == 1) {
-					if (unusedCards.get(0).toString() == weaponsList[count]) {
-						model.addRow(new Object[]{"Weapon",weaponsList[count],"","A"});
-						found=true;
-					}
-				} else if (unusedCards.size() == 2) {
-					if (unusedCards.get(0).toString() == weaponsList[count] ||
-							unusedCards.get(1).toString() == weaponsList[count]) {
-						model.addRow(new Object[]{"Weapon",weaponsList[count],"","A"});
-						found = true;
-					}
-				}else if (unusedCards.size() == 3) {
-					if (unusedCards.get(0).toString() == weaponsList[count] ||
-							unusedCards.get(1).toString() == weaponsList[count] ||
-							unusedCards.get(2).toString() == weaponsList[count]) {
-						model.addRow(new Object[]{"Weapon",weaponsList[count],"","A"});
-						found=true;
-					}
-				} if(found==false){
-					model.addRow(new Object[]{"Weapon",weaponsList[count],"",""});
-				}
-			}
-		}
-		for(int count = 0; count < 9;count++) {
-			boolean found = false;
-			int count2 = 0;
-			while (count2 < arrayList.size()) {
-				if (arrayList.get(count2).toString() == roomList[count]) {
-					model.addRow(new Object[]{"Room",roomList[count],"X",""});
-					found = true;
-				}
-				count2++;
-			}
-			if (found == false) {
-				if (unusedCards.size() == 1) {
-					if (unusedCards.get(0).toString() == roomList[count]) {
-						model.addRow(new Object[]{"Room",roomList[count],"","A"});
-						found=true;
-					}
-				} else if (unusedCards.size() == 2) {
-					if (unusedCards.get(0).toString() == roomList[count] ||
-							unusedCards.get(1).toString() == roomList[count]) {
-						model.addRow(new Object[]{"Room",roomList[count],"","A"});
-						found = true;
-					}
-				} else if (unusedCards.size() == 3) {
-					if (unusedCards.get(0).toString() == roomList[count] ||
-							unusedCards.get(1).toString() == roomList[count] ||
-							unusedCards.get(2).toString() == roomList[count]) {
-						model.addRow(new Object[]{"Room",roomList[count],"","A"});
-						found=true;
-					}
-				}  if(found==false){
-					model.addRow(new Object[]{"Room",roomList[count],"",""});
-				}
-			}
-		}
-	}
-
-	public void setUnusedCards(ArrayList<Card> array){
-		unusedCards = array;
-	}
 
 	public void setMurderEnvelope(ArrayList<Card> array){
 		murderEnvelope = array;

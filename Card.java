@@ -1,5 +1,10 @@
 /**
- * Card class will represent a single card by its name and type
+ * A class that represents a single card
+ *
+ * @Team MAGA
+ * @Author Gajun Young - 16440714
+ * @Author Royal Thomas - 16326926
+ * @Author Richard  Otroshchenko - 16353416
  */
 public class Card {
 
