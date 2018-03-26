@@ -15,7 +15,7 @@ public class Main {
     private CluedoUI ui;				//Starts with an empty board with no players
     private StartUp start;				//Start class for starting methods
     private Turn turn;					//Turn class goes through the player's moves
-    
+
     public Main() {
         this.players = new Players();
         this.weapons = new Weapons();
@@ -33,13 +33,14 @@ public class Main {
      * Divide card pile
      */
     public void start() {
-        capacity = start.size();									//Asks the user for the number of players
-        this.players = new Players(capacity);						//Instantiates the players
-        start.addPlayers(players);									//Asks user for their name and the character they wish to play
-        start.position(players);									//Reposition players in arraylist
-        weapons.createWeapons();									//Instantiates the weapons
-        CommandPanel.updateCommands();								//Shows users available commands
-        start.divideCards(players);                                 //Divide cards
+        capacity = start.size();						//Asks the user for the number of players
+        this.players = new Players(capacity);			//Instantiates the players
+        start.addPlayers(players);						//Asks user for their name and the character they wish to play
+        start.position(players);						//Reposition players in arraylist
+        weapons.createWeapons();						//Instantiates the weapons
+        CommandPanel.updateCommands();					//Shows users available commands
+
+        turn.setUnusedCards(start.divideCards(players)); //Divides cards according to the rules and shows undealt cards to turn class
         turn.setMurderEnvelope(start.getMurderEnvelope()); //Shows murder envelope contents to turn class
 
         //Update and display the board

@@ -13,15 +13,13 @@ public class Player {
     private int choice;    //player's choice
     private Token token;
     private String imagePath;    //tokens image
-    private ArrayList<Card> cards = new ArrayList<>();		//Cards that a player has
-    private NoteBook note; 							//A players notebook 
-    
+    private ArrayList<Card> cards = new ArrayList<>();
+
     //Constructor
     public Player(String name, int choice) {
         this.name = name;
         this.choice = choice;
         this.token = null;
-        this.note = null;
     }
 
     //Accessor of player name
@@ -75,16 +73,6 @@ public class Player {
 
     public ArrayList<Card> getCards() {
         return cards;
-    }
-    
-    //Sets notebook
-    public void setNoteBook(ArrayList<Card> undealt) {
-    	this.note = new NoteBook(undealt, cards);
-    }
-    
-    //Displays player's note
-    public void displayNote() {
-    	note.showNotes();
     }
 
 }

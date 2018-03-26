@@ -1,5 +1,5 @@
 /**
- * A class that represents a single card
+ * Card class will represent a single card by its name and type
  *
  * @Team MAGA
  * @Author Gajun Young - 16440714

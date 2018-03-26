@@ -163,7 +163,7 @@ public class StartUp {
      * @param players an input of the current list of players of type Players
      * @return nothing
      */
-    public void divideCards(Players players) {
+    public ArrayList<Card> divideCards(Players players) {
         ArrayList<Card> tokenList = new ArrayList<Card>(); // Arraylist to store the entire deck
         Random rand = new Random(); // To pick out random cards from the deck
 
@@ -219,12 +219,8 @@ public class StartUp {
 
         // Show the cards that didn't get divided to the user in the GUI
         InformationPanel.updateRemainingCards(tokenList);
-
-        //Sets every players notebook
-        for(int i = 0;  i < players.getCapacity(); i++) {
-        	players.getPlayer(i).setNoteBook(tokenList);
-        }
-        
+        //Returns the undealt card list to main
+        return tokenList;
     }
 
     /*
