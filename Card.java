@@ -1,21 +1,30 @@
+/**
+ * Card class will represent a single card by its name and type
+ */
 public class Card {
+
+    // To store name and type
     private String name;
     private int type;
 
-    public Card(String name, int type){
+    // Intialize the card
+    public Card(String name, int type) {
         this.name = name;
         this.type = type;
     }
 
-    public String getName(){
+    // Get the card's name
+    public String getName() {
         return name;
     }
 
-    public int getType(){
+    // Get Type
+    public int getType() {
         return type;
     }
 
-    public String toString(){
+    // In order to print out the card while testing.
+    public String toString() {
         return this.name;
     }
 }

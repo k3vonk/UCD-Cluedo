@@ -142,8 +142,8 @@ public class Turn {
 		JTable table = new JTable(model);
 
 		// Add the column names one by one.
-		model.addColumn("NAME");
 		model.addColumn("TYPE");
+		model.addColumn("NAME");
 		model.addColumn("YOUR HAND");
 		model.addColumn("UNDEALT");
 
@@ -166,7 +166,7 @@ public class Turn {
 			int count2 = 0;
 			while (count2 < arrayList.size()) {
 				if (arrayList.get(count2).toString() == playerList[count]) {
-					model.addRow(new Object[]{playerList[count],"Player","X",""});
+					model.addRow(new Object[]{"Player",playerList[count],"X",""});
 					found = true;
 				}
 				count2++;
@@ -174,24 +174,24 @@ public class Turn {
 			if (found == false) {
 				if (unusedCards.size() == 1) {
 					if (unusedCards.get(0).toString() == playerList[count]) {
-						model.addRow(new Object[]{playerList[count],"Player","","A"});
+						model.addRow(new Object[]{"Player",playerList[count],"","A"});
 						found=true;
 					}
 				} else if (unusedCards.size() == 2) {
 					if (unusedCards.get(0).toString() == playerList[count] ||
 							unusedCards.get(1).toString() == playerList[count]) {
-						model.addRow(new Object[]{playerList[count],"Player","","A"});
+						model.addRow(new Object[]{"Player",playerList[count],"","A"});
 						found = true;
 					}
 				}else if (unusedCards.size() == 3) {
 					if (unusedCards.get(0).toString() == playerList[count] ||
 							unusedCards.get(1).toString() == playerList[count] ||
 							unusedCards.get(2).toString() == playerList[count]) {
-						model.addRow(new Object[]{playerList[count],"Player","","A"});
+						model.addRow(new Object[]{"Player",playerList[count],"","A"});
 						found=true;
 					}
 				} if(found==false){
-					model.addRow(new Object[]{playerList[count],"Player","",""});
+					model.addRow(new Object[]{"Player",playerList[count],"",""});
 				}
 			}
 		}
@@ -201,7 +201,7 @@ public class Turn {
 			int count2 = 0;
 			while (count2 < arrayList.size()) {
 				if (arrayList.get(count2).toString() == weaponsList[count]) {
-					model.addRow(new Object[]{weaponsList[count],"Weapon","X",""});
+					model.addRow(new Object[]{"Weapon",weaponsList[count],"X",""});
 					found = true;
 				}
 				count2++;
@@ -209,24 +209,24 @@ public class Turn {
 			if (found == false) {
 				if (unusedCards.size() == 1) {
 					if (unusedCards.get(0).toString() == weaponsList[count]) {
-						model.addRow(new Object[]{weaponsList[count],"Weapon","","A"});
+						model.addRow(new Object[]{"Weapon",weaponsList[count],"","A"});
 						found=true;
 					}
 				} else if (unusedCards.size() == 2) {
 					if (unusedCards.get(0).toString() == weaponsList[count] ||
 							unusedCards.get(1).toString() == weaponsList[count]) {
-						model.addRow(new Object[]{weaponsList[count],"Weapon","","A"});
+						model.addRow(new Object[]{"Weapon",weaponsList[count],"","A"});
 						found = true;
 					}
 				}else if (unusedCards.size() == 3) {
 					if (unusedCards.get(0).toString() == weaponsList[count] ||
 							unusedCards.get(1).toString() == weaponsList[count] ||
 							unusedCards.get(2).toString() == weaponsList[count]) {
-						model.addRow(new Object[]{weaponsList[count],"Weapon","","A"});
+						model.addRow(new Object[]{"Weapon",weaponsList[count],"","A"});
 						found=true;
 					}
 				} if(found==false){
-					model.addRow(new Object[]{weaponsList[count],"Weapon","",""});
+					model.addRow(new Object[]{"Weapon",weaponsList[count],"",""});
 				}
 			}
 		}
@@ -235,7 +235,7 @@ public class Turn {
 			int count2 = 0;
 			while (count2 < arrayList.size()) {
 				if (arrayList.get(count2).toString() == roomList[count]) {
-					model.addRow(new Object[]{roomList[count],"Room","X",""});
+					model.addRow(new Object[]{"Room",roomList[count],"X",""});
 					found = true;
 				}
 				count2++;
@@ -243,24 +243,24 @@ public class Turn {
 			if (found == false) {
 				if (unusedCards.size() == 1) {
 					if (unusedCards.get(0).toString() == roomList[count]) {
-						model.addRow(new Object[]{roomList[count],"Room","","A"});
+						model.addRow(new Object[]{"Room",roomList[count],"","A"});
 						found=true;
 					}
 				} else if (unusedCards.size() == 2) {
 					if (unusedCards.get(0).toString() == roomList[count] ||
 							unusedCards.get(1).toString() == roomList[count]) {
-						model.addRow(new Object[]{roomList[count],"Room","","A"});
+						model.addRow(new Object[]{"Room",roomList[count],"","A"});
 						found = true;
 					}
 				} else if (unusedCards.size() == 3) {
 					if (unusedCards.get(0).toString() == roomList[count] ||
 							unusedCards.get(1).toString() == roomList[count] ||
 							unusedCards.get(2).toString() == roomList[count]) {
-						model.addRow(new Object[]{roomList[count],"Room","","A"});
+						model.addRow(new Object[]{"Room",roomList[count],"","A"});
 						found=true;
 					}
 				}  if(found==false){
-					model.addRow(new Object[]{roomList[count],"Room","",""});
+					model.addRow(new Object[]{"Room",roomList[count],"",""});
 				}
 			}
 		}
