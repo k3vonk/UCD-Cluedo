@@ -17,13 +17,13 @@ public class Main {
     private Turn turn;					//Turn class goes through the player's moves
 
     public Main() {
-    	this.players = new Players();
-    	this.weapons = new Weapons();
-    	this.ui 	 = new CluedoUI(players, weapons);
-    	this.start   = new StartUp(ui);
-    	this.turn    = new Turn(ui);
+        this.players = new Players();
+        this.weapons = new Weapons();
+        this.ui 	 = new CluedoUI(players, weapons);
+        this.start   = new StartUp(ui);
+        this.turn    = new Turn(ui);
     }
-    
+
     /**
      * Start of the game - game setup
      * Amount of players
@@ -39,29 +39,25 @@ public class Main {
         start.position(players);						//Reposition players in arraylist
         weapons.createWeapons();						//Instantiates the weapons
         CommandPanel.updateCommands();					//Shows users available commands
-<<<<<<< HEAD
+
         turn.setUnusedCards(start.divideCards(players)); //Divides cards according to the rules and shows undealt cards to turn class
         turn.setMurderEnvelope(start.getMurderEnvelope()); //Shows murder envelope contents to turn class
 
-=======
-        start.divideCards(players);						//Divides cards according to the rules
-        
->>>>>>> Revert "Notes"
         //Update and display the board
         ui.setBoard(players, weapons);
         ui.display();
     }
-    
+
     //Takes players turns
     public void turn() {
         turn.turns(players);
     }
-   
+
 
     public static void main(String[] args) {
         Main game = new Main();
         game.start();
-       	game.turn();
+        game.turn();
 
     }
 
