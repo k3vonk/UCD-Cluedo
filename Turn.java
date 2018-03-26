@@ -1,4 +1,8 @@
+import java.awt.*;
 import java.util.ArrayList;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * A class that represents the turns of each player
@@ -124,6 +128,34 @@ public class Turn {
 	}
 
 	private void notes(Players players, int i){
+
+		DefaultTableModel model = new DefaultTableModel() {
+			@Override
+			public Class getColumnClass(int column) {
+				return getValueAt(0, column).getClass();
+			}
+		};
+		JTable table = new JTable(model);
+
+		// Add the column names one by one.
+		model.addColumn("NAME");
+		model.addColumn("TYPE");
+		model.addColumn("YOUR HAND");
+		model.addColumn("UNDEALT");
+
+
+		JScrollPane tata = new JScrollPane(table);
+		// set the size as it was being crowded and didn't look good at all.
+		tata.setPreferredSize(new Dimension(1000, 170));
+		// output the table within the pane using joptionpane with the object.
+		JFrame displayProperties = new JFrame();
+		// Add the table to the frame
+		displayProperties.add(tata);
+		displayProperties.setSize(900, 400);
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		displayProperties.setLocation(dim.width / 2 - displayProperties.getSize().width / 2, dim.height / 2 - displayProperties.getSize().height / 2);
+		displayProperties.setVisible(true);
+
 		ArrayList<Card> arrayList = players.getPlayer(i).getCards();
 		ui.displayString("People:");
 		for(int count = 0; count < 6;count++) {
@@ -132,6 +164,7 @@ public class Turn {
 			while (count2 < arrayList.size()) {
 				if (arrayList.get(count2).toString() == playerList[count]) {
 					ui.displayString(" " + playerList[count] + " X");
+					model.addRow(new Object[]{playerList[count],"Player","X",""});
 					found = true;
 				}
 				count2++;
@@ -140,12 +173,14 @@ public class Turn {
 				if (unusedCards.size() == 1) {
 					if (unusedCards.get(0).toString() == playerList[count]) {
 						ui.displayString(" " + playerList[count] + " A");
+						model.addRow(new Object[]{playerList[count],"Player","","A"});
 						found=true;
 					}
 				} else if (unusedCards.size() == 2) {
 					if (unusedCards.get(0).toString() == playerList[count] ||
 							unusedCards.get(1).toString() == playerList[count]) {
 						ui.displayString(" " + playerList[count] + " A");
+						model.addRow(new Object[]{playerList[count],"Player","","A"});
 						found = true;
 					}
 				}else if (unusedCards.size() == 3) {
@@ -153,10 +188,12 @@ public class Turn {
 							unusedCards.get(1).toString() == playerList[count] ||
 							unusedCards.get(2).toString() == playerList[count]) {
 						ui.displayString(" " + playerList[count] + " A");
+						model.addRow(new Object[]{playerList[count],"Player","","A"});
 						found=true;
 					}
 				} if(found==false){
 					ui.displayString(" " + playerList[count]);
+					model.addRow(new Object[]{playerList[count],"Player","",""});
 				}
 			}
 		}
@@ -168,6 +205,7 @@ public class Turn {
 			while (count2 < arrayList.size()) {
 				if (arrayList.get(count2).toString() == weaponsList[count]) {
 					ui.displayString(" " + weaponsList[count] + " X");
+					model.addRow(new Object[]{weaponsList[count],"Weapon","X",""});
 					found = true;
 				}
 				count2++;
@@ -176,12 +214,14 @@ public class Turn {
 				if (unusedCards.size() == 1) {
 					if (unusedCards.get(0).toString() == weaponsList[count]) {
 						ui.displayString(" " + weaponsList[count] + " A");
+						model.addRow(new Object[]{weaponsList[count],"Weapon","","A"});
 						found=true;
 					}
 				} else if (unusedCards.size() == 2) {
 					if (unusedCards.get(0).toString() == weaponsList[count] ||
 							unusedCards.get(1).toString() == weaponsList[count]) {
 						ui.displayString(" " + weaponsList[count] + " A");
+						model.addRow(new Object[]{weaponsList[count],"Weapon","","A"});
 						found = true;
 					}
 				}else if (unusedCards.size() == 3) {
@@ -189,10 +229,12 @@ public class Turn {
 							unusedCards.get(1).toString() == weaponsList[count] ||
 							unusedCards.get(2).toString() == weaponsList[count]) {
 						ui.displayString(" " + weaponsList[count] + " A");
+						model.addRow(new Object[]{weaponsList[count],"Weapon","","A"});
 						found=true;
 					}
 				} if(found==false){
 					ui.displayString(" " + weaponsList[count]);
+					model.addRow(new Object[]{weaponsList[count],"Weapon","",""});
 				}
 			}
 		}
@@ -203,6 +245,7 @@ public class Turn {
 			while (count2 < arrayList.size()) {
 				if (arrayList.get(count2).toString() == roomList[count]) {
 					ui.displayString(" " + roomList[count] + " X");
+					model.addRow(new Object[]{roomList[count],"Room","X",""});
 					found = true;
 				}
 				count2++;
@@ -211,12 +254,14 @@ public class Turn {
 				if (unusedCards.size() == 1) {
 					if (unusedCards.get(0).toString() == roomList[count]) {
 						ui.displayString(" " + roomList[count] + " A");
+						model.addRow(new Object[]{roomList[count],"Room","","A"});
 						found=true;
 					}
 				} else if (unusedCards.size() == 2) {
 					if (unusedCards.get(0).toString() == roomList[count] ||
 							unusedCards.get(1).toString() == roomList[count]) {
 						ui.displayString(" " + roomList[count] + " A");
+						model.addRow(new Object[]{roomList[count],"Room","","A"});
 						found = true;
 					}
 				} else if (unusedCards.size() == 3) {
@@ -224,10 +269,12 @@ public class Turn {
 							unusedCards.get(1).toString() == roomList[count] ||
 							unusedCards.get(2).toString() == roomList[count]) {
 						ui.displayString(" " + roomList[count] + " A");
+						model.addRow(new Object[]{roomList[count],"Room","","A"});
 						found=true;
 					}
 				}  if(found==false){
 					ui.displayString(" " + roomList[count]);
+					model.addRow(new Object[]{roomList[count],"Room","",""});
 				}
 			}
 		}
