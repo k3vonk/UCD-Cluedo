@@ -129,12 +129,16 @@ public class Turn {
 
 	private void notes(Players players, int i){
 
+
+		// Ovverride the columnclass so that it now supports checkboxes, will be required on later releases.
 		DefaultTableModel model = new DefaultTableModel() {
 			@Override
 			public Class getColumnClass(int column) {
 				return getValueAt(0, column).getClass();
 			}
 		};
+
+		// Create a new table to store notes. 
 		JTable table = new JTable(model);
 
 		// Add the column names one by one.
