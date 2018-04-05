@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -286,6 +287,32 @@ public class StartUp {
     	ui.displayString("===" + players.currPlayer(position) + " HIGHEST ROLL===");
     	players.addFirst(position, players.getPlayer(position));
 
+    }
+    
+    /**
+     * Add dummies if the amount of players is less than 6
+     * @param players
+     * @param dummies
+     */
+    public void addDummies(Players players, Players dummies) {
+    	
+    //Create a default set of tokens for dummies
+   	for(int i = 0; i < dummies.getCapacity(); i++) {
+   		dummies.createPlayers("dummy", i+1);
+   		dummies.createTokens(i);
+   	}
+   	
+   	
+   	//Remove dummy tokens that players already have
+   	for(int i = 0; i < players.getCapacity(); i++) {
+   		for(int j = 0; j < dummies.getCapacity(); j++) {
+   			if(players.getTokenName(i).equals(dummies.getTokenName(j))) {
+   				dummies.remove(j);
+   				break;
+   			}
+   		}
+   	} 
+		
     }
 
 }

@@ -14,16 +14,29 @@ public class Turn {
 
 	private CluedoUI ui;
 	private TileGrid grid = new TileGrid();
+	private Weapons items = new Weapons();
+	private Players players = new Players();
 	ArrayList<Card> murderEnvelope = new ArrayList<>(); //Holds the murder envelope contents
 
-	public Turn(CluedoUI ui) {
+	String[] suspects = {"List of tokens", "Plum", "White", "Scarlet", "Green", "Mustard", "Peacock"};
+	String[] weapons  = {"List of weapons", "Candle Stick", "Dagger", "Lead Pipe", "Revolver", "Rope", "Spanner"};
+	String[] rooms    = {"Kitchen", "Ball Room", "Conservatory", "Dinning Room","Billiard Room", "library", "Lounge", "Hall", "Study"};
+	
+	public Turn(CluedoUI ui, Players players, Weapons weapons) {
 		this.ui = ui;
+		this.players = players;
+		this.items = weapons;
+	}
+	
+	public void setTurn(Players players, Weapons weapons) {
+		this.players = players;
+		this.items = weapons;
 	}
 
 	/**
 	 * Each player takes turns
 	 */
-	public void turns(Players players) {
+	public void turns() {
 		String command; 				//Text that is entered
 		boolean valid;  				//Check if action is valid
 		Dice dice = new Dice();
@@ -77,17 +90,23 @@ public class Turn {
 				} while (!valid); //The first part of their turn ends only when they make a roll
 
 				//After rolling, the player decides where and how to move
-				movement(players, dice.getRoll1()+dice.getRoll2(), i);
+				movement(dice.getRoll1()+dice.getRoll2(), i);
 
 				//After all actions
 				do {
 					valid = false;
-					ui.displayString(players.currPlayer(i)
-							+ " no moves left.\nType a command");
+					ui.displayString(players.currPlayer(i) + " no moves left.\nType a command");
 					String[] commandsEnd = {"done","notes","cheat","help"};
-					CommandPanel.updateCommands(commandsEnd);
+					if(players.getTile(i).getSlot() == 5){
+						String[] extra = {"done","notes","cheat","help", "question"};
+						CommandPanel.updateCommands(extra);
+					}else {
+						CommandPanel.updateCommands(commandsEnd);
+					}
+				
 					command = ui.getCommand();
 					ui.displayString(players.currPlayer(i) + ": " + command);
+					
 					if (command.equalsIgnoreCase("done")){
 						valid = true;
 					} else if (command.equalsIgnoreCase("notes")){
@@ -96,6 +115,11 @@ public class Turn {
 						cheat();
 					}else if(command.equalsIgnoreCase("help")){
 						help();
+					}else if(players.getTile(i).getSlot() == 5){
+						if(command.equalsIgnoreCase("question")) {
+							question(players, i);
+							valid = true;
+						}
 					}else {
 						ui.displayString("Whoops! Wrong command.\nType 'help' if you're unsure what to do.");
 					}
@@ -136,7 +160,7 @@ public class Turn {
 	 * @param dice
 	 * @param currPlayer
 	 */
-	public void movement(Players players, int dice, int currPlayer) {
+	public void movement(int dice, int currPlayer) {
 		String direction; 									//Contains direction of where the user wants to go
 		boolean validDirection;								//If direction is valid
 		int sentinel = 0; 									//Ensures right warning is displayed
@@ -158,7 +182,7 @@ public class Turn {
 				if(players.getTile(currPlayer).getSlot() == 3) {
 					ui.displayString("Choose another exit");
 				}
-				Boolean tookSecretPath = exitRoom(players, currPlayer, players.getTile(currPlayer).getRoom());
+				Boolean tookSecretPath = exitRoom(currPlayer, players.getTile(currPlayer).getRoom());
 				ui.display();
 				if(!tookSecretPath){
 					ui.displayString(players.currPlayer(currPlayer) + " now choose a direction");
@@ -231,7 +255,7 @@ public class Turn {
 				players.getPlayer(currPlayer).getToken().moveBy(currTile);
 
 				//Move into center of room and no more movement
-				roomCenter(players, currPlayer, players.getTile(currPlayer).getRoom());
+				roomCenter(currPlayer, players.getTile(currPlayer).getRoom());
 				ui.display();
 				dice = 0;
 				CommandPanel.updateMovesReamining(dice);
@@ -251,7 +275,7 @@ public class Turn {
 	 * @param currPlayer
 	 * @param room
 	 */
-	public void roomCenter(Players players, int currPlayer, int room) {
+	public void roomCenter(int currPlayer, int room) {
 		Tile currTile = players.getTile(currPlayer);
 		boolean invalidRoom = true;
 
@@ -279,7 +303,7 @@ public class Turn {
 	 * @param room
 	 * @return
 	 */
-	public Boolean exitRoom(Players players, int currPlayer, int room) {
+	public Boolean exitRoom(int currPlayer, int room) {
 		ArrayList<Tile> exits = new ArrayList<Tile>();
 
 		//Searches for possible exits
@@ -327,16 +351,16 @@ public class Turn {
 		if(exitChoice.equalsIgnoreCase("passage") && ((room == 9 || room == 7 || room == 1 || room  == 3))){
 			switch(room){
 				case 9:
-					roomCenter(players, currPlayer, 1);
+					roomCenter(currPlayer, 1);
 					break;
 				case 3:
-					roomCenter(players, currPlayer, 7);
+					roomCenter(currPlayer, 7);
 					break;
 				case 7:
-					roomCenter(players, currPlayer, 3);
+					roomCenter(currPlayer, 3);
 					break;
 				case 1:
-					roomCenter(players, currPlayer, 9);
+					roomCenter( currPlayer, 9);
 				default:
 					break;
 			}
@@ -347,5 +371,66 @@ public class Turn {
 			return false;
 		}
 
+	}
+	
+	/**
+	 * A suggestion of who was the murder, murder weapon & the room it was done in
+	 * @param player
+	 * @param curr
+	 */
+	public void question(Players player, int curr) {
+		ui.displayString("==========SUGGESTION==========");
+		ui.displayString(player.currPlayer(curr) + ": " + "I suggest it was done by[token]");
+		CommandPanel.updateCommands(suspects);
+		
+		String name, weapon;
+		boolean valid = false;
+		
+		do{
+			name = ui.getCommand();
+			ui.displayString(player.currPlayer(curr)  + ": " + name);
+			
+			//Search if name input is correct
+			for(int i = 1; i < suspects.length;i++) {
+				if(name.equalsIgnoreCase(suspects[i])) {
+					valid = true;
+					break;
+				}
+			}
+			
+			//Error message
+			if(!valid) {
+				ui.displayString(name + " is not a valid token");
+			}
+		}while(!valid);
+		
+		ui.displayString(player.currPlayer(curr)  + ": "+ "I suggest it was done with[weapon]");
+		CommandPanel.updateCommands(weapons);
+		
+		do {
+			weapon = ui.getCommand();
+			ui.displayString(player.currPlayer(curr) + ": " + weapon);
+			
+			for(int i = 1; i < weapons.length; i++) {
+				if(weapon.equalsIgnoreCase(weapons[i])) {
+					valid = true;
+					break;
+				}else {
+					valid = false;
+				}
+			}
+			
+			if(!valid) {
+				ui.displayString(weapon + " is not a valid weapon");
+			}
+		}while(!valid);
+		
+		//The room they are in
+		ui.displayString(player.currPlayer(curr) + ": " + "I suggest it was done in[room]");
+		ui.displayString(player.currPlayer(curr) + ": "+ rooms[player.getTile(curr).getRoom() - 1]);
+	}
+	
+	public void weaponTeleport() {
+		
 	}
 }

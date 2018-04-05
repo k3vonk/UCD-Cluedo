@@ -11,6 +11,7 @@ public class Main {
 
     private int capacity;				//Amount of players playing game.
     private Players players;			//Empty players (Default 6 players with no tokens)
+    private Players dummies; 			//Tokens that haven't been selected
     private Weapons weapons;			//Fixed set of weapons on board
     private CluedoUI ui;				//Starts with an empty board with no players
     private StartUp start;				//Start class for starting methods
@@ -18,10 +19,11 @@ public class Main {
 
     public Main() {
         this.players = new Players();
+        this.dummies = new Players();
         this.weapons = new Weapons();
-        this.ui 	 = new CluedoUI(players, weapons);
+        this.ui 	 = new CluedoUI(players, weapons, dummies);
         this.start   = new StartUp(ui);
-        this.turn    = new Turn(ui);
+        this.turn    = new Turn(ui, players, weapons);
     }
 
     /**
@@ -35,6 +37,7 @@ public class Main {
     public void start() {
         capacity = start.size();						//Asks the user for the number of players
         this.players = new Players(capacity);			//Instantiates the players
+        this.dummies = new Players(6);
         start.addPlayers(players);						//Asks user for their name and the character they wish to play
         start.position(players);						//Reposition players in arraylist
         weapons.createWeapons();						//Instantiates the weapons
@@ -43,14 +46,21 @@ public class Main {
         start.divideCards(players); 					//Divides cards according to the rules and shows undealt cards to turn class
         turn.setMurderEnvelope(start.getMurderEnvelope()); //Shows murder envelope contents to turn class
 
+        //Create dummies if there isn't 6 players
+        if(capacity < 6) {
+        	start.addDummies(players, dummies);
+        }
+        
         //Update and display the board
-        ui.setBoard(players, weapons);
+        ui.setBoard(players, weapons, dummies);
         ui.display();
+        
+        turn.setTurn(players, weapons);
     }
 
     //Takes players turns
     public void turn() {
-        turn.turns(players);
+        turn.turns();
     }
 
 

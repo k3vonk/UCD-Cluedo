@@ -19,12 +19,14 @@ public class BoardPanel extends JPanel{
 	private BufferedImage boardImage, die, die2; //Image of the board
 	private Weapons weapons;
 	private Players players;
+	private Players dummies;
 	
 	//private Tokens tokens = new Tokens(); (test)
 	
-	public BoardPanel(Players players, Weapons weapons){	
+	public BoardPanel(Players players, Weapons weapons, Players dummies){	
 		this.weapons = weapons;
 		this.players = players;
+		this.dummies = dummies;
 		
 		//Check if image input is available [Exceptions]
 		 try {
@@ -38,9 +40,10 @@ public class BoardPanel extends JPanel{
 	}
 	
 	//Sets the board with different players & weapons
-	public void set(Players players, Weapons weapons) {
+	public void set(Players players, Weapons weapons, Players dummies) {
 		this.weapons = weapons;
 		this.players = players;
+		this.dummies = dummies;
 	}
 	
 	//This takes the roll value as input, and draws the correct die image accordingly
@@ -69,7 +72,8 @@ public class BoardPanel extends JPanel{
 		super.paintComponent(g);
 		Graphics2D g2 =(Graphics2D) g;
         g2.drawImage(boardImage, 0, 0, boardImage.getHeight(), boardImage.getWidth(), this);
-       //grid.drawGrid(g); (test)
+        TileGrid grid = new TileGrid();
+        grid.drawGrid(g); //(test)
         
         for(Weapon weapon: weapons) {
         	weapon.drawWeapon(g2);
@@ -78,6 +82,12 @@ public class BoardPanel extends JPanel{
         for(Player player: players) {
         	player.getToken().drawToken(g2);
         }
+        
+        //Draws dummies
+        for(Player dummy: dummies) {
+        	dummy.getToken().drawToken(g2);
+        }
+        
 		if(die != null){ //This is used to help ensure the die is only on-screen when needed.
 			g2.drawImage(die, 290, 255, die.getHeight()-90, die.getWidth()-90, this);
 			g2.drawImage(die2, 290, 335, die.getHeight()-90, die.getWidth()-90, this);

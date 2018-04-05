@@ -103,6 +103,16 @@ public class Players implements Iterable<Player>, Iterator<Player> {
 		return players.get(index).getToken().getPosition();
 	}
 	
+	//Returns the token of the player.
+	public String getTokenName(int index) {
+		return players.get(index).getToken().getTokenName();
+	}
+	
+	//Remove a player from the array
+	public void remove(int index) {
+		players.remove(index);
+	}
+	
 	//Start of string containing the player token and the player's name
 	public String currPlayer(int index) {
 		return players.get(index).getName()  + " [" + players.get(index).getToken().getTokenName() + "] ";

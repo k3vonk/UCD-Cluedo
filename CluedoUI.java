@@ -28,10 +28,10 @@ public class CluedoUI {
     private Random rand = new Random();
 
     //Constructor
-    public CluedoUI(Players players, Weapons weapons) {
+    public CluedoUI(Players players, Weapons weapons, Players dummies) {
     	frame = new JFrame();
         JPanel mainPanel = new JPanel();
-        board = new BoardPanel(players, weapons);
+        board = new BoardPanel(players, weapons, dummies);
         command = new CommandPanel();
         info = new InformationPanel();
 
@@ -57,8 +57,8 @@ public class CluedoUI {
     /**
      * Sets the board with weapons[default] and tokens which depends on the user inputs
      */
-    public void setBoard(Players players, Weapons weapons) {
-        board.set(players, weapons);
+    public void setBoard(Players players, Weapons weapons, Players dummies) {
+        board.set(players, weapons, dummies);
     }
 
     /**
