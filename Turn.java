@@ -61,7 +61,7 @@ public class Turn {
                     continue;
                 }
 
-                if(numofPlayers == 1){
+                if (numofPlayers == 1) {
                     finishGame(players.getPlayer(i));
                 }
 
@@ -499,6 +499,13 @@ public class Turn {
     }
 
 
+    /**
+     * Searches given stringarray for the given string(findMe)
+     * @param stringArray an array of strings to search through
+     * @param findMe string to find within the array of strings
+     * @return true if string is found
+     */
+
     public Boolean findInStringArray(String[] stringArray, String findMe) {
         for (String currentString : stringArray) {
             if (currentString.equalsIgnoreCase(findMe) || currentString.replaceAll("\\s+",
@@ -509,10 +516,25 @@ public class Turn {
         return false;
     }
 
+    /**
+     * Used to end the game by accusing a token of committing a crime using a specific weapon
+     * inside a given room
+     * Will end the game if the accusation is correct but will remove the player from play if
+     * he/she is wrong.
+     *
+     * @param accuseString user's input string eg : "accuse white dagger hall"
+     * @param player       the player that is accusing.
+     * @return A boolean value of true or false, false if the input is in an invalid format and
+     * true if the user is either right or wrong.
+     */
 
     public Boolean accuse(String accuseString, Player player) {
+        // Divide the input into multiple words by splitting them by ' ' (spaces)
         String[] collection = accuseString.split(" ");
+
         try {
+            // Divides the string into name, weapon and room and handles when the inputs have
+            // spaces in them.
             int i = 1;
             String name = collection[i++];
             String weapon, room;
@@ -528,22 +550,30 @@ public class Turn {
                 room = collection[i];
             }
 
-            System.out.println("Inputs: " + name + " xd " + weapon + " xd " + room);
+            // See if the inputs are valid
             if (findInStringArray(suspects, name)) {
                 if (findInStringArray(weapons, weapon)) {
                     if (findInStringArray(rooms, room)) {
+                        // See if the user's accusation was right
                         if (murderEnvelope.get(0).toString().replaceAll("\\s+",
                                 "").equalsIgnoreCase(name)
                                 && murderEnvelope.get(1).toString().replaceAll("\\s+",
                                 "").equalsIgnoreCase(weapon)
                                 && murderEnvelope.get(2).toString().replaceAll("\\s+",
                                 "").equalsIgnoreCase(room)) {
-                           finishGame(player);
+
+                            // Inputs are valid and the user's accusation is correct.
+                            finishGame(player);
 
                         } else {
+
+                            // User got it wrong, end his turns and remove him from the game.
                             player.killPlayer();
                             numofPlayers--;
-                            JOptionPane.showMessageDialog(null,"Oops, that was a wrong suggestion, you're now out of the game, you are now only allowed to answer questions!");
+                            JOptionPane.showMessageDialog(null,
+                                    "Oops, that was a wrong suggestion, you're now out of the "
+                                            + "game, you are now only allowed to answer "
+                                            + "questions!");
                             return true;
                         }
                     } else {
@@ -565,10 +595,10 @@ public class Turn {
         } catch (Exception ex)
 
         {
+            // Invalid format for input
             ui.displayString(
                     "Uknown input format, make sure you it is in the following format: \n'accuse "
                             + "(name) (weapon) (room) without()!");
-            System.out.println(ex);
         }
 
         return false;
@@ -621,18 +651,31 @@ public class Turn {
         }
     }
 
-    public void finishGame(Player player){
+    /**
+     * Method that calls the class that handles the frame that is shown when the game has ended.
+     * Shows messages signifying the importance of the person's victory and prevents inputs other
+     * than quit
+     */
+
+    public void finishGame(Player player) {
+        // Clear information panel
         ui.clearContent();
 
-        ui.displayString("YOU'VE WON!\nCongrats " + player.getName() + "!\nYOU'VE WON!\nCongrats " + player.getName() + "!\nYOU"
-                + "'VE WON!\nCongrats " + player.getName() + "!\nYOU'VE WON!\nCongrats " + player.getName() + "!\nYOU'VE "
+        // Add celebratory contents to it
+        ui.displayString("YOU'VE WON!\nCongrats " + player.getName() + "!\nYOU'VE WON!\nCongrats "
+                + player.getName() + "!\nYOU"
+                + "'VE WON!\nCongrats " + player.getName() + "!\nYOU'VE WON!\nCongrats "
+                + player.getName() + "!\nYOU'VE "
                 + "WON!\nCongrats!\n");
 
+        // Call Class that handles the celebration frame.
         new Congrats(player.getName());
         CommandPanel.updateCommands();
         CommandPanel.updateMovesReamining(-1);
+
+        // Ensure user can only exit from here on.
         String input = ui.getCommand();
-        while(!input.equalsIgnoreCase("quit")){
+        while (!input.equalsIgnoreCase("quit")) {
             input = ui.getCommand();
         }
         System.exit(0);

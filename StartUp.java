@@ -1,7 +1,10 @@
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 /**
  * A class that takes in player information before the gameplay starts
@@ -43,6 +46,7 @@ public class StartUp {
      * Asks the users, the number of players playing the game
      */
     public int size() {
+
         String size; //Holds the size of the players
         
         ui.displayString("======GAME SETUP [CAPACITY]======");

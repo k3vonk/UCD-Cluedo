@@ -15,7 +15,7 @@ public class Player {
     private String imagePath;    //tokens image
     private ArrayList<Card> cards = new ArrayList<>();        //Cards that a player has
     private NoteBook note;                            //A players notebook
-    private Boolean alive = true;
+    private Boolean alive = true; // Ensure that a player that made a bad accusation doesn't play again.
 
     //Constructor
     public Player(String name, int choice) {

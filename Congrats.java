@@ -4,16 +4,29 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
+/**
+ * An frame that congratulates the user for winning the game
+ *
+ * @Team MAGA
+ * @Author Gajun Young - 16440714
+ * @Author Royal Thomas - 16326926
+ * @Author Richard  Otroshchenko - 16353416
+ */
+
+
 public class Congrats {
 
     public Congrats(String userName){
 
 
+        // declare frames.
         JDialog gameFinished = new JDialog();
         JPanel congratsPanel = new JPanel();
 
+        // Make sure user knows that this is the most important frame for them.
         gameFinished.setAlwaysOnTop (true);
 
+        // Add banner
         try{
             congratsPanel.add(CluedoUI.imageToLabel("won.png"));
         }catch(Exception ex){
@@ -29,6 +42,8 @@ public class Congrats {
         gameFinished.add(congratsPanel);
         gameFinished.setLayout(new GridBagLayout());
 
+
+        // Housekeeping
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 0.5;
         c.gridx = 0;
