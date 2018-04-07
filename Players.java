@@ -68,14 +68,15 @@ public class Players implements Iterable<Player>, Iterator<Player> {
 		}
 	}
 	 
-	//Iterates to get a specific Player
-	public Player getName(String name) {
-		for (Player Player : players) {
-			if (Player.hasName(name)) {
-				return Player;
+	//Check if array has the token name
+	public boolean hasTokenName(String name) {
+		for(Player Player: players) {
+			if(Player.getToken().hasName(name)) {
+				return true;
 			}
 		}
-		return null;
+		
+		return false;
 	}
 	
 	//Iterates to check if two tokens are on the same tile
@@ -88,15 +89,25 @@ public class Players implements Iterable<Player>, Iterator<Player> {
 		return false;
 	}
 	
-	public int getArrayPosition(String name) {
-		int i = 0;
-		for(; i < players.size(); i++) {
-			if(players.get(i).hasName(name)) {
-				return i;
+	//Return player with the token
+	public Player getPlayer(String token) {
+		for(Player player: players) {
+			if(player.getToken().hasName(token)) {
+				return player;
 			}
 		}
 		
-		return -1;
+		return null;
+	}
+	
+	//Iterates to get a specific Player
+	public Player getName(String name) {
+		for (Player Player : players) {
+			if (Player.hasName(name)) {
+				return Player;
+			}
+		}
+		return null;
 	}
 	
 	//Gets the number of people in the array list

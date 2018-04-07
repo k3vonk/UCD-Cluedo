@@ -66,7 +66,7 @@ public class Player {
 
     //Checks if two tokens are on the same tile
     public boolean hasTile(Tile tile) {
-        return this.token.getPosition().showRoom().equals(tile.showRoom());
+        return this.token.getPosition().equals(tile);
     }
 
     public void giveCard(Card card) {

@@ -295,7 +295,7 @@ public class Turn {
 					invalidRoom = players.getSameTile(currTile);
 					
 					//Might be in dummies array
-					if(invalidRoom) {
+					if(!invalidRoom) {
 						invalidRoom = dummies.getSameTile(currTile);
 					}
 				}
@@ -369,7 +369,7 @@ public class Turn {
 					roomCenter(currPlayer, 3);
 					break;
 				case 1:
-					roomCenter( currPlayer, 9);
+					roomCenter(currPlayer, 9);
 				default:
 					break;
 			}
@@ -392,16 +392,16 @@ public class Turn {
 		ui.displayString(player.currPlayer(curr) + ": " + "I suggest it was done by[token]");
 		CommandPanel.updateCommands(suspects);
 		
-		String name, weapon;
+		String token, weapon;
 		boolean valid = false;
 		
 		do{
-			name = ui.getCommand();
-			ui.displayString(player.currPlayer(curr)  + ": " + name);
+			token = ui.getCommand();
+			ui.displayString(player.currPlayer(curr)  + ": " + token);
 			
 			//Search if name input is correct
 			for(int i = 1; i < suspects.length;i++) {
-				if(name.equalsIgnoreCase(suspects[i])) {
+				if(token.equalsIgnoreCase(suspects[i])) {
 					valid = true;
 					break;
 				}
@@ -409,7 +409,7 @@ public class Turn {
 			
 			//Error message
 			if(!valid) {
-				ui.displayString(name + " is not a valid token");
+				ui.displayString(token + " is not a valid token");
 			}
 		}while(!valid);
 		
@@ -439,7 +439,7 @@ public class Turn {
 		ui.displayString(player.currPlayer(curr) + ": "+ rooms[player.getTile(curr).getRoom() - 1]);
 		
 		weaponTeleport(weapon, player.getTile(curr).getRoom());
-		
+		playerTeleport(token, player.getTile(curr).getRoom());
 		ui.display();
 	
 	}
@@ -453,6 +453,7 @@ public class Turn {
 		Tile currTile = items.get(name).getPosition();		//Tile of current weapon
 		boolean invalidRoom = true;						
 
+		//Ensures that two weapons don't land onto same tile
 		if(currTile.getRoom() != room) {
 			
 			//Looks for the position in which a weapon is positioned
@@ -470,5 +471,49 @@ public class Turn {
 			}
 		}
 		items.get(name).moveBy(currTile); //Move weapon to new position
+	}
+	
+	public void playerTeleport(String token, int room) {
+		int side = 1; //1 = player's array, 2 = dummy's array
+		Tile currTile = null;
+		boolean invalidRoom = true;
+		
+		//Check which array the token is in
+		if(players.hasTokenName(token)) {
+			side = 1;
+			currTile = players.getPlayer(token).getToken().getPosition();
+		}else if(dummies.hasTokenName(token)) {
+			side = 2;
+			currTile = dummies.getPlayer(token).getToken().getPosition();
+		}
+		
+		//Ensures that two tokens are on the same tile
+		if(currTile.getRoom() != room) {
+			
+			//Looks for the position in which a weapon is positioned
+			for(int i = 0; i < grid.map.length; i++) {
+				//Quick escape from nested for loop if the value is found early.
+				if(!invalidRoom) {
+					break;
+				}
+				for(int j = 0; j < grid.map[i].length; j++) {
+					if(grid.map[i][j].getSlot() == 5 && grid.map[i][j].getRoom() == room && invalidRoom) {
+						currTile = grid.map[i][j];
+						invalidRoom = players.getSameTile(currTile);
+						
+						if(!invalidRoom) {
+							invalidRoom = dummies.getSameTile(currTile);
+						}
+					}
+				}
+			}
+		}
+		
+		//Move according to what array token is in
+		if(side == 1) {
+			players.getPlayer(token).getToken().moveBy(currTile);
+		}else {
+			dummies.getPlayer(token).getToken().moveBy(currTile);
+		}	
 	}
 }
