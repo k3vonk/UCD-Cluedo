@@ -13,10 +13,10 @@ public class Player {
     private int choice;    //player's choice
     private Token token;
     private String imagePath;    //tokens image
-    private ArrayList<Card> cards = new ArrayList<>();		//Cards that a player has
-    private NoteBook note; 							//A players notebook
+    private ArrayList<Card> cards = new ArrayList<>();        //Cards that a player has
+    private NoteBook note;                            //A players notebook
     private Boolean alive = true;
-    
+
     //Constructor
     public Player(String name, int choice) {
         this.name = name;
@@ -77,25 +77,26 @@ public class Player {
     public ArrayList<Card> getCards() {
         return cards;
     }
-    
+
     //Sets notebook
     public void setNoteBook(ArrayList<Card> undealt) {
-    	this.note = new NoteBook(undealt, cards);
+        this.note = new NoteBook(undealt, cards);
     }
-    
+
     //Displays player's note
     public void displayNote() {
-    	note.showNotes();
+        note.showNotes();
     }
 
     //Kills the player if he/she makes a wrong accusation
-    public void killPlayer(){
+    public void killPlayer() {
         alive = false;
     }
 
     //Checks if player is alive
-    public Boolean isAlive(){
+    public Boolean isAlive() {
         return alive;
     }
+
 
 }

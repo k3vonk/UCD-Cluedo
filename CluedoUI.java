@@ -107,6 +107,14 @@ public class CluedoUI {
     }
 
     /**
+     * Method to clear information panel
+     */
+
+    public void clearContent(){
+        info.clearContent();
+    }
+
+    /**
      * Finds the path of an image
      * @param path
      * @return

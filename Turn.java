@@ -530,6 +530,7 @@ public class Turn {
                                 && murderEnvelope.get(2).toString().replaceAll("\\s+",
                                 "").equalsIgnoreCase(room)) {
                             System.out.println("YOU WIN YOU FUCKER");
+
                         } else {
                             player.killPlayer();
                             return true;
