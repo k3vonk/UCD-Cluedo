@@ -39,6 +39,16 @@ public class Weapons implements Iterable<Weapon>, Iterator<Weapon>{
         return null;
     }
     
+  //Iterates to check if two tokens are on the same tile
+  	public boolean getSameTile(Tile tile) {
+  		for(Weapon weapon: weapons) {
+  			if(weapon.hasTile(tile)) {
+  				return true;
+  			}
+  		}
+  		return false;
+  	}
+    
 	@Override
 	public Iterator<Weapon> iterator() {
 		iterator = weapons.iterator();

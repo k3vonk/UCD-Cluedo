@@ -23,7 +23,7 @@ public class Main {
         this.weapons = new Weapons();
         this.ui 	 = new CluedoUI(players, weapons, dummies);
         this.start   = new StartUp(ui);
-        this.turn    = new Turn(ui, players, weapons);
+        this.turn    = new Turn(ui, players, weapons, dummies);
     }
 
     /**
@@ -55,7 +55,7 @@ public class Main {
         ui.setBoard(players, weapons, dummies);
         ui.display();
         
-        turn.setTurn(players, weapons);
+        turn.setTurn(players, weapons, dummies);
     }
 
     //Takes players turns

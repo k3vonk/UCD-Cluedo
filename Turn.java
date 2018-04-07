@@ -14,23 +14,26 @@ public class Turn {
 
 	private CluedoUI ui;
 	private TileGrid grid = new TileGrid();
-	private Weapons items = new Weapons();
-	private Players players = new Players();
+	private Weapons items;
+	private Players players;
+	private Players dummies;
 	ArrayList<Card> murderEnvelope = new ArrayList<>(); //Holds the murder envelope contents
 
 	String[] suspects = {"List of tokens", "Plum", "White", "Scarlet", "Green", "Mustard", "Peacock"};
 	String[] weapons  = {"List of weapons", "Candle Stick", "Dagger", "Lead Pipe", "Revolver", "Rope", "Spanner"};
 	String[] rooms    = {"Kitchen", "Ball Room", "Conservatory", "Dinning Room","Billiard Room", "library", "Lounge", "Hall", "Study"};
 	
-	public Turn(CluedoUI ui, Players players, Weapons weapons) {
+	public Turn(CluedoUI ui, Players players, Weapons weapons, Players dummies) {
 		this.ui = ui;
 		this.players = players;
 		this.items = weapons;
+		this.dummies = dummies;
 	}
 	
-	public void setTurn(Players players, Weapons weapons) {
+	public void setTurn(Players players, Weapons weapons, Players dummies) {
 		this.players = players;
 		this.items = weapons;
+		this.dummies = dummies;
 	}
 
 	/**
@@ -279,6 +282,7 @@ public class Turn {
 		Tile currTile = players.getTile(currPlayer);
 		boolean invalidRoom = true;
 
+		
 		//Looks for the centre in which a character is positioned
 		for(int i = 0; i < grid.map.length; i++) {
 			//Quick escape from nested for loop if the value is found early.
@@ -289,6 +293,11 @@ public class Turn {
 				if(grid.map[i][j].getSlot() == 5 && grid.map[i][j].getRoom() == room && invalidRoom) {
 					currTile = grid.map[i][j];
 					invalidRoom = players.getSameTile(currTile);
+					
+					//Might be in dummies array
+					if(invalidRoom) {
+						invalidRoom = dummies.getSameTile(currTile);
+					}
 				}
 			}
 		}
@@ -428,9 +437,38 @@ public class Turn {
 		//The room they are in
 		ui.displayString(player.currPlayer(curr) + ": " + "I suggest it was done in[room]");
 		ui.displayString(player.currPlayer(curr) + ": "+ rooms[player.getTile(curr).getRoom() - 1]);
+		
+		weaponTeleport(weapon, player.getTile(curr).getRoom());
+		
+		ui.display();
+	
 	}
 	
-	public void weaponTeleport() {
-		
+	/**
+	 * Teleports weapon token, based on player's suggestion
+	 * @param name
+	 * @param room
+	 */
+	public void weaponTeleport(String name, int room) {
+		Tile currTile = items.get(name).getPosition();		//Tile of current weapon
+		boolean invalidRoom = true;						
+
+		if(currTile.getRoom() != room) {
+			
+			//Looks for the position in which a weapon is positioned
+			for(int i = 0; i < grid.map.length; i++) {
+				//Quick escape from nested for loop if the value is found early.
+				if(!invalidRoom) {
+					break;
+				}
+				for(int j = 0; j < grid.map[i].length; j++) {
+					if(grid.map[i][j].getSlot() == 6 && grid.map[i][j].getRoom() == room && invalidRoom) {
+						currTile = grid.map[i][j];
+						invalidRoom = items.getSameTile(currTile);
+					}
+				}
+			}
+		}
+		items.get(name).moveBy(currTile); //Move weapon to new position
 	}
 }

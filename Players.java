@@ -88,6 +88,17 @@ public class Players implements Iterable<Player>, Iterator<Player> {
 		return false;
 	}
 	
+	public int getArrayPosition(String name) {
+		int i = 0;
+		for(; i < players.size(); i++) {
+			if(players.get(i).hasName(name)) {
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	
 	//Gets the number of people in the array list
 	public int getCapacity() {
 		return capacity;

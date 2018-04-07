@@ -38,8 +38,14 @@ public class Weapon {
     	return position;
     }
     
+    //Move weapon to a new position
     public void moveBy(Tile position) {
     	this.position = position;
+    }
+    
+    //Checks if two tokens are on the same tile
+    public boolean hasTile(Tile tile) {
+        return this.getPosition().showRoom().equals(tile.showRoom());
     }
     
     //If name is same
