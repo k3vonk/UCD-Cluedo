@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+import javax.swing.*;
+
 
 /**
  * A class that represents the turns of each player
@@ -45,6 +47,7 @@ public class Turn {
      * Each player takes turns
      */
     public void turns() {
+
         String command;                //Text that is entered
         boolean valid;                //Check if action is valid
         Dice dice = new Dice();
@@ -529,7 +532,19 @@ public class Turn {
                                 "").equalsIgnoreCase(weapon)
                                 && murderEnvelope.get(2).toString().replaceAll("\\s+",
                                 "").equalsIgnoreCase(room)) {
-                            System.out.println("YOU WIN YOU FUCKER");
+                            ui.clearContent();
+
+                            ui.displayString("YOU'VE WON!\nCongrats " + player.getName() + "!\nYOU'VE WON!\nCongrats " + player.getName() + "!\nYOU"
+                                    + "'VE WON!\nCongrats " + player.getName() + "!\nYOU'VE WON!\nCongrats " + player.getName() + "!\nYOU'VE "
+                                    + "WON!\nCongrats!\n");
+
+                            new Congrats("Donatello");
+                            CommandPanel.updateCommands();
+                            String input = ui.getCommand();
+                            while(!input.equalsIgnoreCase("quit")){
+                                input = ui.getCommand();
+                            }
+                            System.exit(0);
 
                         } else {
                             player.killPlayer();
