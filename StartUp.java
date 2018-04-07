@@ -180,7 +180,7 @@ public class StartUp {
         ArrayList<String> rooms = new ArrayList<>(
                 Arrays.asList("Hall", "Lounge", "Dining Room", "Kitchen", "Ball Room",
                         "Conservatory",
-                        "Billard Room", "Library", "Study"));
+                        "Billiard Room", "Library", "Study"));
 
 
         // Pick out cards randomly for murder envelope

@@ -65,6 +65,14 @@ public class InformationPanel extends JPanel {
         infoArea.setCaretPosition(infoArea.getDocument().getLength());
     }
 
+    /**
+     * Method to clear information area
+     */
+
+    public void clearContent(){
+        infoArea.setText("");
+    }
+
 
     /**
      * Method that converts an image into a jlabel object to easily place onto the panel
