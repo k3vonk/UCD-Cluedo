@@ -19,6 +19,7 @@ public class Turn {
     private Weapons items;
     private Players players;
     private Players dummies;
+    private int numofPlayers;
     ArrayList<Card> murderEnvelope = new ArrayList<>(); //Holds the murder envelope contents
 
     String[] suspects =
@@ -41,6 +42,7 @@ public class Turn {
         this.players = players;
         this.items = weapons;
         this.dummies = dummies;
+        this.numofPlayers = players.getCapacity();
     }
 
     /**
@@ -57,6 +59,10 @@ public class Turn {
 
                 if (!players.getPlayer(i).isAlive()) {
                     continue;
+                }
+
+                if(numofPlayers == 1){
+                    finishGame(players.getPlayer(i));
                 }
 
                 valid = false;
@@ -532,22 +538,12 @@ public class Turn {
                                 "").equalsIgnoreCase(weapon)
                                 && murderEnvelope.get(2).toString().replaceAll("\\s+",
                                 "").equalsIgnoreCase(room)) {
-                            ui.clearContent();
-
-                            ui.displayString("YOU'VE WON!\nCongrats " + player.getName() + "!\nYOU'VE WON!\nCongrats " + player.getName() + "!\nYOU"
-                                    + "'VE WON!\nCongrats " + player.getName() + "!\nYOU'VE WON!\nCongrats " + player.getName() + "!\nYOU'VE "
-                                    + "WON!\nCongrats!\n");
-
-                            new Congrats("Donatello");
-                            CommandPanel.updateCommands();
-                            String input = ui.getCommand();
-                            while(!input.equalsIgnoreCase("quit")){
-                                input = ui.getCommand();
-                            }
-                            System.exit(0);
+                           finishGame(player);
 
                         } else {
                             player.killPlayer();
+                            numofPlayers--;
+                            JOptionPane.showMessageDialog(null,"Oops, that was a wrong suggestion, you're now out of the game, you are now only allowed to answer questions!");
                             return true;
                         }
                     } else {
@@ -623,5 +619,22 @@ public class Turn {
         } else {
             dummies.getPlayer(token).getToken().moveBy(currTile);
         }
+    }
+
+    public void finishGame(Player player){
+        ui.clearContent();
+
+        ui.displayString("YOU'VE WON!\nCongrats " + player.getName() + "!\nYOU'VE WON!\nCongrats " + player.getName() + "!\nYOU"
+                + "'VE WON!\nCongrats " + player.getName() + "!\nYOU'VE WON!\nCongrats " + player.getName() + "!\nYOU'VE "
+                + "WON!\nCongrats!\n");
+
+        new Congrats(player.getName());
+        CommandPanel.updateCommands();
+        CommandPanel.updateMovesReamining(-1);
+        String input = ui.getCommand();
+        while(!input.equalsIgnoreCase("quit")){
+            input = ui.getCommand();
+        }
+        System.exit(0);
     }
 }

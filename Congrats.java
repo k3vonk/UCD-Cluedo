@@ -21,7 +21,7 @@ public class Congrats {
         }
 
 
-        JLabel name = new JLabel("Congrats, "+userName+"! You've one hell of a detective!");
+        JLabel name = new JLabel("Congrats, "+userName+"! You're one hell of a detective!");
         name.setFont(new Font("TimesRoman", Font.PLAIN, 30));
 
 
@@ -45,7 +45,4 @@ public class Congrats {
 
     }
 
-    public void quit(){
-        System.exit(0);
-    }
 }
