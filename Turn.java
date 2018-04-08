@@ -156,7 +156,6 @@ public class Turn {
                             != 10) {
                         if (command.equalsIgnoreCase("question")) {
                             questions.question(players, i, ui, this);
-                            valid = true;
                         }
                     } else if (players.getTile(i).getRoom() == 10) {
                         if (command.split(" ")[0].equalsIgnoreCase("accuse")) {

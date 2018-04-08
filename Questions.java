@@ -94,6 +94,15 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
         addQuestion(players.getPlayer(curr), token, weapon, Card.rooms[players.getTile(curr).getRoom() - 1]);
         
         questionHandOver(players, ui);
+        
+        if(check) {
+        	ui.displayString("A player has answered your question!");
+        }else {
+        	ui.displayString("Nobody could answer your question");
+        }
+        
+        CommandPanel.updateUserImage(players.getPlayer(curr).getImagePath());
+		CommandPanel.updateMovesReamining(-1);
     }
     
     /**
@@ -106,7 +115,7 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
     	int selectedOption = -1; //Ensures the question is for the right person
     	boolean answered ;
     	check = false;
-    	String done = null;
+    	String done = " ";
     	
     	//Run through the players array
     	for(int i = 0; i < players.getCapacity();i++) {
@@ -132,7 +141,7 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
 	    			if(!check) {
 	    				done = ui.getCommand();
 	    			}
-	    			if(done.equals("done") || check) {
+	    			if(done.equalsIgnoreCase("done") || check) {
 	    				answered = true;
 	    			}
     			}while(!answered);
