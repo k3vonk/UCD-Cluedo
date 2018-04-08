@@ -50,6 +50,7 @@ public class CluedoUI {
         frame.add(mainPanel, BorderLayout.LINE_START);
         frame.add(command, BorderLayout.PAGE_END);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setVisible(true);
     }

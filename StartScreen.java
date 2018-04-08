@@ -27,10 +27,9 @@ public class StartScreen extends JLabel implements ActionListener
         frame = new JFrame("Cluedo");
         play=new JButton("PLAY");
         quit= new JButton("QUIT");
-
-        frame.add(play, BorderLayout.PAGE_START);
+        frame.add(play, BorderLayout.CENTER);
         frame.add(quit, BorderLayout.PAGE_END);
-        frame.add(screen, BorderLayout.CENTER);
+        frame.add(screen, BorderLayout.PAGE_START);
 
         play.addActionListener(this);
         quit.addActionListener(this);
@@ -38,6 +37,7 @@ public class StartScreen extends JLabel implements ActionListener
         frame.setSize(600,370);
         frame.setResizable(false);
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
 
     }
 
