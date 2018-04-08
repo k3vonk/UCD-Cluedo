@@ -11,6 +11,18 @@ public class Card {
     // To store name and type
     private String name;
     private int type;
+    
+    //Bunch of available cards in the game
+	public static String[] suspects =
+	        {"List of tokens", "Plum", "White", "Scarlet", "Green", "Mustard", "Peacock"};
+	
+	public static String[] weapons =
+	        {"List of weapons", "Candle Stick", "Dagger", "Lead Pipe", "Revolver", "Rope",
+	                "Spanner"};
+	
+	public static String[] rooms =
+	        {"Kitchen", "Ball Room", "Conservatory", "Dining Room", "Billiard Room", "library",
+	                "Lounge", "Hall", "Study"};
 
     // Intialize the card
     public Card(String name, int type) {
@@ -31,5 +43,21 @@ public class Card {
     // In order to print out the card while testing.
     public String toString() {
         return this.name;
+    }
+    
+    /**
+     * Searches given string array for the given string(findMe)
+     * @param stringArray an array of strings to search through
+     * @param findMe string to find within the array of strings
+     * @return true if string is found
+     */
+    public static Boolean findInStringArray(String[] stringArray, String findMe) {
+        for (String currentString : stringArray) {
+            if (currentString.equalsIgnoreCase(findMe) || currentString.replaceAll("\\s+",
+                    "").equalsIgnoreCase(findMe)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

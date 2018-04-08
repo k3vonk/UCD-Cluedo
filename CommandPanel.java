@@ -110,6 +110,8 @@ public class CommandPanel extends JPanel {
 			movesRemaining.setText("");
 		}else if(x == -2){
 			movesRemaining.setText("Choose an exit from the available set in information panel.");
+		}else if(x == -3) {
+			movesRemaining.setText("Answering question! Enter 'done' to move to next player.");
 		} else {
 			movesRemaining.setText("Moves remaining for current player:" + x);
 		}

@@ -16,6 +16,7 @@ public class Turn {
 
     private CluedoUI ui;
     private TileGrid grid = new TileGrid();
+    private Questions questions = new Questions();
     private Weapons items;
     private Players players;
     private Players dummies;
@@ -148,7 +149,7 @@ public class Turn {
                     } else if (players.getTile(i).getSlot() == 5 && players.getTile(i).getRoom()
                             != 10) {
                         if (command.equalsIgnoreCase("question")) {
-                            question(players, i);
+                            questions.question(players, i, ui, this);
                             valid = true;
                         }
                     } else if (players.getTile(i).getRoom() == 10) {
@@ -421,56 +422,6 @@ public class Turn {
     }
 
     /**
-     * A suggestion of who was the murder, murder weapon & the room it was done in
-     */
-    public void question(Players player, int curr) {
-        ui.displayString("==========SUGGESTION==========");
-        ui.displayString(player.currPlayer(curr) + ": " + "I suggest it was done by[token]");
-        CommandPanel.updateCommands(suspects);
-
-        String token, weapon;
-        boolean valid = false;
-
-        do {
-            token = ui.getCommand();
-            ui.displayString(player.currPlayer(curr) + ": " + token);
-
-            //Search if name input is correct
-            valid = findInStringArray(suspects, token);
-
-            //Error message
-            if (!valid) {
-                ui.displayString(token + " is not a valid token");
-            }
-        } while (!valid);
-
-        ui.displayString(player.currPlayer(curr) + ": " + "I suggest it was done with[weapon]");
-        CommandPanel.updateCommands(weapons);
-
-        do {
-            weapon = ui.getCommand();
-            ui.displayString(player.currPlayer(curr) + ": " + weapon);
-
-            //Search if weapon input is correct
-            valid = findInStringArray(weapons, weapon);
-
-            if (!valid) {
-                ui.displayString(weapon + " is not a valid weapon");
-            }
-        } while (!valid);
-
-        //The room they are in
-        ui.displayString(player.currPlayer(curr) + ": " + "I suggest it was done in[room]");
-        ui.displayString(player.currPlayer(curr) + ": " + rooms[player.getTile(curr).getRoom()
-                - 1]);
-
-        weaponTeleport(weapon, player.getTile(curr).getRoom());
-        playerTeleport(token, player.getTile(curr).getRoom());
-        ui.display();
-
-    }
-
-    /**
      * Teleports weapon token, based on player's suggestion
      */
     public void weaponTeleport(String name, int room) {
@@ -505,7 +456,6 @@ public class Turn {
      * @param findMe string to find within the array of strings
      * @return true if string is found
      */
-
     public Boolean findInStringArray(String[] stringArray, String findMe) {
         for (String currentString : stringArray) {
             if (currentString.equalsIgnoreCase(findMe) || currentString.replaceAll("\\s+",
