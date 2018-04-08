@@ -125,4 +125,22 @@ public class CluedoUI {
         return picLabel;
     }
 
+
+    /**
+     * Method that converts an image into a jlabel object to easily place onto the panel
+     *
+     * @param path Location to the image
+     * @param width sets the images width
+     * @param height sets the image's height
+     * @return A JLabel that contains the image
+     * @throws IOException When provided a path that doesn't exist
+     */
+    public static JLabel imageToResizedLabel(String path, int width, int height) throws IOException {
+        BufferedImage myPicture = ImageIO.read(CluedoUI.class.getClassLoader().getResourceAsStream(path)); // Reads the file
+        Image resizedImage = myPicture.getScaledInstance(width, height,
+                myPicture.SCALE_SMOOTH); // Resize it so that it looks better.
+        JLabel picLabel = new JLabel(new ImageIcon(resizedImage)); // Convert to JLabel object
+        return picLabel; // Return
+    }
+
 }

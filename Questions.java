@@ -198,8 +198,8 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
         try {
             for (Card x : hand) {
             	String xName = x.getName().replaceAll("\\s+","");
-                JLabel cardLabel = InformationPanel.imageToResizedLabel(xName
-                        + ".jpg");
+                JLabel cardLabel = CluedoUI.imageToResizedLabel(xName
+                        + ".jpg", 90, 140);
                 cardsPanel.add(cardLabel, c);
                 cardLabel.addMouseListener(new MouseAdapter() {
                     @Override
@@ -245,6 +245,8 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
         c.gridy = 4;
         congratsPanel.add(buttonsPanel, c);
 
+
+        // Make it look good
 
         name.setBorder(BorderFactory.createEmptyBorder(100, 20, 10, 20));
         gameFinished.add(congratsPanel);

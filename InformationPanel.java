@@ -43,9 +43,9 @@ public class InformationPanel extends JPanel {
 
         remainingCards.add(new JLabel("Undealt Cards:"));
         try {
-            remainingCards.add(imageToResizedLabel("empty.png"));
-            remainingCards.add(imageToResizedLabel("empty.png"));
-            remainingCards.add(imageToResizedLabel("empty.png"));
+            remainingCards.add(CluedoUI.imageToResizedLabel("empty.png", 45, 70));
+            remainingCards.add(CluedoUI.imageToResizedLabel("empty.png", 45, 70));
+            remainingCards.add(CluedoUI.imageToResizedLabel("empty.png", 45, 70));
         }catch(IOException ex){
 
         }
@@ -74,21 +74,6 @@ public class InformationPanel extends JPanel {
     }
 
 
-    /**
-     * Method that converts an image into a jlabel object to easily place onto the panel
-     *
-     * @param path Location to the image
-     * @return A JLabel that contains the image
-     * @throws IOException When provided a path that doesn't exist
-     */
-    public static JLabel imageToResizedLabel(String path) throws IOException {
-        BufferedImage myPicture = ImageIO.read(CluedoUI.class.getClassLoader().getResourceAsStream(path)); // Reads the file
-        Image resizedImage = myPicture.getScaledInstance(45, 70,
-                myPicture.SCALE_SMOOTH); // Resize it so that it looks better.
-        JLabel picLabel = new JLabel(new ImageIcon(resizedImage)); // Convert to JLabel object
-        return picLabel; // Return
-    }
-
 
     /**
      * Updates the UI to show the cards that are not dealt to the players
@@ -106,7 +91,7 @@ public class InformationPanel extends JPanel {
                     // making it lower case
                     String cardName = c.getName().toLowerCase().replaceAll(" ", "")
                             + ".jpg";
-                    remainingCards.add(imageToResizedLabel(cardName)); // Add it to the panel
+                    remainingCards.add(CluedoUI.imageToResizedLabel(cardName, 45, 70)); // Add it to the panel
                 } catch (IOException ex) {
                     System.out.println("Unable to locate files for undealt cards.");
                 }
