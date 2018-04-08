@@ -14,10 +14,10 @@ public class Card {
     
     //Bunch of available cards in the game
 	public static String[] suspects =
-	        {"List of tokens", "Plum", "White", "Scarlet", "Green", "Mustard", "Peacock"};
+	        {"Plum", "White", "Scarlet", "Green", "Mustard", "Peacock"};
 	
 	public static String[] weapons =
-	        {"List of weapons", "Candle Stick", "Dagger", "Lead Pipe", "Revolver", "Rope",
+	        {"Candle Stick", "Dagger", "Lead Pipe", "Revolver", "Rope",
 	                "Spanner"};
 	
 	public static String[] rooms =
