@@ -69,18 +69,18 @@ public class Main {
 
     public static void main(String[] args) {
         StartScreen startscreen = new StartScreen();
-        startscreen.gameStart();
-        while(!startscreen.letsPlay){
+        startscreen.gameStart(); //Opens the start menu
+        while(!startscreen.letsPlay){ //This loop ends when the play button is pressed on the start screen, allowing the game to start
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        Main game = new Main();
+      Main game = new Main();
 
-        game.start();
-        game.turn();
+      game.start();
+      game.turn();
     }
 
 }

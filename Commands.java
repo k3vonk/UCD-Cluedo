@@ -8,7 +8,7 @@
  */
 public class Commands {
 
-	
+	//The commands available to the player change according to the state of the game
 	public static String[] firstCommands = {"roll", "notes", "log", "cheat", "help"};
 	public static String[] endCommands = {"done", "notes", "log", "cheat", "help"};
 	

@@ -145,10 +145,10 @@ public class Turn {
                     CommandPanel.updateCommands(Commands.endCommands);
                 }
 
-                boolean questionBarrier = false;
+                boolean questionBarrier = false; //This turns to true if the user has asked a question this turn
                 do {
                     valid = false;
-                    
+
                     command = ui.getCommand();
                     ui.displayString(players.currPlayer(i) + ": " + command);
 
@@ -218,6 +218,7 @@ public class Turn {
                 + "\n\n'quit' - This ends the game immediately.");
     }
 
+    //This method provides the user with a log of all questions asked, including who answered them.
     private void log(){
         List<String> log = questions.getLog();
         if(log.size() == 0){

@@ -5,12 +5,22 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+/**
+ * A menu that opens at the start of the game
+ *
+ * @Team MAGA
+ * @Author Gajun Young - 16440714
+ * @Author Royal Thomas - 16326926
+ * @Author Richard  Otroshchenko - 16353416
+ */
+
 public class StartScreen extends JLabel implements ActionListener
 {
     JLabel screen;
     JFrame frame;
     JButton play,quit;
-    boolean letsPlay = false;
+    boolean letsPlay = false; //Becomes true when the play button is pressed
+
     public void gameStart()
     {
         setLayout(new BorderLayout());
@@ -43,12 +53,12 @@ public class StartScreen extends JLabel implements ActionListener
 
     public void actionPerformed(ActionEvent e)
     {
-        if(e.getSource()==play){
+        if(e.getSource()==play){ //Closes the menu and starts the game up
             letsPlay = true;
             frame.dispose();
         }
 
-        if(e.getSource()==quit)
+        if(e.getSource()==quit) //Ends program if player chooses quit
         {
             System.exit(0);
         }
