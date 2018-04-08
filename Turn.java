@@ -24,15 +24,6 @@ public class Turn {
     private int numofPlayers;
     ArrayList<Card> murderEnvelope = new ArrayList<>(); //Holds the murder envelope contents
 
-    String[] suspects =
-            {"List of tokens", "Plum", "White", "Scarlet", "Green", "Mustard", "Peacock"};
-    String[] weapons =
-            {"List of weapons", "Candle Stick", "Dagger", "Lead Pipe", "Revolver", "Rope",
-                    "Spanner"};
-    String[] rooms =
-            {"Kitchen", "Ball Room", "Conservatory", "Dining Room", "Billiard Room", "library",
-                    "Lounge", "Hall", "Study"};
-
     public Turn(CluedoUI ui, Players players, Weapons weapons, Players dummies) {
         this.ui = ui;
         this.players = players;
@@ -40,6 +31,7 @@ public class Turn {
         this.dummies = dummies;
     }
 
+    //Mutator
     public void setTurn(Players players, Weapons weapons, Players dummies) {
         this.players = players;
         this.items = weapons;
@@ -52,13 +44,31 @@ public class Turn {
      */
     public void turns() {
 
-        String command;                //Text that is entered
+        String command;               //Text that is entered
         boolean valid;                //Check if action is valid
+        boolean questionBarrier = false;
         Dice dice = new Dice();
 
         do {
             for (int i = 0; i < players.getCapacity(); i++) {
-
+            	int selectedOption = -1;
+            	ui.displayString("ROTATING PLAYER.......");
+        		//Have window be still for 2 seconds
+        		try { 
+        	          Thread.sleep(2000);
+        	    } catch (InterruptedException e) {
+        	    	  e.printStackTrace();
+        	    }
+        		ui.clearContent(); //Clears info panel for next player
+        		
+        		do {
+      			  //Pops up a JOptionPane and ensures turn is passed
+      			  selectedOption = JOptionPane.showConfirmDialog(null,
+      					  "Turn handed over to " + players.currPlayer(i) + "?", "TURN", JOptionPane.YES_NO_OPTION); 
+      	
+      			}while(selectedOption != JOptionPane.YES_NO_OPTION);
+      			
+        		//Checks if player is alive
                 if (!players.getPlayer(i).isAlive()) {
                     continue;
                 }
@@ -75,8 +85,7 @@ public class Turn {
                 CommandPanel.updateUserImage(players.getPlayer(i).getImagePath());
 
                 //Available commands
-                String[] commands = {"roll", "notes", "cheat", "log", "help"};
-                CommandPanel.updateCommands(commands);
+                CommandPanel.updateCommands(Commands.firstCommands);
                 CommandPanel.updateMovesReamining(-1);
 
                 do {
@@ -124,21 +133,23 @@ public class Turn {
 
                 //After all actions
                 ui.displayString(players.currPlayer(i) + "Out of moves! Type a command.");
+                
+                if (players.getTile(i).getSlot() == 5) {
+                    String[] extra;
+                    if (players.getTile(i).getRoom() != 10) {
+                        extra = Commands.questionCommands;
+                    } else {
+                        extra = Commands.accuseCommands;
+                    }
+                    CommandPanel.updateCommands(extra);
+                } else {
+                    CommandPanel.updateCommands(Commands.endCommands);
+                }
+                
                 do {
                     valid = false;
-                    String[] commandsEnd = {"done", "notes", "cheat", "log", "help"};
-                    if (players.getTile(i).getSlot() == 5) {
-                        String[] extra;
-                        if (players.getTile(i).getRoom() != 10) {
-                            extra = new String[]{"done", "notes", "cheat", "log", "help", "question"};
-                        } else {
-                            extra = new String[]{"notes", "cheat", "log", "help", "accuse"};
-                        }
-                        CommandPanel.updateCommands(extra);
-                    } else {
-                        CommandPanel.updateCommands(commandsEnd);
-                    }
-
+                   
+     
                     command = ui.getCommand();
                     ui.displayString(players.currPlayer(i) + ": " + command);
 
@@ -153,9 +164,9 @@ public class Turn {
                     }  else if (command.equalsIgnoreCase("help")) {
                         help();
                     } else if (players.getTile(i).getSlot() == 5 && players.getTile(i).getRoom()
-                            != 10) {
+                            != 10 && !questionBarrier) {
                         if (command.equalsIgnoreCase("question")) {
-                            questions.question(players, i, ui, this);
+                           questionBarrier = questions.question(players, i, ui, this);
                         }
                     } else if (players.getTile(i).getRoom() == 10) {
                         if (command.split(" ")[0].equalsIgnoreCase("accuse")) {
@@ -167,6 +178,11 @@ public class Turn {
                     } else {
                         ui.displayString(
                                 "Whoops! Wrong command.\nType 'help' if you're unsure what to do.");
+                    }
+                    
+                    if(!valid) {
+                    	ui.displayString("Type another command");
+                    	CommandPanel.updateCommands(Commands.endCommands);
                     }
                 } while (!valid); //Their turn ends after they type the 'done' command
             }
@@ -190,10 +206,16 @@ public class Turn {
                 + "\n\n'notes' - Type this to inspect your notes."
                 + "\nThis lists all players, weapons and rooms,\nand shows an 'X' mark for cards"
                 + " you own and an 'A' mark for cards everybody sees."
+                + "\n 'V' for cards you suggested and someone answered"
                 + "\n\n'cheat' - Allows you to inspect the murder envelope."
                 + "\n\n'u,r,d,l' - Type one of these to move up, right, down or left respectively."
                 + "\n\n'Passage' - Type to move from one corner of the board using a room to room"
                 + " passageway"
+                + "\n'log' - To show a list of questions asked and people that answered"
+                + "\n'done' - Finishes up your turn or a requirement"
+                + "\n'question' - To question players about your suggestion"
+                + "\n'accuse' - To accuse the murder, with the weapon and place they killed the "
+                + "\n victum."
                 + "\n\n'quit' - This ends the game immediately.");
     }
 
@@ -228,8 +250,7 @@ public class Turn {
         ui.displayString(players.currPlayer(currPlayer) + "make your move!");
 
         //Set of commands a player could possibly use
-        String[] commands = {"u - up", "d - down", "l - left", "r - right"};
-        CommandPanel.updateCommands(commands);
+        CommandPanel.updateCommands(Commands.movementCommands);
         CommandPanel.updateMovesReamining(dice);
 
         do {
@@ -467,7 +488,7 @@ public class Turn {
 
 
     /**
-     * Searches given stringarray for the given string(findMe)
+     * Searches given string array for the given string(findMe)
      * @param stringArray an array of strings to search through
      * @param findMe string to find within the array of strings
      * @return true if string is found
@@ -517,9 +538,9 @@ public class Turn {
             }
 
             // See if the inputs are valid
-            if (findInStringArray(suspects, name)) {
-                if (findInStringArray(weapons, weapon)) {
-                    if (findInStringArray(rooms, room)) {
+            if (findInStringArray(Card.suspects, name)) {
+                if (findInStringArray(Card.weapons, weapon)) {
+                    if (findInStringArray(Card.rooms, room)) {
                         // See if the user's accusation was right
                         if (murderEnvelope.get(0).toString().replaceAll("\\s+",
                                 "").equalsIgnoreCase(name)

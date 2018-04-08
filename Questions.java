@@ -39,13 +39,14 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
     /**
      * A suggestion of who was the murder, murder weapon & the room it was done in
      */
-    public void question(Players players, int curr, CluedoUI ui, Turn turn) {
+    public boolean question(Players players, int curr, CluedoUI ui, Turn turn) {
         ui.displayString("==========SUGGESTION==========");
         ui.displayString(players.currPlayer(curr) + ": " + "I suggest it was done by[token]");
         CommandPanel.updateCommands(Card.suspects);
 
         String token, weapon;
         boolean valid = false;
+        int selectedOption = -1;
 
         do {
             token = ui.getCommand();
@@ -91,15 +92,28 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
         questionHandOver(players, ui); //Question every player
         
         ui.clearContent(); //Clears info panel
+        
+    	do {
+    		//Pops up a JOptionPane and ensures turn is passed
+			 selectedOption = JOptionPane.showConfirmDialog(null,
+					  "Turn handed over to " + players.currPlayer(curr) + "?", "TURN", JOptionPane.YES_NO_OPTION); 
+	
+		}while(selectedOption != JOptionPane.YES_NO_OPTION);
+    	
         ui.displayString("=====" + players.currPlayer(curr) + "TURN"+ "======");
+        
+        //Checks if a player answered question
         if(check) {
         	ui.displayString("A player has answered your question!");
+        	ui.displayString("Card: " + players.getPlayer(curr).getNoteBook().getLatestCard().toUpperCase());
         }else {
         	ui.displayString("Nobody could answer your question");
         }
         
         CommandPanel.updateUserImage(players.getPlayer(curr).getImagePath());
 		CommandPanel.updateMovesReamining(-1);
+		
+		return true; //player has asked a question
     }
     
     /**
@@ -258,7 +272,7 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
         gameFinished.setVisible(true);
 
     }
- 
+    
 	@Override
 	public Iterator<Question> iterator() {
 		iterator = questions.iterator();

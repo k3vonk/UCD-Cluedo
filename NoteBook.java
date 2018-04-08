@@ -38,6 +38,10 @@ public class NoteBook {
 		}
 	}
 	
+	public String getLatestCard() {
+		return seenCard.get(seenCard.size() - 1).toString();
+	}
+	
 	/**
 	 * Displays the notes of a player
 	 */
