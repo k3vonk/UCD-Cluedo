@@ -109,7 +109,7 @@ public class Player {
 
 
 
-    public static void pickACard(ArrayList<Card> cards, Player fromPlayer, Player toPlayer) {
+    public static void pickACard(Question question, Player fromPlayer, Player toPlayer) {
 
         JDialog gameFinished = new JDialog();
         JPanel congratsPanel = new JPanel();
@@ -124,9 +124,10 @@ public class Player {
 
         StringBuilder xd = new StringBuilder();
         xd.append("Pick a card to show from (");
-        for (Card x : cards) {
-            xd.append(" - " + x.getName());
-        }
+        
+        xd.append(" - " + question.getTokenName());
+        xd.append(" - " + question.getWeaponName());
+        xd.append(" - " + question.getRoomName());
         xd.append(" - )");
         JLabel name = new JLabel(xd.toString());
         name.setFont(new Font(new JLabel().getFont().toString(), Font.PLAIN, 17));
