@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -12,12 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class Questions implements Iterable<Question>, Iterator<Question>{
 	private ArrayList<Question> questions = new ArrayList<Question>();
@@ -160,13 +157,17 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
         ArrayList<Card> hand = toPlayer.getCards();
         try {
             for (Card x : hand) {
-                System.out.println(x.getName());
-                JLabel cardLabel = imageToResizedLabel(x.getName().toLowerCase().replaceAll(" ", "")
+            	String xName = x.getName().toLowerCase().replaceAll(" ", "");
+                JLabel cardLabel = imageToResizedLabel(xName
                         + ".jpg");
                 cardsPanel.add(cardLabel, c);
                 cardLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
+
+                    	if(xName.equalsIgnoreCase(question.room) || xName.equalsIgnoreCase(question.token) || xName.equalsIgnoreCase(question.weapon)){
+							gameFinished.dispose();
+						}
 
                         /**
                          *
@@ -192,9 +193,20 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
         congratsPanel.add(cardsPanel, c);
         c.gridy = 3;
         c.gridwidth = 1;
-        JButton cancel = new JButton("I have none");
-        cancel.setPreferredSize(new Dimension(400, 40));
-        buttonsPanel.add(cancel, c);
+
+
+		JButton cancel = new JButton("I have none");
+		cancel.setPreferredSize(new Dimension(400, 40));
+
+        if(!toPlayer.hasCard(question.room) && !toPlayer.hasCard(question.weapon) && !toPlayer.hasCard(question.token))
+		{
+			buttonsPanel.add(cancel, c);
+			//Dispose frame if user responds that he/she has none of the cards
+			cancel.addActionListener(e -> gameFinished.dispose());
+		}
+
+		System.out.println(toPlayer.getCards());
+
         c.gridy = 4;
         congratsPanel.add(buttonsPanel, c);
 
@@ -203,10 +215,14 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
         gameFinished.add(congratsPanel);
         gameFinished.setModal(true);
         gameFinished.setAlwaysOnTop(true);
+		gameFinished.setUndecorated(true);
+		gameFinished.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         gameFinished.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-        gameFinished.setSize(864, 500);
+        gameFinished.setSize(964, 500);
         gameFinished.setLocationRelativeTo(null);
         gameFinished.setVisible(true);
+
+
 
     }
 
@@ -220,7 +236,7 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
     public static JLabel imageToResizedLabel(String path) throws IOException {
         BufferedImage myPicture = ImageIO.read(
                 CluedoUI.class.getClassLoader().getResourceAsStream(path)); // Reads the file
-        Image resizedImage = myPicture.getScaledInstance(105, 190,
+        Image resizedImage = myPicture.getScaledInstance(70, 130,
                 myPicture.SCALE_SMOOTH); // Resize it so that it looks better.
         JLabel picLabel = new JLabel(new ImageIcon(resizedImage)); // Convert to JLabel object
         return picLabel; // Return
