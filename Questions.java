@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -31,6 +32,14 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
 	public int getCapacity() {
 		return questions.size();
 	}
+
+	public List<String> getLog(){
+        List<String> log = new ArrayList<String>();
+	    for(int i = getCapacity() -1; i >= 0; i--){
+            log.add(questions.get(i).toString());
+        }
+        return log;
+    }
 	
     /**
      * A suggestion of who was the murder, murder weapon & the room it was done in

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -74,7 +75,7 @@ public class Turn {
                 CommandPanel.updateUserImage(players.getPlayer(i).getImagePath());
 
                 //Available commands
-                String[] commands = {"roll", "notes", "cheat", "help"};
+                String[] commands = {"roll", "notes", "cheat", "log", "help"};
                 CommandPanel.updateCommands(commands);
                 CommandPanel.updateMovesReamining(-1);
 
@@ -106,7 +107,10 @@ public class Turn {
                     } else if (command.equalsIgnoreCase("cheat")) {
                         //Displays the murder envelope cards
                         cheat();
-                    } else if (command.equalsIgnoreCase("help")) {
+                    } else if (command.equalsIgnoreCase("log")){
+                        log();
+                    }
+                        else if (command.equalsIgnoreCase("help")) {
                         //Displays various commands and an explanation on what they do
                         help();
                     } else {
@@ -119,16 +123,16 @@ public class Turn {
                 movement(dice.getRoll1() + dice.getRoll2(), i);
 
                 //After all actions
+                ui.displayString(players.currPlayer(i) + "Out of moves! Type a command.");
                 do {
                     valid = false;
-                    ui.displayString(players.currPlayer(i) + "Type a valid command!");
-                    String[] commandsEnd = {"done", "notes", "cheat", "help"};
+                    String[] commandsEnd = {"done", "notes", "cheat", "log", "help"};
                     if (players.getTile(i).getSlot() == 5) {
                         String[] extra;
                         if (players.getTile(i).getRoom() != 10) {
-                            extra = new String[]{"done", "notes", "cheat", "help", "question"};
+                            extra = new String[]{"done", "notes", "cheat", "log", "help", "question"};
                         } else {
-                            extra = new String[]{"notes", "cheat", "help", "accuse"};
+                            extra = new String[]{"notes", "cheat", "log", "help", "accuse"};
                         }
                         CommandPanel.updateCommands(extra);
                     } else {
@@ -144,7 +148,9 @@ public class Turn {
                         players.getPlayer(i).displayNote();
                     } else if (command.equalsIgnoreCase("cheat")) {
                         cheat();
-                    } else if (command.equalsIgnoreCase("help")) {
+                    } else if(command.equalsIgnoreCase("log")){
+                       log();
+                    }  else if (command.equalsIgnoreCase("help")) {
                         help();
                     } else if (players.getTile(i).getSlot() == 5 && players.getTile(i).getRoom()
                             != 10) {
@@ -190,6 +196,17 @@ public class Turn {
                 + "\n\n'Passage' - Type to move from one corner of the board using a room to room"
                 + " passageway"
                 + "\n\n'quit' - This ends the game immediately.");
+    }
+
+    private void log(){
+        List<String> log = questions.getLog();
+        if(log.size() == 0){
+            ui.displayString("No questions have been asked yet.");
+        }else {
+            for (int i = 0; i < log.size(); i++) {
+                ui.displayString(i + 1 + ". " + log.get(i));
+            }
+        }
     }
 
     //Method used in main to tell the turn class the contents of the murder envelope
