@@ -48,13 +48,21 @@ public class NoteBook {
      */
     public void showNotes() {
 
-        // Ovverride the columnclass so that it now supports checkboxes, will be required on
-		// later releases.
+        // Ovverride so that the cells are no longer editable
         DefaultTableModel model = new DefaultTableModel() {
+            @Override
+            // Makes the cells not editable
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
+
 
         // Create a new table to store notes.
         JTable table = new JTable(model);
+
+        // Prevent user from dragging around columns.
+        table.getTableHeader().setReorderingAllowed(false);
 
         // Add the column names one by one.
         model.addColumn("TYPE");
@@ -67,7 +75,7 @@ public class NoteBook {
         // set the size as it was being crowded and didn't look good at all.
         tata.setPreferredSize(new Dimension(1000, 170));
         // output the table within the pane using joptionpane with the object.
-        JFrame displayProperties = new JFrame();
+        JFrame displayProperties = new JFrame("NoteBook");
         // Add the table to the frame
         displayProperties.add(tata);
         displayProperties.setSize(900, 400);
