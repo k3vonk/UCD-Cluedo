@@ -109,7 +109,7 @@ public class Player {
 
 
 
-    public static Card pickACard(ArrayList<Card> cards, Player fromPlayer, Player toPlayer) {
+    public static void pickACard(ArrayList<Card> cards, Player fromPlayer, Player toPlayer) {
 
         JDialog gameFinished = new JDialog();
         JPanel congratsPanel = new JPanel();
@@ -124,11 +124,9 @@ public class Player {
 
         StringBuilder xd = new StringBuilder();
         xd.append("Pick a card to show from (");
-
         for (Card x : cards) {
             xd.append(" - " + x.getName());
         }
-
         xd.append(" - )");
         JLabel name = new JLabel(xd.toString());
         name.setFont(new Font(new JLabel().getFont().toString(), Font.PLAIN, 17));
@@ -193,8 +191,6 @@ public class Player {
         gameFinished.setLocationRelativeTo(null);
         gameFinished.setVisible(true);
 
-
-        return null;
     }
 
     /**
