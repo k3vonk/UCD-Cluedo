@@ -46,7 +46,6 @@ public class Turn {
 
         String command;               //Text that is entered
         boolean valid;                //Check if action is valid
-        boolean questionBarrier = false;
         Dice dice = new Dice();
 
         do {
@@ -145,11 +144,11 @@ public class Turn {
                 } else {
                     CommandPanel.updateCommands(Commands.endCommands);
                 }
-                
+
+                boolean questionBarrier = false;
                 do {
                     valid = false;
-                   
-     
+                    
                     command = ui.getCommand();
                     ui.displayString(players.currPlayer(i) + ": " + command);
 
