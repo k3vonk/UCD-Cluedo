@@ -167,6 +167,8 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
 
                     	if(xName.equalsIgnoreCase(question.room) || xName.equalsIgnoreCase(question.token) || xName.equalsIgnoreCase(question.weapon)){
 							gameFinished.dispose();
+						}else{
+                    		JOptionPane.showMessageDialog(null, "That's not a card that's being questioned, pick another card!");
 						}
 
                         /**
