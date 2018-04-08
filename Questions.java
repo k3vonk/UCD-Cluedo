@@ -20,6 +20,8 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
 	private ArrayList<Question> questions = new ArrayList<Question>();
 	private Iterator<Question> iterator;
 	
+	public boolean check = false;
+	
 	//Adds new question to the arraylist
 	public void addQuestion(Player player,String token, String weapon, String room) {
 		questions.add(new Question(player, token, weapon, room));
@@ -93,10 +95,13 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
      */
     public void questionHandOver(Players players, CluedoUI ui) {
     	int selectedOption = -1; //Ensures the question is for the right person
-    	boolean answered = false;
+    	boolean answered ;
+    	check = false;
+    	String done = null;
     	
     	//Run through the players array
     	for(int i = 0; i < players.getCapacity();i++) {
+    		answered = false;
     		ui.clearContent(); //Clears info panel
     		CommandPanel.updateUserImage(players.getPlayer(i).getImagePath());
 			CommandPanel.updateMovesReamining(-3);
@@ -113,17 +118,25 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
 	    			ui.displayString("=====" + players.currPlayer(i) + "ANSWERING=====");
 	    			ui.displayString(questions.get(getCapacity() - 1).toString());
 	    		//	CommandPanel.updateCommands(commands);
-	    			Questions.pickACard(questions.get(getCapacity() - 1), players.getPlayer(i));
-	    			if(ui.getCommand().equals("done")) {
+	    			pickACard(questions.get(getCapacity() - 1), players.getPlayer(i));
+	    			
+	    			if(!check) {
+	    				done = ui.getCommand();
+	    			}
+	    			if(done.equals("done") || check) {
 	    				answered = true;
-	    				
 	    			}
     			}while(!answered);
     		}
+    		
+    		if(check) {
+				ui.displayString("Question Answered");
+				break;
+			}
     	}
     }
     
-    public static void pickACard(Question question, Player toPlayer) {
+    public void pickACard(Question question, Player toPlayer) {
 
         JDialog gameFinished = new JDialog();
         JPanel congratsPanel = new JPanel();
@@ -157,7 +170,7 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
         ArrayList<Card> hand = toPlayer.getCards();
         try {
             for (Card x : hand) {
-            	String xName = x.getName().toLowerCase().replaceAll(" ", "");
+            	String xName = x.getName().replaceAll("\\s+","");
                 JLabel cardLabel = imageToResizedLabel(xName
                         + ".jpg");
                 cardsPanel.add(cardLabel, c);
@@ -165,26 +178,18 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
                     @Override
                     public void mouseClicked(MouseEvent e) {
 
-                    	if(xName.equalsIgnoreCase(question.room) || xName.equalsIgnoreCase(question.token) || xName.equalsIgnoreCase(question.weapon)){
+                    	if(xName.equalsIgnoreCase(question.room.replaceAll("\\s+","")) 
+                    			|| xName.equalsIgnoreCase(question.token.replaceAll("\\s+","")) 
+                    			|| xName.equalsIgnoreCase(question.weapon.replaceAll("\\s+",""))){
+                    		question.setAnswerer(toPlayer); //This player answered the question
+                    		question.getQuestioner().getNoteBook().addSeenCard(toPlayer.getCard(xName)); //Questioner now sees a new card
+                    		
+                    		
 							gameFinished.dispose();
+							check = true;
 						}else{
-                    		JOptionPane.showMessageDialog(null, "That's not a card that's being questioned, pick another card!");
+                    		JOptionPane.showMessageDialog(gameFinished,"That's not a card that's being questioned, pick another card!");
 						}
-
-                        /**
-                         *
-                         *
-                         *
-                         *
-                         * Do anything with card ( x )
-                         * NoteBook.setSeen(x);
-                         *
-                         *
-                         *
-                         *
-                         *
-                         */
-
                     }
                 });
             }
@@ -205,6 +210,7 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
 			buttonsPanel.add(cancel, c);
 			//Dispose frame if user responds that he/she has none of the cards
 			cancel.addActionListener(e -> gameFinished.dispose());
+			
 		}
 
 		System.out.println(toPlayer.getCards());
@@ -213,18 +219,16 @@ public class Questions implements Iterable<Question>, Iterator<Question>{
         congratsPanel.add(buttonsPanel, c);
 
 
-        //name.setBorder(BorderFactory.createEmptyBorder(100, 20, 10, 20));
+        name.setBorder(BorderFactory.createEmptyBorder(100, 20, 10, 20));
         gameFinished.add(congratsPanel);
         gameFinished.setModal(true);
-        gameFinished.setAlwaysOnTop(true);
+        gameFinished.setAlwaysOnTop(false);
 		gameFinished.setUndecorated(true);
 		gameFinished.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         gameFinished.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         gameFinished.setSize(964, 500);
         gameFinished.setLocationRelativeTo(null);
         gameFinished.setVisible(true);
-
-
 
     }
 

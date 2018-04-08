@@ -89,18 +89,31 @@ public class Player {
 
     public Boolean hasCard(String y) {
         for (Card x : cards) {
-            if (x.toString().replaceAll("\\s+",
-                    "").equalsIgnoreCase(y)) {
+            if (x.toString().equalsIgnoreCase(y)) {
                 return true;
             }
         }
-
         return false;
+    }
+    
+    public Card getCard(String name) {
+    	for(Card x: cards) {
+    		if(x.toString().replaceAll("\\s+","").equalsIgnoreCase(name)) {
+    			System.out.println("GET: " + x.getName());
+    			return x;
+    		}
+    	}
+    	
+    	return null;
     }
 
     //Sets notebook
     public void setNoteBook(ArrayList<Card> undealt) {
         this.note = new NoteBook(undealt, cards);
+    }
+    
+    public NoteBook getNoteBook() {
+    	return note;
     }
 
     //Displays player's note

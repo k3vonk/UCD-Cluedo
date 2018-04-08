@@ -19,6 +19,7 @@ public class NoteBook {
 	
 	private ArrayList<Card> unusedCards;		//Undealt cards
 	private ArrayList<Card> hand;			//Player cards
+	private ArrayList<Card> seenCard = new ArrayList<Card>();       //Someone answered a question and showed you the card
 	
 	//Cards get compared to these lists when seeing if a player owns them or not
 	String playerList[] = {"Plum","White","Scarlet","Green","Mustard","Peacock"};
@@ -29,6 +30,16 @@ public class NoteBook {
 	public NoteBook(ArrayList<Card> unusedCards, ArrayList<Card> hand) {
 		this.unusedCards = unusedCards;
 		this.hand	= hand;
+	}
+	
+	public void addSeenCard(Card card) {
+		seenCard.add(card);
+	}
+	
+	public void getSeenCard() {
+		for(Card card: seenCard) {
+			System.out.println(card.toString());
+		}
 	}
 	
 	/**
