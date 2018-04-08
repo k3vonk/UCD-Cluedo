@@ -66,8 +66,19 @@ public class Main {
     }
 
 
+
     public static void main(String[] args) {
+        StartScreen startscreen = new StartScreen();
+        startscreen.gameStart();
+        while(!startscreen.letsPlay){
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         Main game = new Main();
+
         game.start();
         game.turn();
     }

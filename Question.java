@@ -57,7 +57,9 @@ public class Question {
 		question += "\nToken:        " + token.toUpperCase() + "\nWeapon:     " + weapon.toUpperCase() + "\nRoom:         " + room.toUpperCase();
 		
 		if(answerer != null) {
-			question += "\nAnwered by: " + answerer.getName() +"[" + answerer.getToken().getTokenName() + "]";
+			question += "\nAnswered by: " + answerer.getName() +"[" + answerer.getToken().getTokenName() + "]";
+		}else {
+			question += "\nNobody answered the question.";
 		}
 		return question;
 	}
