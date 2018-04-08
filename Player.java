@@ -1,12 +1,4 @@
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
 
 /**
  * A class that represents a player containing their name and player they choose
@@ -17,14 +9,14 @@ import javax.swing.*;
  * @Author Richard  Otroshchenko - 16353416
  */
 public class Player {
-    private String name;    //Name of player
-    private int choice;    //player's choice
+    private String name;    								//Name of player
+    private int choice;    									//player's choice
     private Token token;
-    private String imagePath;    //tokens image
-    private ArrayList<Card> cards = new ArrayList<>();        //Cards that a player has
-    private NoteBook note;                            //A players notebook
-    private Boolean alive = true;
-    // Ensure that a player that made a bad accusation doesn't play again.
+    private String imagePath;   							//tokens image
+    private ArrayList<Card> cards = new ArrayList<>();      //Cards that a player has
+    private NoteBook note;                           	 	//A players notebook
+    private Boolean alive = true;							// Ensure that a player that made a bad accusation doesn't play again.
+    
 
     //Constructor
     public Player(String name, int choice) {
@@ -79,14 +71,17 @@ public class Player {
         return this.token.getPosition().equals(tile);
     }
 
+    //Gives a card to the player
     public void giveCard(Card card) {
         this.cards.add(card);
     }
 
+    //Getter for cards of a player
     public ArrayList<Card> getCards() {
         return cards;
     }
 
+    //Boolean check if player has a card
     public Boolean hasCard(String y) {
         for (Card x : cards) {
             if (x.toString().equalsIgnoreCase(y)) {
@@ -96,14 +91,13 @@ public class Player {
         return false;
     }
     
+    //Returns card, see if user has that same exact card
     public Card getCard(String name) {
     	for(Card x: cards) {
     		if(x.toString().replaceAll("\\s+","").equalsIgnoreCase(name)) {
-    			System.out.println("GET: " + x.getName());
     			return x;
     		}
     	}
-    	
     	return null;
     }
 
@@ -112,6 +106,7 @@ public class Player {
         this.note = new NoteBook(undealt, cards);
     }
     
+    //Get notebook
     public NoteBook getNoteBook() {
     	return note;
     }
@@ -130,6 +125,5 @@ public class Player {
     public Boolean isAlive() {
         return alive;
     }
-
 
 }

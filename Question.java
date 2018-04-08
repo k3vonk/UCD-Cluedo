@@ -52,9 +52,13 @@ public class Question {
 	 */
 	public String toString() {
 		String question;
-		question = questioner.getName() + "[" +questioner.getToken().getTokenName()+ "]";
+		question = "====="+questioner.getName() + "[" +questioner.getToken().getTokenName()+ "]" + " SUGGESTED=====";
 		
-		question += " suggested:" + "\nToken: " + token.toUpperCase() + "\nWeapon: " + weapon.toUpperCase() + "\nRoom: " + room.toUpperCase();
+		question += "\nToken:        " + token.toUpperCase() + "\nWeapon:     " + weapon.toUpperCase() + "\nRoom:         " + room.toUpperCase();
+		
+		if(answerer != null) {
+			question += "\nAnwered by: " + answerer.getName() +"[" + answerer.getToken().getTokenName() + "]";
+		}
 		return question;
 	}
 	

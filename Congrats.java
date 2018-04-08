@@ -1,18 +1,14 @@
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
 import javax.swing.*;
 
 /**
- * An frame that congratulates the user for winning the game
+ * A frame that congratulates the user for winning the game
  *
  * @Team MAGA
  * @Author Gajun Young - 16440714
  * @Author Royal Thomas - 16326926
  * @Author Richard  Otroshchenko - 16353416
  */
-
 
 public class Congrats {
 

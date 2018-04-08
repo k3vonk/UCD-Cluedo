@@ -17,25 +17,21 @@ import javax.swing.table.DefaultTableModel;
  */
 public class NoteBook {
 	
-	private ArrayList<Card> unusedCards;		//Undealt cards
-	private ArrayList<Card> hand;			//Player cards
+	private ArrayList<Card> unusedCards;							//Undealt cards
+	private ArrayList<Card> hand;									//Player cards
 	private ArrayList<Card> seenCard = new ArrayList<Card>();       //Someone answered a question and showed you the card
-	
-	//Cards get compared to these lists when seeing if a player owns them or not
-	String playerList[] = {"Plum","White","Scarlet","Green","Mustard","Peacock"};
-	String weaponsList[] = {"Candle Stick","Dagger","Lead Pipe","Revolver","Rope","Spanner"};
-	String roomList[] = {"Dining Room","Conservatory","Study","Billard Room","Lounge","Library","Ball Room","Kitchen","Hall"};
-
 	
 	public NoteBook(ArrayList<Card> unusedCards, ArrayList<Card> hand) {
 		this.unusedCards = unusedCards;
 		this.hand	= hand;
 	}
 	
+	//Someone showed u a card, add it as seen
 	public void addSeenCard(Card card) {
 		seenCard.add(card);
 	}
 	
+	//Testing to see if cards are added
 	public void getSeenCard() {
 		for(Card card: seenCard) {
 			System.out.println(card.toString());
@@ -47,13 +43,8 @@ public class NoteBook {
 	 */
 	public void showNotes() {
 
-
 		// Ovverride the columnclass so that it now supports checkboxes, will be required on later releases.
 		DefaultTableModel model = new DefaultTableModel() {
-			@Override
-			public Class getColumnClass(int column) {
-				return getValueAt(0, column).getClass();
-			}
 		};
 
 		// Create a new table to store notes. 
@@ -82,33 +73,33 @@ public class NoteBook {
 			boolean found = false; //Checks if a card was found so we dont display it twice
 			int count2 = 0;
 			while (count2 < hand.size()) { //This loop iterates through every card owned by the player
-				if (hand.get(count2).toString().equalsIgnoreCase(playerList[count])) {
-					model.addRow(new Object[]{"Player",playerList[count],"X",""});
+				if (hand.get(count2).toString().equalsIgnoreCase(Card.suspects[count])) {
+					model.addRow(new Object[]{"Player",Card.suspects[count],"X",""});
 					found = true;
 				}
 				count2++;
 			}
 			if (!found) { //The following if statements basically find and indicate undealt cards
 				if (unusedCards.size() == 1) {
-					if (unusedCards.get(0).toString().equalsIgnoreCase(playerList[count])) {
-						model.addRow(new Object[]{"Player",playerList[count],"","A"});
+					if (unusedCards.get(0).toString().equalsIgnoreCase(Card.suspects[count])) {
+						model.addRow(new Object[]{"Player",Card.suspects[count],"","A"});
 						found=true;
 					}
 				} else if (unusedCards.size() == 2) {
-					if (unusedCards.get(0).toString().equalsIgnoreCase(playerList[count]) ||
-							unusedCards.get(1).toString().equalsIgnoreCase(playerList[count])) {
-						model.addRow(new Object[]{"Player",playerList[count],"","A"});
+					if (unusedCards.get(0).toString().equalsIgnoreCase(Card.suspects[count]) ||
+							unusedCards.get(1).toString().equalsIgnoreCase(Card.suspects[count])) {
+						model.addRow(new Object[]{"Player",Card.suspects[count],"","A"});
 						found = true;
 					}
 				}else if (unusedCards.size() == 3) {//There can only be at most 3 undealt cards with 2-6 players
-					if (unusedCards.get(0).toString().equalsIgnoreCase(playerList[count]) ||
-							unusedCards.get(1).toString().equalsIgnoreCase(playerList[count]) ||
-							unusedCards.get(2).toString().equalsIgnoreCase(playerList[count])) {
-						model.addRow(new Object[]{"Player",playerList[count],"","A"});
+					if (unusedCards.get(0).toString().equalsIgnoreCase(Card.suspects[count]) ||
+							unusedCards.get(1).toString().equalsIgnoreCase(Card.suspects[count]) ||
+							unusedCards.get(2).toString().equalsIgnoreCase(Card.suspects[count])) {
+						model.addRow(new Object[]{"Player",Card.suspects[count],"","A"});
 						found=true;
 					}
 				} if(!found){ //If a card doesent match the player's cards and isn't undealt, it's added normally without a marker
-					model.addRow(new Object[]{"Player",playerList[count],"",""});
+					model.addRow(new Object[]{"Player",Card.suspects[count],"",""});
 				}
 			}
 		}
@@ -117,33 +108,33 @@ public class NoteBook {
 			boolean found = false;
 			int count2 = 0;
 			while (count2 < hand.size()) {
-				if (hand.get(count2).toString().equalsIgnoreCase(weaponsList[count])) {
-					model.addRow(new Object[]{"Weapon",weaponsList[count],"X",""});
+				if (hand.get(count2).toString().equalsIgnoreCase(Card.weapons[count])) {
+					model.addRow(new Object[]{"Weapon",Card.weapons[count],"X",""});
 					found = true;
 				}
 				count2++;
 			}
 			if (!found) {
 				if (unusedCards.size() == 1) {
-					if (unusedCards.get(0).toString().equalsIgnoreCase(weaponsList[count])) {
-						model.addRow(new Object[]{"Weapon",weaponsList[count],"","A"});
+					if (unusedCards.get(0).toString().equalsIgnoreCase(Card.weapons[count])) {
+						model.addRow(new Object[]{"Weapon",Card.weapons[count],"","A"});
 						found=true;
 					}
 				} else if (unusedCards.size() == 2) {
-					if (unusedCards.get(0).toString().equalsIgnoreCase(weaponsList[count]) ||
-							unusedCards.get(1).toString().equalsIgnoreCase(weaponsList[count])) {
-						model.addRow(new Object[]{"Weapon",weaponsList[count],"","A"});
+					if (unusedCards.get(0).toString().equalsIgnoreCase(Card.weapons[count]) ||
+							unusedCards.get(1).toString().equalsIgnoreCase(Card.weapons[count])) {
+						model.addRow(new Object[]{"Weapon",Card.weapons[count],"","A"});
 						found = true;
 					}
 				}else if (unusedCards.size() == 3) {
-					if (unusedCards.get(0).toString().equalsIgnoreCase(weaponsList[count]) ||
-							unusedCards.get(1).toString().equalsIgnoreCase(weaponsList[count]) ||
-							unusedCards.get(2).toString().equalsIgnoreCase(weaponsList[count])) {
-						model.addRow(new Object[]{"Weapon",weaponsList[count],"","A"});
+					if (unusedCards.get(0).toString().equalsIgnoreCase(Card.weapons[count]) ||
+							unusedCards.get(1).toString().equalsIgnoreCase(Card.weapons[count]) ||
+							unusedCards.get(2).toString().equalsIgnoreCase(Card.weapons[count])) {
+						model.addRow(new Object[]{"Weapon",Card.weapons[count],"","A"});
 						found=true;
 					}
 				} if(!found){
-					model.addRow(new Object[]{"Weapon",weaponsList[count],"",""});
+					model.addRow(new Object[]{"Weapon",Card.weapons[count],"",""});
 				}
 			}
 		}
@@ -152,33 +143,33 @@ public class NoteBook {
 			boolean found = false;
 			int count2 = 0;
 			while (count2 < hand.size()) {
-				if (hand.get(count2).toString().equalsIgnoreCase(roomList[count])) {
-					model.addRow(new Object[]{"Room",roomList[count],"X",""});
+				if (hand.get(count2).toString().equalsIgnoreCase(Card.rooms[count])) {
+					model.addRow(new Object[]{"Room",Card.rooms[count],"X",""});
 					found = true;
 				}
 				count2++;
 			}
 			if (!found) {
 				if (unusedCards.size() == 1) {
-					if (unusedCards.get(0).toString().equalsIgnoreCase(roomList[count])) {
-						model.addRow(new Object[]{"Room",roomList[count],"","A"});
+					if (unusedCards.get(0).toString().equalsIgnoreCase(Card.rooms[count])) {
+						model.addRow(new Object[]{"Room",Card.rooms[count],"","A"});
 						found=true;
 					}
 				} else if (unusedCards.size() == 2) {
-					if (unusedCards.get(0).toString().equalsIgnoreCase(roomList[count]) ||
-							unusedCards.get(1).toString().equalsIgnoreCase(roomList[count])) {
-						model.addRow(new Object[]{"Room",roomList[count],"","A"});
+					if (unusedCards.get(0).toString().equalsIgnoreCase(Card.rooms[count]) ||
+							unusedCards.get(1).toString().equalsIgnoreCase(Card.rooms[count])) {
+						model.addRow(new Object[]{"Room",Card.rooms[count],"","A"});
 						found = true;
 					}
 				} else if (unusedCards.size() == 3) {
-					if (unusedCards.get(0).toString().equalsIgnoreCase(roomList[count]) ||
-							unusedCards.get(1).toString().equalsIgnoreCase(roomList[count]) ||
-							unusedCards.get(2).toString().equalsIgnoreCase(roomList[count])) {
-						model.addRow(new Object[]{"Room",roomList[count],"","A"});
+					if (unusedCards.get(0).toString().equalsIgnoreCase(Card.rooms[count]) ||
+							unusedCards.get(1).toString().equalsIgnoreCase(Card.rooms[count]) ||
+							unusedCards.get(2).toString().equalsIgnoreCase(Card.rooms[count])) {
+						model.addRow(new Object[]{"Room",Card.rooms[count],"","A"});
 						found=true;
 					}
 				}  if(!found){
-					model.addRow(new Object[]{"Room",roomList[count],"",""});
+					model.addRow(new Object[]{"Room",Card.rooms[count],"",""});
 				}
 			}
 		}

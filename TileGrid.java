@@ -1,4 +1,3 @@
-import java.awt.Graphics;
 
 /**
  * A grid created by an array of Tiles that represents the board space
@@ -15,7 +14,7 @@ public class TileGrid {
 
 	//{WALL, PATH, ROOM, ENTERANCE, SECRET, SIT};
 	private int[][] property = new int[][]
-			{ {0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0},
+				  { {0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0},
 					{2,2,2,2,2,4,0,1,1,1,2,2,2,2,1,1,1,0,2,2,6,2,6,2},
 					{2,6,2,6,2,2,1,1,2,2,6,6,6,2,2,2,1,1,2,6,5,5,5,2},
 					{2,5,5,5,6,2,1,1,2,2,6,6,6,2,2,2,1,1,2,6,5,5,5,2},
@@ -44,7 +43,7 @@ public class TileGrid {
 
 	//{NO_ROOM,KITCHEN,BALLROOM,CONSERVATORY,DINING,BILLIARD,LIBRARY, LOUNGE, HALL, STUDY}
 	private int[][] room = new int[][]
-			{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+				  { {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 					{1,1,1,1,1,1,0,0,0,0,2,2,2,2,0,0,0,0,3,3,3,3,3,3},
 					{1,1,1,1,1,1,0,0,2,2,2,2,2,2,2,2,0,0,3,3,3,3,3,3},
 					{1,1,1,1,1,1,0,0,2,2,2,2,2,2,2,2,0,0,3,3,3,3,3,3},
@@ -92,7 +91,7 @@ public class TileGrid {
 			}
 		}
 	}
-
+	/*
 	//Draw the grid tiles onto the map
 	public void drawGrid(Graphics g) {
 		for (int i = 0; i < map.length; i++) {
@@ -100,5 +99,5 @@ public class TileGrid {
 				map[i][j].drawTile(g);
 			}
 		}
-	}
+	}*/
 }

@@ -1,13 +1,9 @@
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
 /**
- * A class that takes in player information before the gameplay starts
+ * A class that takes in player information before the game play starts
  *
  * @Team MAGA
  * @Author Gajun Young - 16440714
@@ -17,10 +13,8 @@ import javax.swing.border.EmptyBorder;
 
 public class StartUp {
 
-    private CluedoUI ui; //Just a ui
-
+    private CluedoUI ui; 
     private enum Token {PLUM, WHITE, SCARLET, GREEN, MUSTARD, PEACOCK}
-
     private ArrayList<Card> murderEnvelope = new ArrayList<>();
 
     public StartUp(CluedoUI ui) {
@@ -86,8 +80,9 @@ public class StartUp {
         //Iterates through each player and allows each one to choose their name and token
         for (int i = 0; i < players.getCapacity(); i++) {
             ui.displayString("======" + "PLAYER " + (i + 1) + "======");
-            //Acquire players name
             ui.displayString("Player " + (i + 1) + "'s name: ");
+            
+            //Acquire players name
             do {
                 name = ui.getCommand();
             } while (name.equals(""));
@@ -104,8 +99,7 @@ public class StartUp {
 
 
             //Character choice text
-            ui.displayString(
-                    "Player " + (i + 1) + "(" + name + "), " + " Please choose a character");
+            ui.displayString("Player " + (i + 1) + "(" + name + "), " + " Please choose a character");
 
             int j = 0;
 
@@ -157,6 +151,7 @@ public class StartUp {
         }
     }
 
+    //Getter
     public ArrayList<Card> getMurderEnvelope() {
         return murderEnvelope;
     }
@@ -185,7 +180,6 @@ public class StartUp {
                 Arrays.asList("Hall", "Lounge", "Dining Room", "Kitchen", "Ball Room",
                         "Conservatory",
                         "Billiard Room", "Library", "Study"));
-
 
         // Pick out cards randomly for murder envelope
         Card characterChosen = new Card(characters.get(rand.nextInt(characters.size())), 1);
@@ -284,7 +278,7 @@ public class StartUp {
 	    	if(!unique) {
 	    		ui.displayString("Players with the same highest roll value,\nhas to re-roll");
 	    	}
-	    	diff = highest; //ensures reroll will not be the same as the lower numbers
+	    	diff = highest; //ensures re-roll will not be the same as the lower numbers
     	}
     	
     	//Reposition players into their new order
@@ -300,22 +294,22 @@ public class StartUp {
      */
     public void addDummies(Players players, Players dummies) {
     	
-    //Create a default set of tokens for dummies
-   	for(int i = 0; i < dummies.getCapacity(); i++) {
-   		dummies.createPlayers("dummy", i+1);
-   		dummies.createTokens(i);
-   	}
-   	
-   	
-   	//Remove dummy tokens that players already have
-   	for(int i = 0; i < players.getCapacity(); i++) {
-   		for(int j = 0; j < dummies.getCapacity(); j++) {
-   			if(players.getTokenName(i).equals(dummies.getTokenName(j))) {
-   				dummies.remove(j);
-   				break;
-   			}
-   		}
-   	} 
+	    //Create a default set of tokens for dummies
+	   	for(int i = 0; i < dummies.getCapacity(); i++) {
+	   		dummies.createPlayers("dummy", i+1);
+	   		dummies.createTokens(i);
+	   	}
+	   	
+	   	
+	   	//Remove dummy tokens that players already have
+	   	for(int i = 0; i < players.getCapacity(); i++) {
+	   		for(int j = 0; j < dummies.getCapacity(); j++) {
+	   			if(players.getTokenName(i).equals(dummies.getTokenName(j))) {
+	   				dummies.remove(j);
+	   				break;
+	   			}
+	   		}
+	   	} 
 		
     }
 
