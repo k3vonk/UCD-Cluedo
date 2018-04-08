@@ -203,18 +203,17 @@ public class Turn {
         ui.displayString("'roll' - to roll the dice and begin your turn."
                 + "\nA roll ranges from 1 to 6 and you can move that many spaces on the board."
                 + "\n\n'notes' - Type this to inspect your notes."
-                + "\nThis lists all players, weapons and rooms,\nand shows an 'X' mark for cards"
-                + " you own and an 'A' mark for cards everybody sees."
-                + "\n 'V' for cards you suggested and someone answered"
-                + "\n\n'cheat' - Allows you to inspect the murder envelope."
-                + "\n\n'u,r,d,l' - Type one of these to move up, right, down or left respectively."
-                + "\n\n'Passage' - Type to move from one corner of the board using a room to room"
+                + "\nThis lists all players, weapons and rooms,\n'X' mark for cards"
+                + "\n'A' mark for cards everybody sees."
+                + "\n'V' for cards that were 'seen' "
+                + "\n\n'cheat' - Allows you to inspect the-\nmurder envelope."
+                + "\n\n'u,r,d,l' - Type one of these to move up, right,-\ndown or left respectively."
+                + "\n\n'Passage' - Type to move from one corner-\nof the board using a room to room"
                 + " passageway"
-                + "\n'log' - To show a list of questions asked and people that answered"
-                + "\n'done' - Finishes up your turn or a requirement"
-                + "\n'question' - To question players about your suggestion"
-                + "\n'accuse' - To accuse the murder, with the weapon and place they killed the "
-                + "\n victum."
+                + "\n\n'log' - To show a list of questions asked-\nand people that answered"
+                + "\n\n'done' - Finishes up your turn or a requirement"
+                + "\n\n'question' - To question players about -\nyour suggestion"
+                + "\n\n'accuse' - To accuse the murder, with the -\nweapon and place they killed the victum"
                 + "\n\n'quit' - This ends the game immediately.");
     }
 
@@ -649,14 +648,14 @@ public class Turn {
         ui.clearContent();
 
         // Add celebratory contents to it
-        ui.displayString("YOU'VE WON!\nCongrats " + player.getName() + "!\nYOU'VE WON!\nCongrats "
-                + player.getName() + "!\nYOU"
-                + "'VE WON!\nCongrats " + player.getName() + "!\nYOU'VE WON!\nCongrats "
+        ui.displayString("YOU'VE WON!\nCongrats " + player.getName()+"[" +player.getToken().getTokenName() + "]" + "!\nYOU'VE WON!\nCongrats "
+                + player.getName()+"[" +player.getToken().getTokenName() + "]" + "!\nYOU"
+                + "'VE WON!\nCongrats " + player.getName()+"[" +player.getToken().getTokenName() + "]" + "!\nYOU'VE WON!\nCongrats "
                 + player.getName() + "!\nYOU'VE "
                 + "WON!\nCongrats!\n");
 
         // Call Class that handles the celebration frame.
-        new Congrats(player.getName());
+        new Congrats(player.getName() +"[" +player.getToken().getTokenName() + "]");
         CommandPanel.updateCommands();
         CommandPanel.updateMovesReamining(-1);
 

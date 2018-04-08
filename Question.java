@@ -59,7 +59,7 @@ public class Question {
 		if(answerer != null) {
 			question += "\nAnswered by: " + answerer.getName() +"[" + answerer.getToken().getTokenName() + "]";
 		}else {
-			question += "\nNobody answered the question.";
+			question += "\nAnswered by: Null";
 		}
 		return question;
 	}

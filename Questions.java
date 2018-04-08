@@ -201,9 +201,9 @@ public class Questions implements Iterable<Question>, Iterator<Question> {
         // Shows the user the list of cards that the current player is looking for
         StringBuilder xd = new StringBuilder();
         xd.append("Pick a card to show from (");
-        xd.append(" - " + question.getTokenName());
-        xd.append(" - " + question.getWeaponName());
-        xd.append(" - " + question.getRoomName());
+        xd.append(" - " + question.getTokenName().toUpperCase());
+        xd.append(" - " + question.getWeaponName().toUpperCase());
+        xd.append(" - " + question.getRoomName().toUpperCase());
         xd.append(" - )");
         JLabel name = new JLabel(xd.toString());
         name.setFont(new Font(new JLabel().getFont().toString(), Font.PLAIN, 17));
