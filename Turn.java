@@ -178,17 +178,17 @@ public class Turn {
                         ui.displayString(
                                 "Whoops! Wrong command.\nType 'help' if you're unsure what to do.");
                     }
-
+                    
                     if(!valid) {
-                        ui.displayString("Type another command");
+                    	ui.displayString("Type another command");
                     }
-
+                    
                     if(players.getTile(i).getRoom() == 10 && !valid) {
-                        CommandPanel.updateCommands(Commands.accuseCommands);
+                    	CommandPanel.updateCommands(Commands.accuseCommands);
                     }else if(players.getTile(i).getRoom() != 10 && !valid && !questionBarrier) {
-                        CommandPanel.updateCommands(Commands.questionCommands);
+                    	CommandPanel.updateCommands(Commands.questionCommands);
                     }else {
-                        CommandPanel.updateCommands(Commands.endCommands);
+                    	CommandPanel.updateCommands(Commands.endCommands);
                     }
                 } while (!valid); //Their turn ends after they type the 'done' command
             }
@@ -575,11 +575,13 @@ public class Turn {
                     }
                 } else {
                     ui.displayString("Could not find the weapon:" + weapon
-                            + ", are you sure you spelled it correctly?");
+                            + ", are you sure you spelled it correctly?" + murderEnvelope.get(
+                            1).toString().replaceAll("\\s+", ""));
                 }
             } else {
                 ui.displayString("Could not find the token:" + name
-                        + ", are you sure you spelled it correctly?");
+                        + ", are you sure you spelled it correctly?" + murderEnvelope.get(
+                        1).toString().replaceAll("\\s+", ""));
             }
 
 
