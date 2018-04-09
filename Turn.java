@@ -178,10 +178,17 @@ public class Turn {
                         ui.displayString(
                                 "Whoops! Wrong command.\nType 'help' if you're unsure what to do.");
                     }
-                    
+
                     if(!valid) {
-                    	ui.displayString("Type another command");
-                    	CommandPanel.updateCommands(Commands.endCommands);
+                        ui.displayString("Type another command");
+                    }
+
+                    if(players.getTile(i).getRoom() == 10 && !valid) {
+                        CommandPanel.updateCommands(Commands.accuseCommands);
+                    }else if(players.getTile(i).getRoom() != 10 && !valid && !questionBarrier) {
+                        CommandPanel.updateCommands(Commands.questionCommands);
+                    }else {
+                        CommandPanel.updateCommands(Commands.endCommands);
                     }
                 } while (!valid); //Their turn ends after they type the 'done' command
             }
