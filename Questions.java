@@ -221,7 +221,7 @@ public class Questions implements Iterable<Question>, Iterator<Question> {
         ArrayList<Card> hand = toPlayer.getCards();
         try {
             for (Card x : hand) {
-                String xName = x.getName().replaceAll("\\s+", "");
+                String xName = x.getName().replaceAll("\\s+", "").toLowerCase();
                 JLabel cardLabel = CluedoUI.imageToResizedLabel(xName
                         + ".jpg", 90, 140);
                 cardsPanel.add(cardLabel, c);
