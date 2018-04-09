@@ -575,13 +575,11 @@ public class Turn {
                     }
                 } else {
                     ui.displayString("Could not find the weapon:" + weapon
-                            + ", are you sure you spelled it correctly?" + murderEnvelope.get(
-                            1).toString().replaceAll("\\s+", ""));
+                            + ", are you sure you spelled it correctly?");
                 }
             } else {
                 ui.displayString("Could not find the token:" + name
-                        + ", are you sure you spelled it correctly?" + murderEnvelope.get(
-                        1).toString().replaceAll("\\s+", ""));
+                        + ", are you sure you spelled it correctly?");
             }
 
 
@@ -590,7 +588,7 @@ public class Turn {
         {
             // Invalid format for input
             ui.displayString(
-                    "Uknown input format, make sure you it is in the following format: \n'accuse "
+                    "Unknown input format, make sure you it is in the following format: \n'accuse "
                             + "(name) (weapon) (room) without()!");
         }
 
