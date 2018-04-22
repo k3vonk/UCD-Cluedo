@@ -86,6 +86,7 @@ public class Bot1 implements BotAPI {
             }else{
                 System.out.println("I can't accuse now, I've already done it");
                 pathLeft = 0;
+                squaresMoved = 0;
                 hasAccused = false;
                 return "roll"; // or passage or anything else really
             }
@@ -93,24 +94,25 @@ public class Bot1 implements BotAPI {
             squaresMoved = 0;
             System.out.println("Ran out of moves");
             return "done";
-        } else {
+        }else{
             return "help";
         }
+
 
     }
 
     public String getMove() {
 
         Coordinates playerPosition = player.getToken().getPosition();
+        String randomRoom = Names.ROOM_NAMES[rand.nextInt(Names.ROOM_NAMES.length)];
 
         if (pathLeft == 0) {
             path = calculatePath(playerPosition,
-                    map.getRoom("Conservatory").getDoorCoordinates(0));
+                    map.getRoom(randomRoom).getDoorCoordinates(0));
             pathLeft += path.size();
         }
 
         if(path.size() == 0){
-
             // When the AI tries to go back into the room it is in.
             Coordinates up = map.getNewPosition(playerPosition, "u");
             Coordinates down = map.getNewPosition(playerPosition, "d");
