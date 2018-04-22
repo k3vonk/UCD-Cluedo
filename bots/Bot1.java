@@ -114,8 +114,7 @@ public class Bot1 implements BotAPI {
     private ArrayList<Coordinates> calculatePath(Coordinates s, Coordinates e) {
 
         BZAstar pathFinder = new BZAstar(24, 25);
-        ArrayList<Coordinates> path = pathFinder.calculateAStarNoTerrain(
-                player.getToken().getPosition(), map.getRoom("Conservatory").getDoorCoordinates(0));
+        ArrayList<Coordinates> path = pathFinder.calculateAStarNoTerrain(s, e);
         return path;
     }
 
