@@ -23,7 +23,6 @@ public class Bot1 implements BotAPI {
     private Dice dice;
     private Log log;
     private Deck deck;
-    private int diceTotal;
     private int squaresMoved = 0;
     private int pathLeft;
     Random rand = new Random();
@@ -31,6 +30,7 @@ public class Bot1 implements BotAPI {
     Boolean hasAccused = false;
     ArrayList<Coordinates> path;
 
+    private boolean hasRolled = false;
 
     public Bot1(Player player, PlayersInfo playersInfo, Map map, Dice dice, Log log, Deck deck) {
         this.player = player;
@@ -39,7 +39,6 @@ public class Bot1 implements BotAPI {
         this.dice = dice;
         this.log = log;
         this.deck = deck;
-        this.diceTotal = dice.getTotal();
     }
 
     public String getName() {
@@ -51,54 +50,37 @@ public class Bot1 implements BotAPI {
     }
 
     public String getCommand() {
-        //Roll dice
-    	/*if(diceTotal == -1) {
+       
+    	//Has the player rolled their dice for the start of the round
+    	if(!hasRolled) {
+    		//resets (start of turn)
+    		hasAccused = false;
+    		hasRolled = true;
+    		squaresMoved = 0;
     		return "roll";
-    	}//In corridor and has moves
-    	else if(map.isCorridor(player.getToken().getPosition()) && diceTotal > 0) {
-    		diceTotal--;
-    		//If walks into room diceTotal == 0;
-    		return getMove();
-    	}//In room and has moves (recently rolled)
-    	else if(!map.isCorridor(player.getToken().getPosition()) && diceTotal > 0) {
-    		//exit room or 
-    		//passage
-    	}//Recently entered a room
-    	else if(!map.isCorridor(player.getToken().getPosition()) && diceTotal == 0) {
-    		//just entered a room 
-    		//question
-    	}else if(false) { //Accusation room
-    		//Accuse
-    	}
-    	
-    	//Ending
-    	diceTotal = -1;
-        return "done";*/
-
-        if (map.isCorridor(player.getToken().getPosition()) && squaresMoved == 0) {
-            return "roll";
-        } else if (!map.isCorridor(player.getToken().getPosition())) {
-            if(!hasAccused) {
-                System.out.println("I'm in a room can accuse");
+    	}//Enters a room and questions
+    	else if(!map.isCorridor(player.getToken().getPosition()) && squaresMoved > 0) {
+    		if(!hasAccused) {
+    			System.out.println("I'm in a room can accuse");
                 // accuse
                 hasAccused = true;
-                return "done";
-            }else{
-                System.out.println("I can't accuse now, I've already done it");
-                pathLeft = 0;
-                squaresMoved = 0;
-                hasAccused = false;
-                return "roll"; // or passage or anything else really
-            }
-        } else if (squaresMoved == dice.getTotal()) {
-            squaresMoved = 0;
-            System.out.println("Ran out of moves");
-            return "done";
-        }else{
-            return "help";
-        }
-
-
+                return "question";
+    		}else { //Player already questioned, nothing left to do
+    			hasRolled = false;
+    			return "done";
+    		}
+    	}//In room just rolled, so he can leave the room or passage
+    	else if(!map.isCorridor(player.getToken().getPosition()) && squaresMoved == 0) {
+    		//passage
+    		//exit
+    		//(might need to incooperate to A*)
+    		hasRolled = false;
+    		return "done";
+    	}
+    	
+    	//resets
+    	hasRolled = false;
+    	return "done";
     }
 
     public String getMove() {
