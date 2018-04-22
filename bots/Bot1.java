@@ -16,6 +16,7 @@ public class Bot1 implements BotAPI {
     private Dice dice;
     private Log log;
     private Deck deck;
+    private int diceTotal;
 
     public Bot1 (Player player, PlayersInfo playersInfo, Map map, Dice dice, Log log, Deck deck) {
         this.player = player;
@@ -24,6 +25,7 @@ public class Bot1 implements BotAPI {
         this.dice = dice;
         this.log = log;
         this.deck = deck;
+        this.diceTotal = dice.getTotal();
     }
 
     public String getName() {
@@ -35,12 +37,33 @@ public class Bot1 implements BotAPI {
     }
 
     public String getCommand() {
-        // Add your code here
+        //Roll dice
+    	if(diceTotal == -1) {
+    		return "roll";
+    	}//In corridor and has moves
+    	else if(map.isCorridor(player.getToken().getPosition()) && diceTotal > 0) {
+    		diceTotal--;
+    		//If walks into room diceTotal == 0;
+    		return getMove();
+    	}//In room and has moves (recently rolled)
+    	else if(!map.isCorridor(player.getToken().getPosition()) && diceTotal > 0) {
+    		//exit room or 
+    		//passage
+    	}//Recently entered a room
+    	else if(!map.isCorridor(player.getToken().getPosition()) && diceTotal == 0) {
+    		//just entered a room 
+    		//question
+    	}else if(false) { //Accusation room
+    		//Accuse
+    	}
+    	
+    	//Ending
+    	diceTotal = -1;
         return "done";
     }
 
     public String getMove() {
-        // Add your code here
+       
         return "r";
     }
 
