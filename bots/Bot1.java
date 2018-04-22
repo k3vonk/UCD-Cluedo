@@ -24,10 +24,11 @@ public class Bot1 implements BotAPI {
     private Log log;
     private Deck deck;
     private int diceTotal;
-    private int squaresMoved;
+    private int squaresMoved = 0;
     private int pathLeft;
     Random rand = new Random();
     String mapDirections[] = {"u", "d", "l", "r"};
+    Boolean hasAccused = false;
     ArrayList<Coordinates> path;
 
 
@@ -74,18 +75,23 @@ public class Bot1 implements BotAPI {
     	diceTotal = -1;
         return "done";*/
 
-        if (squaresMoved == dice.getTotal()) {
-            squaresMoved = 0;
-            return "done";
-        }else if (map.isCorridor(player.getToken().getPosition())) {
+        if (map.isCorridor(player.getToken().getPosition()) && squaresMoved == 0) {
             return "roll";
-        } else if (!map.isCorridor(player.getToken().getPosition()) && dice.getTotal() > 0) {
-            //exit room or
-            //passage
-            return "done";
-        } else if (!map.isCorridor(player.getToken().getPosition()) && diceTotal == 0) {
-            //Accusation room
-            //Accuse
+        } else if (!map.isCorridor(player.getToken().getPosition())) {
+            if(!hasAccused) {
+                System.out.println("I'm in a room can accuse");
+                // accuse
+                hasAccused = true;
+                return "done";
+            }else{
+                System.out.println("I can't accuse now, I've already done it");
+                pathLeft = 0;
+                hasAccused = false;
+                return "roll"; // or passage or anything else really
+            }
+        } else if (squaresMoved == dice.getTotal()) {
+            squaresMoved = 0;
+            System.out.println("Ran out of moves");
             return "done";
         } else {
             return "help";
@@ -95,13 +101,37 @@ public class Bot1 implements BotAPI {
 
     public String getMove() {
 
+        Coordinates playerPosition = player.getToken().getPosition();
+
         if (pathLeft == 0) {
-            path = calculatePath(player.getToken().getPosition(),
+            path = calculatePath(playerPosition,
                     map.getRoom("Conservatory").getDoorCoordinates(0));
             pathLeft += path.size();
         }
 
-        String randMove = getDirection(player.getToken().getPosition(),
+        if(path.size() == 0){
+
+            // When the AI tries to go back into the room it is in.
+            Coordinates up = map.getNewPosition(playerPosition, "u");
+            Coordinates down = map.getNewPosition(playerPosition, "d");
+            Coordinates left = map.getNewPosition(playerPosition, "l");
+            Coordinates right = map.getNewPosition(playerPosition, "r");
+
+            if(map.isDoor(up, playerPosition )){
+                path.add(playerPosition);
+                path.add(up);
+            }else if(map.isDoor(down, playerPosition)){
+                path.add(playerPosition);
+                path.add(down);
+            }else if(map.isDoor(left, playerPosition)){
+                path.add(playerPosition);
+                path.add(left);
+            }else if(map.isDoor(right, playerPosition)){
+                path.add(playerPosition);
+                path.add(right);
+            }
+        }
+        String randMove = getDirection(playerPosition,
                 path.remove(path.size() - 1));
         System.out.println("Direction:" + randMove);
         pathLeft--;
