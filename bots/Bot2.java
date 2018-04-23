@@ -70,17 +70,12 @@ public class Bot2 implements BotAPI {
         }
 
 
-        if (player.getToken().isInRoom() && squaresMoved == 0) {
+        if (player.getToken().isInRoom() && !hasRolled) {
             if (player.getToken().getRoom().hasPassage()) {
                 if (goToRoom.equals(
                         player.getToken().getRoom().getPassageDestination().toString())) {
-                    try {
-                        Thread.sleep(5000);
-                    }catch (Exception ex){
-                        System.out.println(ex);
-                    }
+                    hasRolled = true;
                     return "passage";
-
                 }
             }
         }
