@@ -29,6 +29,7 @@ public class Bot2 implements BotAPI {
     private String mapDirections[] = {"u", "d", "l", "r"};
     private Boolean hasAccused = false;
     private ArrayList<Coordinates> path;
+    private String goToRoom = null;
     private boolean accuse = false;
     private boolean hasRolled = false;
     private int switchX = 1;
@@ -55,7 +56,35 @@ public class Bot2 implements BotAPI {
 
         if (player.getToken().isInRoom()) {
             pathLeft = 0;
+            goToRoom = null;
         }
+
+        if (goToRoom == null) {
+            if (getUnseenWeapons().size() > 1 && getUnseenTokens().size() > 1) {
+                goToRoom = getRoomCard();
+            } else if (accuse) {
+                goToRoom = "Cellar";
+            } else {
+                goToRoom = getRandomRoomCard();
+            }
+        }
+
+
+        if (player.getToken().isInRoom() && squaresMoved == 0) {
+            if (player.getToken().getRoom().hasPassage()) {
+                if (goToRoom.equals(
+                        player.getToken().getRoom().getPassageDestination().toString())) {
+                    try {
+                        Thread.sleep(5000);
+                    }catch (Exception ex){
+                        System.out.println(ex);
+                    }
+                    return "passage";
+
+                }
+            }
+        }
+
 
         if (getUnseenRooms().size() == 1 && getUnseenTokens().size() == 1
                 && getUnseenWeapons().size() == 1) {
@@ -163,17 +192,7 @@ public class Bot2 implements BotAPI {
 
 
         Coordinates playerPosition = player.getToken().getPosition();
-        String goToRoom;
         if (pathLeft == 0) {
-
-            if (getUnseenWeapons().size() > 1 && getUnseenTokens().size() > 1) {
-                goToRoom = getRoomCard();
-            } else if (accuse) {
-                goToRoom = "Cellar";
-            } else{
-                goToRoom = getRandomRoomCard();
-            }
-
             System.out.println(player.getName() + "is moving towards room: " + goToRoom);
             path = calculatePath(player.getToken().getPosition(),
                     map.getRoom(goToRoom).getDoorCoordinates(0));
@@ -294,7 +313,7 @@ public class Bot2 implements BotAPI {
         // Then returns suspect, then weapon rather arbitrarily.
         boolean cardFound = false;
         String bestChoice = matchingCards.get().toString();
-        for(String room: Names.ROOM_NAMES) {
+        for (String room : Names.ROOM_NAMES) {
             for (Card card : matchingCards) {
                 if (card.hasName(room)) {
                     bestChoice = card.toString();
@@ -302,8 +321,8 @@ public class Bot2 implements BotAPI {
                 }
             }
         }
-        if(!cardFound){
-            for(String suspect: Names.SUSPECT_NAMES) {
+        if (!cardFound) {
+            for (String suspect : Names.SUSPECT_NAMES) {
                 for (Card card : matchingCards) {
                     if (card.hasName(suspect)) {
                         bestChoice = card.toString();
@@ -312,8 +331,8 @@ public class Bot2 implements BotAPI {
                 }
             }
         }
-        if(!cardFound){
-            for(String weapon: Names.WEAPON_NAMES) {
+        if (!cardFound) {
+            for (String weapon : Names.WEAPON_NAMES) {
                 for (Card card : matchingCards) {
                     if (card.hasName(weapon)) {
                         bestChoice = card.toString();
@@ -326,18 +345,28 @@ public class Bot2 implements BotAPI {
 
     public void notifyResponse(Log response) {
         // Add your code here
+
+
     }
 
     public void notifyPlayerName(String playerName) {
         // Add your code here
+        System.out.println("PLAYER NAME:" + playerName);
+
+
     }
 
     public void notifyTurnOver(String playerName, String position) {
         // Add your code here
+        System.out.println(playerName + " " + position);
+
     }
 
     public void notifyQuery(String playerName, String query) {
         // Add your code here
+        System.out.println(playerName + query);
+
+
     }
 
     public void notifyReply(String playerName, boolean cardShown) {
@@ -392,9 +421,14 @@ public class Bot2 implements BotAPI {
 
                 Collections.sort(openList, this.fComparator);
                 currentNode = openList.get(0);
-
                 if (currentNode.point.equals(destNode.point)) {
                     return this.calculatePath(destNode);
+                }
+
+                if (!map.isCorridor(currentNode.point) && map.getRoom(
+                        currentNode.point).toString().equals(
+                        map.getRoom(destNode.point).toString())) {
+                    return this.calculatePath(currentNode);
                 }
 
                 openList.remove(currentNode);
@@ -407,9 +441,9 @@ public class Bot2 implements BotAPI {
                     }
                     AStarNode adjNode = nodes.get(
                             "(" + adjPoint.getCol() + "," + adjPoint.getRow() + ")");
-                        if (!map.isValidMove(currentNode.point, direction)) {
-                            continue;
-                        }
+                    if (!map.isValidMove(currentNode.point, direction)) {
+                        continue;
+                    }
 
                     if (!closedList.contains(adjNode)) {
                         if (!openList.contains(adjNode)) {
