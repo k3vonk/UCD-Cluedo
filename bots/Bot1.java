@@ -29,7 +29,6 @@ public class Bot1 implements BotAPI {
     String mapDirections[] = {"u", "d", "l", "r"};
     Boolean hasAccused = false;
     ArrayList<Coordinates> path;
-    private ArrayList<Card> shownCards = new ArrayList<>();
 
     private boolean hasRolled = false;
     private int switchX = 1;

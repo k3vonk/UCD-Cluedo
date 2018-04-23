@@ -25,13 +25,14 @@ public class Bot2 implements BotAPI {
     private Deck deck;
     private int squaresMoved = 0;
     private int pathLeft;
-    Random rand = new Random();
-    String mapDirections[] = {"u", "d", "l", "r"};
-    Boolean hasAccused = false;
-    ArrayList<Coordinates> path;
+    private Random rand = new Random();
+    private String mapDirections[] = {"u", "d", "l", "r"};
+    private Boolean hasAccused = false;
+    private ArrayList<Coordinates> path;
     private boolean accuse = false;
     private boolean hasRolled = false;
     private int switchX = 1;
+
 
     public Bot2(Player player, PlayersInfo playersInfo, Map map, Dice dice, Log log, Deck deck) {
         this.player = player;
@@ -286,8 +287,39 @@ public class Bot2 implements BotAPI {
     }
 
     public String getCard(Cards matchingCards) {
-        // Add your code here
-        return matchingCards.get().toString();
+
+        // Basic strategy for getCard. Returns room if possible since they are harder to access.
+        // Then returns suspect, then weapon rather arbitrarily.
+        boolean cardFound = false;
+        String bestChoice = matchingCards.get().toString();
+        for(String room: Names.ROOM_NAMES) {
+            for (Card card : matchingCards) {
+                if (card.hasName(room)) {
+                    bestChoice = card.toString();
+                    cardFound = true;
+                }
+            }
+        }
+        if(!cardFound){
+            for(String suspect: Names.SUSPECT_NAMES) {
+                for (Card card : matchingCards) {
+                    if (card.hasName(suspect)) {
+                        bestChoice = card.toString();
+                        cardFound = true;
+                    }
+                }
+            }
+        }
+        if(!cardFound){
+            for(String weapon: Names.WEAPON_NAMES) {
+                for (Card card : matchingCards) {
+                    if (card.hasName(weapon)) {
+                        bestChoice = card.toString();
+                    }
+                }
+            }
+        }
+        return bestChoice;
     }
 
     public void notifyResponse(Log response) {
@@ -373,9 +405,9 @@ public class Bot2 implements BotAPI {
                     }
                     AStarNode adjNode = nodes.get(
                             "(" + adjPoint.getCol() + "," + adjPoint.getRow() + ")");
-                    if (!map.isValidMove(currentNode.point, direction)) {
-                        continue;
-                    }
+                        if (!map.isValidMove(currentNode.point, direction)) {
+                            continue;
+                        }
 
                     if (!closedList.contains(adjNode)) {
                         if (!openList.contains(adjNode)) {
