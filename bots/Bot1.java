@@ -226,7 +226,42 @@ public class Bot1 implements BotAPI {
     }
 
     public String getWeapon() {
-    	return Names.WEAPON_NAMES[0];
+	String weapon = Names.WEAPON_NAMES[0]; //Default
+    	
+    	//Ask random cards as long as its not seen
+    	do {
+    		do {
+    			weapon = Names.WEAPON_NAMES[rand.nextInt(Names.WEAPON_NAMES.length)];
+	    
+	    		if(switchX == 0 && !player.hasSeen(weapon) && !player.hasCard(weapon)) {
+	    			switchX = 1;
+	    		}
+    		}while(switchX == 0);
+    	}while(player.hasSeen(weapon));
+    	/*
+    	 * If a player bluffed, they can't bluff next turn
+    	 * switchX = 1 (allow passage)
+    	 * switchX = 0 (block)
+    	 */
+    	//If you bluffed last turn, you cant bluff again
+    	if(player.hasCard(weapon)) {
+    		System.out.println("Just bluffed haha [weapon]");
+    		switchX = 0;
+    	}
+    	else{
+    		switchX = 1;
+    	}
+    	
+    	//if he is in accusation room (Needs changing maybe a array to store final answers)
+    	if(player.getToken().getRoom().equals(map.getRoom("Cellar"))) {
+    		for(String token: Names.WEAPON_NAMES) {
+    			if(!player.hasCard(token) && !player.hasSeen(token)) {
+    				weapon = token;
+    				break;
+    			}
+    		}
+    	}
+        return weapon;
     }
 
     public String getRoom() {
@@ -236,7 +271,22 @@ public class Bot1 implements BotAPI {
 
     public String getDoor() {
         // Add your code here
-        return "1";
+    	/*int i = 1;
+    	int doorNumber = 0;
+    	ArrayList<Coordinates> doorPath = calculatePath(player.getToken().getRoom().getDoorCoordinates(0), path.get(path.size()));
+    	ArrayList<Coordinates> tmp = new ArrayList<Coordinates>();
+    	
+    	for(; i < player.getToken().getRoom().getNumberOfDoors(); i++) {
+    		tmp = (calculatePath(player.getToken().getRoom().getDoorCoordinates(i), path.get(0)));
+    	
+    		if(doorPath.size() > tmp.size()) {
+    			doorPath = tmp;
+    			doorNumber = i;
+    		}
+    	}
+       // return Integer.toString(i);
+    	*/
+    	return "1";
     }
 
     public String getCard(Cards matchingCards) {

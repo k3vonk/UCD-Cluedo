@@ -263,14 +263,16 @@ public class Bot2 implements BotAPI {
         }
 
         //Ask random cards as long as its not seen
-        do {
-            suspect = Names.SUSPECT_NAMES[rand.nextInt(Names.SUSPECT_NAMES.length)];
-
-            //If last turn he bluffed, next card is not a bluff
-            if (!player.hasCard(suspect) && switchX == 0) {
-                switchX = 1;
-            }
-        } while (player.hasSeen(suspect) && switchX != 0);
+      //Ask random cards as long as its not seen
+    	do {
+    		do {
+	    		suspect = Names.SUSPECT_NAMES[rand.nextInt(Names.SUSPECT_NAMES.length)];
+	    
+	    		if(switchX == 0 && !player.hasSeen(suspect) && !player.hasCard(suspect)) {
+	    			switchX = 1;
+	    		}
+    		}while(switchX == 0);
+    	}while(player.hasSeen(suspect));
 
         //If you bluffed last turn, you cant bluff again
         if (player.hasCard(suspect)) {
