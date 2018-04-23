@@ -32,6 +32,7 @@ public class Bot1 implements BotAPI {
 
     private boolean hasRolled = false;
     private int switchX = 1;
+    private int switchWeapon = 1;
 
     public Bot1(Player player, PlayersInfo playersInfo, Map map, Dice dice, Log log, Deck deck) {
         this.player = player;
@@ -154,24 +155,29 @@ public class Bot1 implements BotAPI {
     	
     	//Ask random cards as long as its not seen
     	do {
-    		suspect = Names.SUSPECT_NAMES[rand.nextInt(Names.SUSPECT_NAMES.length)];
-    		
-    		//If last turn he bluffed, next card is not a bluff
-    		if(!player.hasCard(suspect) && switchX == 0) {
-    			switchX = 1;
-    		}
-    	}while(player.hasSeen(suspect) && switchX != 0);
-    	
+    		do {
+	    		suspect = Names.SUSPECT_NAMES[rand.nextInt(Names.SUSPECT_NAMES.length)];
+	    
+	    		if(switchX == 0 && !player.hasSeen(suspect) && !player.hasCard(suspect)) {
+	    			switchX = 1;
+	    		}
+    		}while(switchX == 0);
+    	}while(player.hasSeen(suspect));
+    	/*
+    	 * If a player bluffed, they can't bluff next turn
+    	 * switchX = 1 (allow passage)
+    	 * switchX = 0 (block)
+    	 */
     	//If you bluffed last turn, you cant bluff again
     	if(player.hasCard(suspect)) {
-    		System.out.println("Just bluffed haha");
+    		System.out.println("Just bluffed haha [token]");
     		switchX = 0;
     	}
     	else{
     		switchX = 1;
     	}
     	
-    	//if he is in accusation room
+    	//if he is in accusation room (Needs changing maybe a array to store final answers)
     	if(player.getToken().getRoom().equals(map.getRoom("Cellar"))) {
     		for(String token: Names.SUSPECT_NAMES) {
     			if(!player.hasCard(token) && !player.hasSeen(token)) {
@@ -184,8 +190,7 @@ public class Bot1 implements BotAPI {
     }
 
     public String getWeapon() {
-        // Add your code here
-        return Names.WEAPON_NAMES[0];
+    	return Names.WEAPON_NAMES[0];
     }
 
     public String getRoom() {
