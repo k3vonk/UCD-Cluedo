@@ -65,9 +65,11 @@ public class Bot1 implements BotAPI {
     			System.out.println("I'm in a room can accuse");
                 // accuse
                 hasAccused = true;
-                return "question";
+                return "done";
+                //return "question";
     		}else { //Player already questioned, nothing left to do
     			hasRolled = false;
+    			pathLeft = 0;
     			return "done";
     		}
     	}//In room just rolled, so he can leave the room or passage
@@ -75,6 +77,7 @@ public class Bot1 implements BotAPI {
     		//passage
     		//exit
     		//(might need to incooperate to A*)
+            pathLeft = 0;
     		hasRolled = false;
     		return "done";
     	}
@@ -87,9 +90,10 @@ public class Bot1 implements BotAPI {
     public String getMove() {
 
         Coordinates playerPosition = player.getToken().getPosition();
-        String randomRoom = Names.ROOM_NAMES[rand.nextInt(Names.ROOM_NAMES.length)];
 
         if (pathLeft == 0) {
+            String randomRoom = Names.ROOM_CARD_NAMES[rand.nextInt(Names.ROOM_CARD_NAMES.length)];
+            System.out.println("Next room: "+ randomRoom);
             path = calculatePath(playerPosition,
                     map.getRoom(randomRoom).getDoorCoordinates(0));
             pathLeft += path.size();
