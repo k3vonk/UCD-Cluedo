@@ -324,18 +324,28 @@ public class Bot2 implements BotAPI {
 
     public void notifyResponse(Log response) {
         // Add your code here
+
+
     }
 
     public void notifyPlayerName(String playerName) {
         // Add your code here
+        System.out.println("PLAYER NAME:" + playerName);
+
+
     }
 
     public void notifyTurnOver(String playerName, String position) {
         // Add your code here
+        System.out.println(playerName + " " + position);
+
     }
 
     public void notifyQuery(String playerName, String query) {
         // Add your code here
+        System.out.println(playerName + query);
+
+
     }
 
     public void notifyReply(String playerName, boolean cardShown) {
@@ -390,9 +400,12 @@ public class Bot2 implements BotAPI {
 
                 Collections.sort(openList, this.fComparator);
                 currentNode = openList.get(0);
-
                 if (currentNode.point.equals(destNode.point)) {
                     return this.calculatePath(destNode);
+                }
+
+                if(!map.isCorridor(currentNode.point) && map.getRoom(currentNode.point).toString().equals(map.getRoom(destNode.point).toString())){
+                    return this.calculatePath(currentNode);
                 }
 
                 openList.remove(currentNode);

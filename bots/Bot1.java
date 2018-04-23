@@ -348,6 +348,11 @@ public class Bot1 implements BotAPI {
                     return this.calculatePath(destNode);
                 }
 
+                if(!map.isCorridor(currentNode.point) && map.getRoom(currentNode.point).toString().equals(map.getRoom(destNode.point).toString())){
+                    return this.calculatePath(currentNode);
+                }
+
+
                 openList.remove(currentNode);
                 closedList.add(currentNode);
 
