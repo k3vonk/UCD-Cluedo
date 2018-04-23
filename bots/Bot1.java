@@ -52,7 +52,10 @@ public class Bot1 implements BotAPI {
     }
 
     public String getCommand() {
-       
+
+        if(player.getToken().isInRoom()){
+            pathLeft = 0;
+        }
     	//Has the player rolled their dice for the start of the round
     	if(!hasRolled) {
     		//resets (start of turn)
@@ -83,7 +86,6 @@ public class Bot1 implements BotAPI {
     	}
     	
     	//resets
-        pathLeft = 0;
     	hasRolled = false;
     	return "done";
     }
