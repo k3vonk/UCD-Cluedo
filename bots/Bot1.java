@@ -90,7 +90,7 @@ public class Bot1 implements BotAPI {
     public ArrayList<String> getUnseenRooms(){
         ArrayList<String> unseenRooms = new ArrayList<>();
         for(String room: Names.ROOM_CARD_NAMES){
-            if(!player.hasCard(room) && player.hasSeen(room)){
+            if(!player.hasCard(room) && !player.hasSeen(room)){
                 unseenRooms.add(room);
             }
         }
@@ -100,7 +100,7 @@ public class Bot1 implements BotAPI {
     public ArrayList<String> getUnseenTokens(){
         ArrayList<String> unseenTokens = new ArrayList<>();
         for(String token: Names.SUSPECT_NAMES){
-            if(!player.hasCard(token) && player.hasSeen(token)){
+            if(!player.hasCard(token) && !player.hasSeen(token)){
                 unseenTokens.add(token);
             }
         }
@@ -110,7 +110,7 @@ public class Bot1 implements BotAPI {
     public ArrayList<String> getUnseenWeapons(){
         ArrayList<String> unseenWeapons = new ArrayList<>();
         for(String weapon: Names.WEAPON_NAMES){
-            if(!player.hasCard(weapon) && player.hasSeen(weapon)){
+            if(!player.hasCard(weapon) && !player.hasSeen(weapon)){
                 unseenWeapons.add(weapon);
             }
         }
