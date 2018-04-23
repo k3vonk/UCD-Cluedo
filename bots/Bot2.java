@@ -70,7 +70,7 @@ public class Bot2 implements BotAPI {
         }
 
 
-        if (player.getToken().isInRoom()) {
+        if (player.getToken().isInRoom() && squaresMoved == 0) {
             if (player.getToken().getRoom().hasPassage()) {
                 if (goToRoom.equals(
                         player.getToken().getRoom().getPassageDestination().toString())) {
