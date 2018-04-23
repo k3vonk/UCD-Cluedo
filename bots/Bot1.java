@@ -150,14 +150,16 @@ public class Bot1 implements BotAPI {
     }
 
     public String getSuspect() {
-        // Add your code here
-    	String suspect = Names.SUSPECT_NAMES[0];
+    	String suspect = Names.SUSPECT_NAMES[0]; //Default
     	
     	//Ask random cards as long as its not seen
     	do {
     		suspect = Names.SUSPECT_NAMES[rand.nextInt(Names.SUSPECT_NAMES.length)];
     		
-    		
+    		//If last turn he bluffed, next card is not a bluff
+    		if(!player.hasCard(suspect) && switchX == 0) {
+    			switchX = 1;
+    		}
     	}while(player.hasSeen(suspect) && switchX != 0);
     	
     	//If you bluffed last turn, you cant bluff again
@@ -169,6 +171,15 @@ public class Bot1 implements BotAPI {
     		switchX = 1;
     	}
     	
+    	//if he is in accusation room
+    	if(player.getToken().getRoom().equals(map.getRoom("Cellar"))) {
+    		for(String token: Names.SUSPECT_NAMES) {
+    			if(!player.hasCard(token) && !player.hasSeen(token)) {
+    				suspect = token;
+    				break;
+    			}
+    		}
+    	}
         return suspect;
     }
 
