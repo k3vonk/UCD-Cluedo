@@ -31,6 +31,7 @@ public class Bot1 implements BotAPI {
     ArrayList<Coordinates> path;
 
     private boolean hasRolled = false;
+    private int switchX = 1;
 
     public Bot1(Player player, PlayersInfo playersInfo, Map map, Dice dice, Log log, Deck deck) {
         this.player = player;
@@ -150,7 +151,25 @@ public class Bot1 implements BotAPI {
 
     public String getSuspect() {
         // Add your code here
-        return Names.SUSPECT_NAMES[0];
+    	String suspect = Names.SUSPECT_NAMES[0];
+    	
+    	//Ask random cards as long as its not seen
+    	do {
+    		suspect = Names.SUSPECT_NAMES[rand.nextInt(Names.SUSPECT_NAMES.length)];
+    		
+    		
+    	}while(player.hasSeen(suspect) && switchX != 0);
+    	
+    	//If you bluffed last turn, you cant bluff again
+    	if(player.hasCard(suspect)) {
+    		System.out.println("Just bluffed haha");
+    		switchX = 0;
+    	}
+    	else{
+    		switchX = 1;
+    	}
+    	
+        return suspect;
     }
 
     public String getWeapon() {
