@@ -74,11 +74,6 @@ public class Bot2 implements BotAPI {
             if (player.getToken().getRoom().hasPassage()) {
                 if (goToRoom.equals(
                         player.getToken().getRoom().getPassageDestination().toString())) {
-                    try {
-                        Thread.sleep(5000);
-                    }catch (Exception ex){
-                        System.out.println(ex);
-                    }
                     hasRolled = true;
                     return "passage";
                 }
