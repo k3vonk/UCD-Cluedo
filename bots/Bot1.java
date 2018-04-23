@@ -29,6 +29,7 @@ public class Bot1 implements BotAPI {
     String mapDirections[] = {"u", "d", "l", "r"};
     Boolean hasAccused = false;
     ArrayList<Coordinates> path;
+    private ArrayList<Card> shownCards = new ArrayList<>();
 
     private boolean hasRolled = false;
     private int switchX = 1;
@@ -72,7 +73,6 @@ public class Bot1 implements BotAPI {
                 return "question";
     		}else { //Player already questioned, nothing left to do
     			hasRolled = false;
-    			pathLeft = 0;
     			return "done";
     		}
     	}//In room just rolled, so he can leave the room or passage
@@ -80,7 +80,6 @@ public class Bot1 implements BotAPI {
     		//passage
     		//exit
     		//(might need to incooperate to A*)
-            pathLeft = 0;
     		hasRolled = false;
     		return "done";
     	}
@@ -243,6 +242,13 @@ public class Bot1 implements BotAPI {
 
     public String getCard(Cards matchingCards) {
         // Add your code here
+        for(Card card: matchingCards){
+            if(shownCards.contains(card)){
+                System.exit(23);
+                return card.toString();
+            }
+        }
+        shownCards.add(matchingCards.get());
         return matchingCards.get().toString();
     }
 
