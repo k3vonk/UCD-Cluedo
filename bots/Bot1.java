@@ -83,6 +83,7 @@ public class Bot1 implements BotAPI {
     	}
     	
     	//resets
+        pathLeft = 0;
     	hasRolled = false;
     	return "done";
     }
@@ -123,8 +124,8 @@ public class Bot1 implements BotAPI {
 
         if (pathLeft == 0) {
             String randomRoom = Names.ROOM_CARD_NAMES[rand.nextInt(Names.ROOM_CARD_NAMES.length)];
-            System.out.println("Next room: "+ randomRoom);
-            path = calculatePath(playerPosition,
+            System.out.println(player.getName() + "is moving towards room: " + randomRoom);
+            path = calculatePath(player.getToken().getPosition(),
                     map.getRoom(randomRoom).getDoorCoordinates(0));
             pathLeft += path.size();
         }
@@ -149,8 +150,10 @@ public class Bot1 implements BotAPI {
                 path.add(playerPosition);
                 path.add(right);
             }
+
+            System.out.println("Path: " + path);
         }
-        String randMove = getDirection(playerPosition,
+        String randMove = getDirection(player.getToken().getPosition(),
                 path.remove(path.size() - 1));
         System.out.println("Direction:" + randMove);
         pathLeft--;
