@@ -66,8 +66,7 @@ public class Bot1 implements BotAPI {
     			System.out.println("I'm in a room can accuse");
                 // accuse
                 hasAccused = true;
-                return "done";
-                //return "question";
+                return "question";
     		}else { //Player already questioned, nothing left to do
     			hasRolled = false;
     			pathLeft = 0;
@@ -86,6 +85,36 @@ public class Bot1 implements BotAPI {
     	//resets
     	hasRolled = false;
     	return "done";
+    }
+
+    public ArrayList<String> getUnseenRooms(){
+        ArrayList<String> unseenRooms = new ArrayList<>();
+        for(String room: Names.ROOM_CARD_NAMES){
+            if(!player.hasCard(room) && player.hasSeen(room)){
+                unseenRooms.add(room);
+            }
+        }
+        return unseenRooms;
+    }
+
+    public ArrayList<String> getUnseenTokens(){
+        ArrayList<String> unseenTokens = new ArrayList<>();
+        for(String token: Names.SUSPECT_NAMES){
+            if(!player.hasCard(token) && player.hasSeen(token)){
+                unseenTokens.add(token);
+            }
+        }
+        return unseenTokens;
+    }
+
+    public ArrayList<String> getUnseenWeapons(){
+        ArrayList<String> unseenWeapons = new ArrayList<>();
+        for(String weapon: Names.WEAPON_NAMES){
+            if(!player.hasCard(weapon) && player.hasSeen(weapon)){
+                unseenWeapons.add(weapon);
+            }
+        }
+        return unseenWeapons;
     }
 
     public String getMove() {
