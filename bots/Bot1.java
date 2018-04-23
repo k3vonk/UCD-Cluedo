@@ -241,15 +241,39 @@ public class Bot1 implements BotAPI {
     }
 
     public String getCard(Cards matchingCards) {
-        // Add your code here
-        for(Card card: matchingCards){
-            if(shownCards.contains(card)){
-                System.exit(23);
-                return card.toString();
+
+        // Basic strategy for getCard. Returns room if possible since they are harder to access.
+        // Then returns suspect, then weapon rather arbitrarily.
+        boolean cardFound = false;
+        String bestChoice = matchingCards.get().toString();
+        for(String room: Names.ROOM_NAMES) {
+            for (Card card : matchingCards) {
+                if (card.hasName(room)) {
+                    bestChoice = card.toString();
+                    cardFound = true;
+                }
             }
         }
-        shownCards.add(matchingCards.get());
-        return matchingCards.get().toString();
+        if(!cardFound){
+            for(String suspect: Names.SUSPECT_NAMES) {
+                for (Card card : matchingCards) {
+                    if (card.hasName(suspect)) {
+                        bestChoice = card.toString();
+                        cardFound = true;
+                    }
+                }
+            }
+        }
+        if(!cardFound){
+            for(String weapon: Names.WEAPON_NAMES) {
+                for (Card card : matchingCards) {
+                    if (card.hasName(weapon)) {
+                        bestChoice = card.toString();
+                    }
+                }
+            }
+        }
+        return bestChoice;
     }
 
     public void notifyResponse(Log response) {
