@@ -256,20 +256,17 @@ public class Bot1 implements BotAPI {
     }
 
     public String getCard(Cards matchingCards) {
-
-        // Basic strategy for getCard. Returns room if possible since they are harder to access.
-        // Then returns suspect, then weapon rather arbitrarily.
+        // Basic strategy for getCard. Returns not a room if possible since they are harder to access.
         boolean cardFound = false;
         String bestChoice = matchingCards.get().toString();
-        for (String room : Names.ROOM_NAMES) {
+        for (String weapon : Names.WEAPON_NAMES) {
             for (Card card : matchingCards) {
-                if (card.hasName(room)) {
+                if (card.hasName(weapon)) {
                     bestChoice = card.toString();
                     cardFound = true;
                 }
             }
-        }
-        if (!cardFound) {
+        }if (!cardFound) {
             for (String suspect : Names.SUSPECT_NAMES) {
                 for (Card card : matchingCards) {
                     if (card.hasName(suspect)) {
@@ -279,15 +276,16 @@ public class Bot1 implements BotAPI {
                 }
             }
         }
-        if (!cardFound) {
-            for (String weapon : Names.WEAPON_NAMES) {
+        if (!cardFound){
+            for (String room : Names.ROOM_NAMES) {
                 for (Card card : matchingCards) {
-                    if (card.hasName(weapon)) {
+                    if (card.hasName(room)) {
                         bestChoice = card.toString();
-                    }
                 }
             }
         }
+    }
+
         return bestChoice;
     }
     

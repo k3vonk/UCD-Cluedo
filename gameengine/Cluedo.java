@@ -12,7 +12,7 @@ public class Cluedo {
 
     private static final String[] ALL_BOT_NAMES = {"Bot"};
     private static final int NUM_PLAYERS = 3;
-    private static final int DELAY = 10000;  // in milliseconds
+    private static final int DELAY = 0000;  // in milliseconds
 
     private final Tokens tokens  = new Tokens();
     private final Players players = new Players();
