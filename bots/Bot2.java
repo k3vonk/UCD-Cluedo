@@ -2,6 +2,7 @@ package bots;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -87,7 +88,6 @@ public class Bot2 implements BotAPI {
         }
 
 
-
         if (!log.isEmpty()) {
             int count = 0;
             ArrayList<String> tmp = new ArrayList<>();
@@ -98,7 +98,6 @@ public class Bot2 implements BotAPI {
             }
 
             while (tmp.size() != count - logSizeCounter) {
-                System.out.println(tmp.size() + " " + (count - logSizeCounter));
                 tmp.remove(0);
             }
 
@@ -127,9 +126,10 @@ public class Bot2 implements BotAPI {
         if (player.getToken().isInRoom() && !hasRolled) {
             if (player.getToken().getRoom().hasPassage()) {
                 if (goToRoom.equals(
-                        player.getToken().getRoom().getPassageDestination().toString())) {
-                        //hasRolled = true;
-                        return "passage";
+                        player.getToken().getRoom().getPassageDestination())) {
+                    //hasRolled = true;
+                    JOptionPane.showMessageDialog(null, "used passage");
+                    return "passage";
                 }
             }
         }
@@ -196,6 +196,10 @@ public class Bot2 implements BotAPI {
                 unseenRooms.add(room);
             }
         }
+
+        if (unseenRooms.size() == 0) {
+            System.exit(39);
+        }
         return unseenRooms;
     }
 
@@ -212,8 +216,20 @@ public class Bot2 implements BotAPI {
             }
         }
         if (unseenTokens.size() == 0) {
-            System.out.println(found[0]);
-            System.exit(5);
+
+            System.out.println("Player's Cards:");
+            for (Card c : player.getCards()) {
+                System.out.println(c.toString());
+            }
+            System.out.println("All of em");
+            for (String token : Names.SUSPECT_NAMES) {
+                System.out.println(
+                        token + " hasseen?" + hasSeen(token) + " playerseen?" + player.hasSeen(
+                                token) + " hascard?" + player.hasCard(token));
+            }
+            System.out.println("Private seen:");
+            System.out.println(privateSeen);
+            System.exit(29);
         }
         return unseenTokens;
     }
@@ -228,6 +244,9 @@ public class Bot2 implements BotAPI {
             if (!player.hasCard(weapon) && !hasSeen(weapon)) {
                 unseenWeapons.add(weapon);
             }
+        }
+        if (unseenWeapons.size() == 0) {
+            System.exit(19);
         }
         return unseenWeapons;
     }
@@ -250,89 +269,150 @@ public class Bot2 implements BotAPI {
                     String user = logx.get(z).split(" ", 2)[0];
                     System.out.println(user + "XD" + token + "xd" + weapon + "XD" + room + "XD");
                     learn(user, token, weapon, room);
+                } else {
+                    System.out.print(logx.get(z));
+                    String token = logx.get(i).split("with", 2)[0].trim();
+                    token = token.split("about", 2)[1].trim();
+                    String rest = logx.get(i).split("with the ", 2)[1];
+                    String room = rest.split("in the", 2)[1];
+                    room = room.substring(1, room.length() - 1);
+                    String weapon = rest.split(" in", 2)[0];
+                    String user = logx.get(z).split(" ", 2)[0];
+                    System.out.println(user + "XD" + token + "xd" + weapon + "XD" + room + "XD");
+                    System.out.println(user + "Doesnt have :" + token + weapon + room);
+                    removeGuess(user, token, weapon, room);
+                }
+
+            }
+        }
+    }
+
+
+    public void removeGuess(String user, String token, String weapon, String room){
+        if(!user.equals(player.getName())) {
+            if (guessGame.get(user).get(token) != null) {
+                if (guessGame.get(user).get(token).size() != 0) {
+                    guessGame.get(user).put(token, new ArrayList<Integer>());
+                }
+            }
+
+            if (guessGame.get(user).get(weapon) != null) {
+                if (guessGame.get(user).get(weapon).size() != 0) {
+                    guessGame.get(user).put(weapon, new ArrayList<Integer>());
+                }
+            }
+
+            if (guessGame.get(user).get(weapon) != null) {
+                if (guessGame.get(user).get(weapon).size() != 0) {
+                    guessGame.get(user).put(weapon, new ArrayList<Integer>());
                 }
             }
         }
+
+        reloadGuessMap();
     }
 
     private void learn(String user, String token, String weapon, String room) {
 
         if (!user.equals(player.getName())) {
             int currentToken = answerCounter.get(user) + 1;
-            System.out.println(currentToken + "<<< CURREN TTOKENNNNNN");
             int counter = 0;
             String singleValue = "";
 
 
-                if (!player.hasCard(token)) {
+            if (!player.hasCard(token)) {
+                if (guessGame.get(user).get(token) != null && guessGame.get(user).get(token).size()
+                        == 0) {
+                } else {
                     ArrayList<Integer> privateList = new ArrayList<>();
-                    if(guessGame.get(user).get(token) != null) {
+                    if (guessGame.get(user).get(token) != null) {
                         privateList = guessGame.get(user).get(token);
                     }
                     privateList.add(currentToken);
 
                     System.out.println("Added " + token + privateList);
                     guessGame.get(user).put(token, privateList);
-                    if(guessGame.get(user).get(token).size() == 0){
-                        JOptionPane.showMessageDialog(null, "Woopsie");
-                    }
                     singleValue = token;
                     counter++;
+
                 }
+            }
 
-                if (!player.hasCard(weapon)) {
-
+            if (!player.hasCard(weapon)) {
+                if (guessGame.get(user).get(weapon) != null && guessGame.get(user).get(weapon).size()
+                        == 0) {
+                } else {
                     ArrayList<Integer> privateList = new ArrayList<>();
                     privateList.clear();
-                    if(guessGame.get(user).get(weapon) != null) {
+                    if (guessGame.get(user).get(weapon) != null) {
                         privateList = guessGame.get(user).get(weapon);
                     }
                     privateList.add(currentToken);
                     System.out.println("Added " + weapon + privateList);
                     guessGame.get(user).put(weapon, privateList);
-                    if(guessGame.get(user).get(weapon).size() == 0){
-                        JOptionPane.showMessageDialog(null, "Woopsie");
-                    }
                     singleValue = weapon;
                     counter++;
                 }
+            }
 
-                if (!player.hasCard(room)) {
-
+            if (!player.hasCard(room)) {
+                if (guessGame.get(user).get(room) != null && guessGame.get(user).get(room).size()
+                        == 0) {
+                } else {
                     ArrayList<Integer> privateList = new ArrayList<>();
                     privateList.clear();
-                    if(guessGame.get(user).get(room) != null) {
+                    if (guessGame.get(user).get(room) != null) {
                         privateList = guessGame.get(user).get(room);
                     }
                     privateList.add(currentToken);
                     guessGame.get(user).put(room, privateList);
                     System.out.println("Added " + room + privateList);
-                    if(guessGame.get(user).get(room).size() == 0){
-                        JOptionPane.showMessageDialog(null, "Woopsie");
-                    }
                     singleValue = room;
                     counter++;
                 }
-
-                answerCounter.put(user, currentToken);
-
-
-
-                if (counter == 1) {
-                    if (!privateSeen.contains(singleValue)) {
-                        privateSeen.add(singleValue);
-                        System.out.println("EHM?\n\n\n\\n\\n\n\n????");
-                        reloadGuessMap();
-                    }
-                } else {
-                    System.out.println(counter);
-                }
-                //System.out.println(guessGame);
-                System.out.println(answerCounter);
             }
 
-            System.out.println(guessGame);
+            answerCounter.put(user, currentToken);
+
+
+            if (counter == 1) {
+                if (!privateSeen.contains(singleValue)) {
+                    privateSeen.add(singleValue);
+                    System.out.println("SEEN:");
+                    System.out.println(privateSeen);
+                    for (String s : Names.ROOM_CARD_NAMES) {
+                        if (player.hasSeen(s)) {
+                            System.out.println(s);
+                        }
+                    }
+                    for (String s : Names.SUSPECT_NAMES) {
+                        if (player.hasSeen(s)) {
+                            System.out.println(s);
+                        }
+                    }
+                    for (String s : Names.WEAPON_NAMES) {
+                        if (player.hasSeen(s)) {
+                            System.out.println(s);
+                        }
+                    }
+                    System.out.println("Player's cards:");
+                    for (Card c : player.getCards()) {
+                        System.out.print("[" + c.toString() + "]");
+                    }
+                    System.out.println(
+                            "EHM?\n\n\n\\n\\n\n\n????" + singleValue + room + weapon + token);
+                    reloadGuessMap();
+                    //System.exit(67);
+                }
+            } else {
+                System.out.println(counter);
+            }
+            //System.out.println(guessGame);
+            System.out.println(answerCounter);
         }
+
+        System.out.println(guessGame);
+    }
 
     private String getRoomCard() {
         for (Card card : player.getCards()) {
@@ -483,16 +563,19 @@ public class Bot2 implements BotAPI {
         // Add your code here
         int i = 0;
 
-        ArrayList<Coordinates> doorPath = calculatePath(player.getToken().getRoom().getDoorCoordinates(i), map.getRoom(goToRoom).getDoorCoordinates(i));
+        ArrayList<Coordinates> doorPath = calculatePath(
+                player.getToken().getRoom().getDoorCoordinates(i),
+                map.getRoom(goToRoom).getDoorCoordinates(i));
         ArrayList<Coordinates> tmp = new ArrayList<Coordinates>();
 
         //Finds best path between my current room doors and the next room doors
-        for(; i < player.getToken().getRoom().getNumberOfDoors(); i++) {
+        for (; i < player.getToken().getRoom().getNumberOfDoors(); i++) {
 
-            for(int j = 0; j < map.getRoom(goToRoom).getNumberOfDoors(); j++) {
-                tmp = calculatePath(player.getToken().getRoom().getDoorCoordinates(i), map.getRoom(goToRoom).getDoorCoordinates(j));
+            for (int j = 0; j < map.getRoom(goToRoom).getNumberOfDoors(); j++) {
+                tmp = calculatePath(player.getToken().getRoom().getDoorCoordinates(i),
+                        map.getRoom(goToRoom).getDoorCoordinates(j));
 
-                if(doorPath.size() > tmp.size()) {
+                if (doorPath.size() > tmp.size()) {
                     doorPath = tmp;
 
                 }
@@ -596,9 +679,8 @@ public class Bot2 implements BotAPI {
             if (u.equals(user) || u.equals(player.getName())) {
                 continue;
             } else if (guessGame.get(u).get(card) != null) {
-                guessGame.get(u).put(card, null);
+                guessGame.get(u).put(card, new ArrayList<Integer>());
                 System.out.println("Updated value of card " + card + " on user " + u);
-                System.out.println(guessGame);
             }
         }
     }
@@ -609,22 +691,25 @@ public class Bot2 implements BotAPI {
         for (String c : playersInfo.getPlayersNames()) {
             System.out.println(c + " IS MY NAME !");
             int currentCount = answerCounter.get(c);
-            if(c != player.getName()){
-                for(int i=1; i<=currentCount; i++){
-                    Iterator<java.util.Map.Entry<String, ArrayList<Integer>>> it = guessGame.get(c).entrySet().iterator();
-                    int d = 0; String found = "";
+            if (c != player.getName()) {
+                for (int i = 1; i <= currentCount; i++) {
+                    Iterator<java.util.Map.Entry<String, ArrayList<Integer>>> it = guessGame.get(
+                            c).entrySet().iterator();
+                    int d = 0;
+                    String found = "";
                     while (it.hasNext()) {
-                        java.util.Map.Entry<String, ArrayList<Integer>>  pair = (java.util.Map.Entry)it.next();
-                        if(pair.getValue() != null && pair.getValue().contains(i)){
+                        java.util.Map.Entry<String, ArrayList<Integer>> pair =
+                                (java.util.Map.Entry) it.next();
+                        if (pair.getValue() != null && pair.getValue().contains(i)) {
                             d++;
                             found = pair.getKey();
                         }
                     }
 
-                    if(d == 1){
-                        if(!privateSeen.contains(found)){
-                            privateSeen.add(found);
+                    if (d == 1) {
+                        if (!privateSeen.contains(found)) {
                             JOptionPane.showMessageDialog(null, "We've found" + found);
+                            privateSeen.add(found);
                         }
                     }
                 }
