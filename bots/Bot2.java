@@ -808,7 +808,7 @@ public class Bot2 implements BotAPI {
 
                     if (d == 1) {
                         if (!privateSeen.contains(found)) {
-                            JOptionPane.showMessageDialog(null, "We've found" + found);
+                            //JOptionPane.showMessageDialog(null, "We've found" + found);
                             privateSeen.add(found);
                         }
                     }
