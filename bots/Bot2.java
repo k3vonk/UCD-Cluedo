@@ -146,6 +146,7 @@ public class Bot2 implements BotAPI {
                     "===================  Remaining: BOT2 ==================="
                             + getUnseenTokens().size() + "," + getUnseenWeapons().size() + ","
                             + getUnseenRooms().size());
+            System.out.println(privateSeen);
         }
 
         //Has the player rolled their dice for the start of the round
@@ -256,31 +257,36 @@ public class Bot2 implements BotAPI {
     private void learn(String user, String token, String weapon, String room) {
 
         if (!user.equals(player.getName())) {
-            int currentToken = answerCounter.get(user);
+            int currentToken = answerCounter.get(user) + 1;
             int counter = 0;
             String singleValue = "";
+
+            if (guessGame.get(user).get(token) != 0) {
+                currentToken = guessGame.get(user).get(token) - 1;
+            }
+            if (guessGame.get(user).get(weapon) != 0) {
+                currentToken = guessGame.get(user).get(weapon) - 1;
+            }
+            if (guessGame.get(user).get(room) != 0) {
+                currentToken = guessGame.get(user).get(room) - 1;
+            }
+
             if (!player.hasCard(token)) {
-                if (guessGame.get(user).get((token)) == 0) {
-                    guessGame.get(user).put(token, currentToken + 1);
-                    singleValue = token;
-                    counter++;
-                }
+                guessGame.get(user).put(token, currentToken);
+                singleValue = token;
+                counter++;
             }
 
             if (!player.hasCard(weapon)) {
-                if (guessGame.get(user).get((weapon)) == 0) {
-                    guessGame.get(user).put(weapon, currentToken + 1);
-                    singleValue = weapon;
-                    counter++;
-                }
+                guessGame.get(user).put(weapon, currentToken);
+                singleValue = weapon;
+                counter++;
             }
 
             if (!player.hasCard(room)) {
-                if (guessGame.get(user).get((room)) == 0) {
-                    guessGame.get(user).put(room, currentToken + 1);
-                    singleValue = room;
-                    counter++;
-                }
+                guessGame.get(user).put(room, currentToken);
+                singleValue = room;
+                counter++;
             }
 
             answerCounter.put(user, currentToken + 1);
@@ -293,7 +299,10 @@ public class Bot2 implements BotAPI {
             }
 
             if (counter == 1) {
-                System.out.println(singleValue + "unseen?");
+                if (!privateSeen.contains(singleValue)) {
+                    privateSeen.add(singleValue);
+                    System.out.println("EHM?\n\n\n\\n\\n\n\n????");
+                }
             } else {
                 System.out.println(counter);
             }
@@ -403,6 +412,14 @@ public class Bot2 implements BotAPI {
             return getUnseenTokens().get(0);
         }
 
+        if (!accuse && getUnseenTokens().size() == 1) {
+            String randCard = "";
+            do {
+                randCard = Names.SUSPECT_NAMES[rand.nextInt(Names.SUSPECT_NAMES.length)];
+            } while (!player.hasCard(randCard));
+            return randCard;
+        }
+
         //Ask random cards as long as its not seen
         //Ask random cards as long as its not seen
         do {
@@ -431,6 +448,16 @@ public class Bot2 implements BotAPI {
         if (accuse) {
             return getUnseenWeapons().get(0);
         }
+
+        if (!accuse && getUnseenWeapons().size() == 1) {
+            String randCard = "";
+            do {
+                randCard = Names.WEAPON_NAMES[rand.nextInt(Names.WEAPON_NAMES.length)];
+            } while (!player.hasCard(randCard));
+            return randCard;
+
+        }
+
         ArrayList<String> unseen = getUnseenWeapons();
         return unseen.get(rand.nextInt(unseen.size()));
     }
@@ -525,7 +552,6 @@ public class Bot2 implements BotAPI {
                 }
             }
             if (foundQ) {
-                JOptionPane.showMessageDialog(null, "YIKES?");
                 if (!player.hasCard(token)) {
                     found[0] = token;
                 }
