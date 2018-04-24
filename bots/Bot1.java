@@ -8,8 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.JOptionPane;
-
 import gameengine.*;
 
 public class Bot1 implements BotAPI {
@@ -85,18 +83,7 @@ public class Bot1 implements BotAPI {
             } else if (accuse) {
                 goToRoom = "Cellar";
             } else {
-                goToRoom = getRandomRoomCard();
-            }
-        }
-        
-        //Only take passage if it is a seen card, otherwise no point leaving
-        if (player.getToken().isInRoom() && squaresMoved == 0) {
-            if (player.getToken().getRoom().hasPassage()) {
-                if (player.hasSeen(player.getToken().getRoom().toString())) {
-                	hasRolled = true;
-                	System.out.println("PASSAGE! ACCESSED");
-                	return "passage";
-                }
+                goToRoom = Names.ROOM_CARD_NAMES[rand.nextInt(Names.ROOM_CARD_NAMES.length)];
             }
         }
         
@@ -145,6 +132,18 @@ public class Bot1 implements BotAPI {
 
 	//Movement of the bot
 	public String getMove() {
+		
+        //Only take passage if it is a seen card, otherwise no point leaving
+        if (player.getToken().isInRoom()) {
+            if (player.getToken().getRoom().hasPassage()) {
+                if (player.hasSeen(player.getToken().getRoom().toString())) {
+                	hasRolled = true;
+                	System.out.println("PASSAGE! ACCESSED");
+                	return "passage";
+                }
+            }
+        }
+        
 		
 		Coordinates playerPosition = player.getToken().getPosition();
 		
@@ -681,6 +680,7 @@ public class Bot1 implements BotAPI {
         return Names.ROOM_CARD_NAMES[rand.nextInt(Names.ROOM_CARD_NAMES.length)];
     }
     
+    /*
     //Obtains a random card
     private String getRandomRoomCard() {
         ArrayList<String> rooms = new ArrayList<>();
@@ -690,7 +690,7 @@ public class Bot1 implements BotAPI {
             }
         }
         return rooms.get(rand.nextInt(rooms.size()));
-    }
+    }*/
     
     //A* calculating path
     private ArrayList<Coordinates> calculatePath(Coordinates s, Coordinates e) {
@@ -746,7 +746,7 @@ public class Bot1 implements BotAPI {
                 if (d == 1) {
                     if (!privateSeen.contains(current)) {
                         privateSeen.add(current);
-                        JOptionPane.showMessageDialog(null, "n1" + current);
+                      //  JOptionPane.showMessageDialog(null, "n1" + current); test
                     }
                 }
             }
