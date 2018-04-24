@@ -1,5 +1,6 @@
 package bots;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -40,7 +41,7 @@ public class Bot2 implements BotAPI {
     private boolean hasRolled = false;
     private int switchX = 1;
     private int logSizeCounter = 0;
-    private HashMap<String, HashMap<String, Integer>> guessGame = new HashMap<>();
+    private HashMap<String, HashMap<String, ArrayList<Integer>>> guessGame = new HashMap<>();
     private HashMap<String, Integer> answerCounter = new HashMap<>();
     private ArrayList<String> privateSeen = new ArrayList<>();
     private String[] found = {null, null, null};
@@ -70,20 +71,21 @@ public class Bot2 implements BotAPI {
                 if (s.equals(player.getName())) {
                     continue;
                 }
-                HashMap<String, Integer> cardMap = new HashMap<>();
+                HashMap<String, ArrayList<Integer>> cardMap = new HashMap<>();
                 for (String y : Names.SUSPECT_NAMES) {
-                    cardMap.put(y, 0);
+                    cardMap.put(y, null);
                 }
                 for (String y : Names.WEAPON_NAMES) {
-                    cardMap.put(y, 0);
+                    cardMap.put(y, null);
                 }
                 for (String y : Names.ROOM_CARD_NAMES) {
-                    cardMap.put(y, 0);
+                    cardMap.put(y, null);
                 }
                 System.out.println(cardMap);
                 guessGame.put(s, cardMap);
             }
         }
+
 
 
         if (!log.isEmpty()) {
@@ -106,7 +108,6 @@ public class Bot2 implements BotAPI {
 
         }
 
-
         if (player.getToken().isInRoom()) {
             pathLeft = 0;
             goToRoom = null;
@@ -127,10 +128,8 @@ public class Bot2 implements BotAPI {
             if (player.getToken().getRoom().hasPassage()) {
                 if (goToRoom.equals(
                         player.getToken().getRoom().getPassageDestination().toString())) {
-                    if (player.hasSeen(player.getToken().getRoom().toString())) {
-                        hasRolled = true;
+                        //hasRolled = true;
                         return "passage";
-                    }
                 }
             }
         }
@@ -260,60 +259,80 @@ public class Bot2 implements BotAPI {
 
         if (!user.equals(player.getName())) {
             int currentToken = answerCounter.get(user) + 1;
+            System.out.println(currentToken + "<<< CURREN TTOKENNNNNN");
             int counter = 0;
             String singleValue = "";
 
-            if (guessGame.get(user).get(token) != 0) {
-                currentToken = guessGame.get(user).get(token);
-            }
-            if (guessGame.get(user).get(weapon) != 0) {
-                currentToken = guessGame.get(user).get(weapon);
-            }
-            if (guessGame.get(user).get(room) != 0) {
-                currentToken = guessGame.get(user).get(room);
-            }
 
-            if (!player.hasCard(token)) {
-                guessGame.get(user).put(token, currentToken);
-                singleValue = token;
-                counter++;
-            }
+                if (!player.hasCard(token)) {
+                    ArrayList<Integer> privateList = new ArrayList<>();
+                    if(guessGame.get(user).get(token) != null) {
+                        privateList = guessGame.get(user).get(token);
+                    }
+                    privateList.add(currentToken);
 
-            if (!player.hasCard(weapon)) {
-                guessGame.get(user).put(weapon, currentToken);
-                singleValue = weapon;
-                counter++;
-            }
-
-            if (!player.hasCard(room)) {
-                guessGame.get(user).put(room, currentToken);
-                singleValue = room;
-                counter++;
-            }
-
-            answerCounter.put(user, currentToken + 1);
-
-
-            for (Card c : player.getCards()) {
-                if (!hasSeen(c.toString())) {
-                    System.out.println("Player has :" + c.toString());
+                    System.out.println("Added " + token + privateList);
+                    guessGame.get(user).put(token, privateList);
+                    if(guessGame.get(user).get(token).size() == 0){
+                        JOptionPane.showMessageDialog(null, "Woopsie");
+                    }
+                    singleValue = token;
+                    counter++;
                 }
+
+                if (!player.hasCard(weapon)) {
+
+                    ArrayList<Integer> privateList = new ArrayList<>();
+                    privateList.clear();
+                    if(guessGame.get(user).get(weapon) != null) {
+                        privateList = guessGame.get(user).get(weapon);
+                    }
+                    privateList.add(currentToken);
+                    System.out.println("Added " + weapon + privateList);
+                    guessGame.get(user).put(weapon, privateList);
+                    if(guessGame.get(user).get(weapon).size() == 0){
+                        JOptionPane.showMessageDialog(null, "Woopsie");
+                    }
+                    singleValue = weapon;
+                    counter++;
+                }
+
+                if (!player.hasCard(room)) {
+
+                    ArrayList<Integer> privateList = new ArrayList<>();
+                    privateList.clear();
+                    if(guessGame.get(user).get(room) != null) {
+                        privateList = guessGame.get(user).get(room);
+                    }
+                    privateList.add(currentToken);
+                    guessGame.get(user).put(room, privateList);
+                    System.out.println("Added " + room + privateList);
+                    if(guessGame.get(user).get(room).size() == 0){
+                        JOptionPane.showMessageDialog(null, "Woopsie");
+                    }
+                    singleValue = room;
+                    counter++;
+                }
+
+                answerCounter.put(user, currentToken);
+
+
+
+                if (counter == 1) {
+                    if (!privateSeen.contains(singleValue)) {
+                        privateSeen.add(singleValue);
+                        System.out.println("EHM?\n\n\n\\n\\n\n\n????");
+                        reloadGuessMap();
+                    }
+                } else {
+                    System.out.println(counter);
+                }
+                //System.out.println(guessGame);
+                System.out.println(answerCounter);
             }
 
-            if (counter == 1) {
-                if (!privateSeen.contains(singleValue)) {
-                    privateSeen.add(singleValue);
-                    System.out.println("EHM?\n\n\n\\n\\n\n\n????");
-                }
-            } else {
-                System.out.println(counter);
-            }
             System.out.println(guessGame);
-            System.out.println(answerCounter);
         }
-
-    }
-
 
     private String getRoomCard() {
         for (Card card : player.getCards()) {
@@ -327,6 +346,7 @@ public class Bot2 implements BotAPI {
 
         return Names.ROOM_CARD_NAMES[rand.nextInt(Names.ROOM_CARD_NAMES.length)];
     }
+
 
     private String getRandomRoomCard() {
         ArrayList<String> rooms = new ArrayList<>();
@@ -575,8 +595,8 @@ public class Bot2 implements BotAPI {
         for (String u : playersInfo.getPlayersNames()) {
             if (u.equals(user) || u.equals(player.getName())) {
                 continue;
-            } else if (guessGame.get(u).get(card) != 0) {
-                guessGame.get(u).put(card, 0);
+            } else if (guessGame.get(u).get(card) != null) {
+                guessGame.get(u).put(card, null);
                 System.out.println("Updated value of card " + card + " on user " + u);
                 System.out.println(guessGame);
             }
@@ -584,28 +604,34 @@ public class Bot2 implements BotAPI {
     }
 
     public void reloadGuessMap() {
+        System.out.println(guessGame);
         String current = "";
         for (String c : playersInfo.getPlayersNames()) {
+            System.out.println(c + " IS MY NAME !");
             int currentCount = answerCounter.get(c);
-            for (int i = 1; i <= currentCount; i++) {
-                Iterator it = guessGame.get(c).entrySet().iterator();
-                int d = 0;
-                while (it.hasNext()) {
-                    java.util.Map.Entry pair = (java.util.Map.Entry) it.next();
-                    System.out.println(pair.getKey() + " = " + pair.getValue());
-                    if (pair.getValue().equals(i)) {
-                        d++;
-                        current = pair.getKey().toString();
+            if(c != player.getName()){
+                for(int i=1; i<=currentCount; i++){
+                    Iterator<java.util.Map.Entry<String, ArrayList<Integer>>> it = guessGame.get(c).entrySet().iterator();
+                    int d = 0; String found = "";
+                    while (it.hasNext()) {
+                        java.util.Map.Entry<String, ArrayList<Integer>>  pair = (java.util.Map.Entry)it.next();
+                        if(pair.getValue() != null && pair.getValue().contains(i)){
+                            d++;
+                            found = pair.getKey();
+                        }
+                    }
+
+                    if(d == 1){
+                        if(!privateSeen.contains(found)){
+                            privateSeen.add(found);
+                            JOptionPane.showMessageDialog(null, "We've found" + found);
+                        }
                     }
                 }
-                if (d == 1) {
-                    if (!privateSeen.contains(current)) {
-                        privateSeen.add(current);
-                        JOptionPane.showMessageDialog(null, "n1" + current);
-                    }
-                }
+
             }
         }
+
     }
 
     public void notifyPlayerName(String playerName) {
@@ -625,6 +651,7 @@ public class Bot2 implements BotAPI {
     public void notifyTurnOver(String playerName, String position) {
         // Add your code here
         System.out.println(playerName + " " + position);
+
 
     }
 
