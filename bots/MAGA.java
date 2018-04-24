@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 import gameengine.*;
 
-public class Bot1 implements BotAPI {
+public class MAGA implements BotAPI {
 	
     private Player player;
     private PlayersInfo playersInfo;
@@ -41,7 +41,7 @@ public class Bot1 implements BotAPI {
     private ArrayList<String> privateSeen = new ArrayList<>();
     private String[] found = {null, null, null};
 
-    public Bot1(Player player, PlayersInfo playersInfo, Map map, Dice dice, Log log, Deck deck) {
+    public MAGA(Player player, PlayersInfo playersInfo, Map map, Dice dice, Log log, Deck deck) {
         this.player = player;
         this.playersInfo = playersInfo;
         this.map = map;
