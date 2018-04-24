@@ -506,8 +506,8 @@ public class Bot2 implements BotAPI {
 
         Coordinates playerPosition = player.getToken().getPosition();
         if (pathLeft == 0) {
-            // JOptionPane.showMessageDialog(null,
-            //         player.getName() + " is moving towards room: " + goToRoom);
+           // JOptionPane.showMessageDialog(null,
+           //         player.getName() + " is moving towards room: " + goToRoom);
             //JOptionPane.showMessageDialog(null, "unseen rooms" + getUnseenRooms());
             //JOptionPane.showMessageDialog(null, player.getCards());
             path = calculatePath(player.getToken().getPosition(),

@@ -7,40 +7,36 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import javax.swing.*;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
+import javax.swing.JOptionPane;
 
 import gameengine.*;
 
 public class Bot3 implements BotAPI {
-
-    // The public API of Bot must not change
-    // This is ONLY class that you can edit in the program
-    // Rename Bot to the name of your team. Use camel case.
-    // Bot may not alter the state of the board or the player objects
-    // It may only inspect the state of the board and the player objects
-
+	
     private Player player;
     private PlayersInfo playersInfo;
     private Map map;
     private Dice dice;
     private Log log;
     private Deck deck;
-    private int squaresMoved = 0;
-    private int pathLeft;
     private Random rand = new Random();
+    
+    //Checks
+    private boolean hasAccused = false;
+    private boolean hasRolled = false;
+    private boolean accuse = false;
+    
+    //Movement
     private String mapDirections[] = {"u", "d", "l", "r"};
-    private Boolean hasAccused = false;
     private ArrayList<Coordinates> path;
     private String goToRoom = null;
-    private boolean accuse = false;
-    private boolean hasRolled = false;
-    private int switchX = 1;
+    private int pathLeft;
+    private int squaresMoved = 0;
+    
+    //Log/Predictions
     private int logSizeCounter = 0;
-    private HashMap<String, HashMap<String, Integer>> guessGame = new HashMap<>();
+    private HashMap<String, HashMap<String, ArrayList<Integer>>> guessGame = new HashMap<>();
     private HashMap<String, Integer> answerCounter = new HashMap<>();
     private ArrayList<String> privateSeen = new ArrayList<>();
     private String[] found = {null, null, null};
@@ -53,65 +49,39 @@ public class Bot3 implements BotAPI {
         this.log = log;
         this.deck = deck;
     }
+    
+    //Class name
+	public String getName() {
+		return "MAGA";
+	}
 
-    public String getName() {
-        return "MAGA3"; // must match the class name
-    }
+	//Release
+	public String getVersion() {
+		return "0.1";
+	}
 
-    public String getVersion() {
-        return "0.1";   // change on a new release
-    }
+	@Override
+	public String getCommand() {
 
-    public String getCommand() {
+		//Setting up predictions
+		if(guessGame.isEmpty()) { guessSheetSetUp(); }
+		
+		
+		//Update log (needs to be moved to notify turn over)
+		if(!log.isEmpty()) { updateGuessSheet(); }
+		
+		//If a player just walks into a room, reset
+		if(player.getToken().isInRoom()) {
+			pathLeft = 0;
+			goToRoom = null;
+		}
 
-        if (guessGame.isEmpty()) {
-            for (String s : playersInfo.getPlayersNames()) {
-                answerCounter.put(s, 0);
-                if (s.equals(player.getName())) {
-                    continue;
-                }
-                HashMap<String, Integer> cardMap = new HashMap<>();
-                for (String y : Names.SUSPECT_NAMES) {
-                    cardMap.put(y, 0);
-                }
-                for (String y : Names.WEAPON_NAMES) {
-                    cardMap.put(y, 0);
-                }
-                for (String y : Names.ROOM_CARD_NAMES) {
-                    cardMap.put(y, 0);
-                }
-                System.out.println(cardMap);
-                guessGame.put(s, cardMap);
-            }
-        }
-
-
-        if (!log.isEmpty()) {
-            int count = 0;
-            ArrayList<String> tmp = new ArrayList<>();
-            for (String s : log) {
-                tmp.add(s);
-                count++;
-
-            }
-
-            while (tmp.size() != count - logSizeCounter) {
-                System.out.println(tmp.size() + " " + (count - logSizeCounter));
-                tmp.remove(0);
-            }
-
-            analyseLog(tmp);
-
-            logSizeCounter += count - logSizeCounter;
-
-        }
-
-
-        if (player.getToken().isInRoom()) {
-            pathLeft = 0;
-            goToRoom = null;
-        }
-
+        /*Strategy: 
+		 *If there is no new destination
+		 *1. We have a lot of unseen cards, move to a room where our bot has the roomCard
+		 *2. If we are allowed to accuse, move to cellar
+		 *3. Go to an unseen card room [Most likely only room left (envelope)]
+		 */
         if (goToRoom == null) {
             if (getUnseenWeapons().size() > 1 && getUnseenTokens().size() > 1) {
                 goToRoom = getRoomCard();
@@ -121,36 +91,33 @@ public class Bot3 implements BotAPI {
                 goToRoom = getRandomRoomCard();
             }
         }
-
-
+        
+        //Passage
         if (player.getToken().isInRoom() && !hasRolled) {
             if (player.getToken().getRoom().hasPassage()) {
-                if (goToRoom.equals(
-                        player.getToken().getRoom().getPassageDestination().toString())) {
-                    if (player.hasSeen(player.getToken().getRoom().toString())) {
-                        hasRolled = true;
-                        return "passage";
-                    }
+                if (goToRoom.equals(player.getToken().getRoom().getPassageDestination().toString())) {
+                    //hasRolled = true;
+                    JOptionPane.showMessageDialog(null, "used passage");
+                    return "passage";
                 }
             }
         }
-
-
-        if (getUnseenRooms().size() == 1 && getUnseenTokens().size() == 1
-                && getUnseenWeapons().size() == 1) {
+        
+		//(test)
+        //If unseen cards are 1 for each category then accuse, else do nothing
+        if (getUnseenRooms().size() == 1 && getUnseenTokens().size() == 1 && getUnseenWeapons().size() == 1) {
             System.out.println("TIME TO ACCUSE");
             System.out.println(getUnseenRooms().get(0));
             System.out.println(getUnseenTokens().get(0));
             System.out.println(getUnseenWeapons().get(0));
             accuse = true;
         } else {
-            System.out.println(
-                    "===================  Remaining: BOT3 ==================="
-                            + getUnseenTokens().size() + "," + getUnseenWeapons().size() + ","
+        	System.out.println("===================  Remaining: MAGA ==================="
+            + "\nRemaining Cards [T,W,R]: " + getUnseenTokens().size() + "," + getUnseenWeapons().size() + ","
                             + getUnseenRooms().size());
             System.out.println(privateSeen);
         }
-
+		
         //Has the player rolled their dice for the start of the round
         if (!hasRolled) {
             //resets (start of turn)
@@ -171,184 +138,28 @@ public class Bot3 implements BotAPI {
                 hasRolled = false;
                 return "done";
             }
-        }//In room just rolled, so he can leave the room or passage
-        else if (!map.isCorridor(player.getToken().getPosition()) && squaresMoved == 0) {
-            //passage
-            //exit
-            //(might need to incooperate to A*)
-            hasRolled = false;
-            return "done";
         }
 
         //resets
         hasRolled = false;
-        return "done";
-    }
-
-    private ArrayList<String> getUnseenRooms() {
-        ArrayList<String> unseenRooms = new ArrayList<>();
-        if (found[2] != null) {
-            unseenRooms.add(found[2]);
-            return unseenRooms;
-        }
-
-        for (String room : Names.ROOM_CARD_NAMES) {
-            if (!player.hasCard(room) && !hasSeen(room)) {
-                unseenRooms.add(room);
-            }
-        }
-        return unseenRooms;
-    }
+        return "done";       
+	}
 
 
-    private ArrayList<String> getUnseenTokens() {
-        ArrayList<String> unseenTokens = new ArrayList<>();
-        if (found[0] != null) {
-            unseenTokens.add(found[0]);
-            return unseenTokens;
-        }
-        for (String token : Names.SUSPECT_NAMES) {
-            if (!player.hasCard(token) && !hasSeen(token)) {
-                unseenTokens.add(token);
-            }
-        }
-        if (unseenTokens.size() == 0) {
-            System.out.println(found[0]);
-            System.exit(5);
-        }
-        return unseenTokens;
-    }
-
-    private ArrayList<String> getUnseenWeapons() {
-        ArrayList<String> unseenWeapons = new ArrayList<>();
-        if (found[1] != null) {
-            unseenWeapons.add(found[1]);
-            return unseenWeapons;
-        }
-        for (String weapon : Names.WEAPON_NAMES) {
-            if (!player.hasCard(weapon) && !hasSeen(weapon)) {
-                unseenWeapons.add(weapon);
-            }
-        }
-        return unseenWeapons;
-    }
-
-
-    private void analyseLog(ArrayList<String> logx) {
-
-        for (int i = 0; i < logx.size(); i++) {
-            System.out.println(logx.get(i));
-            if (logx.get(i).contains("questioned")) {
-                int z = i + 1;
-                System.out.println(logx.get(z));
-                if (logx.get(z).contains("showed")) {
-                    String token = logx.get(i).split("with", 2)[0].trim();
-                    token = token.split("about", 2)[1].trim();
-                    String rest = logx.get(i).split("with the ", 2)[1];
-                    String room = rest.split("in the", 2)[1];
-                    room = room.substring(1, room.length() - 1);
-                    String weapon = rest.split(" in", 2)[0];
-                    String user = logx.get(z).split(" ", 2)[0];
-                    System.out.println(user + "XD" + token + "xd" + weapon + "XD" + room + "XD");
-                    learn(user, token, weapon, room);
-                }
-            }
-        }
-    }
-
-    private void learn(String user, String token, String weapon, String room) {
-
-        if (!user.equals(player.getName())) {
-            int currentToken = answerCounter.get(user) + 1;
-            int counter = 0;
-            String singleValue = "";
-
-            if (guessGame.get(user).get(token) != 0) {
-                currentToken = guessGame.get(user).get(token);
-            }
-            if (guessGame.get(user).get(weapon) != 0) {
-                currentToken = guessGame.get(user).get(weapon);
-            }
-            if (guessGame.get(user).get(room) != 0) {
-                currentToken = guessGame.get(user).get(room);
-            }
-
-            if (!player.hasCard(token)) {
-                guessGame.get(user).put(token, currentToken);
-                singleValue = token;
-                counter++;
-            }
-
-            if (!player.hasCard(weapon)) {
-                guessGame.get(user).put(weapon, currentToken);
-                singleValue = weapon;
-                counter++;
-            }
-
-            if (!player.hasCard(room)) {
-                guessGame.get(user).put(room, currentToken);
-                singleValue = room;
-                counter++;
-            }
-
-            answerCounter.put(user, currentToken + 1);
-
-
-            for (Card c : player.getCards()) {
-                if (!hasSeen(c.toString())) {
-                    System.out.println("Player has :" + c.toString());
-                }
-            }
-
-            if (counter == 1) {
-                if (!privateSeen.contains(singleValue)) {
-                    privateSeen.add(singleValue);
-                    System.out.println("EHM?\n\n\n\\n\\n\n\n????");
-                }
-            } else {
-                System.out.println(counter);
-            }
-            System.out.println(guessGame);
-            System.out.println(answerCounter);
-        }
-
-    }
-
-
-    private String getRoomCard() {
-        for (Card card : player.getCards()) {
-            for (String room : Names.ROOM_CARD_NAMES) {
-                System.out.println("Comparing:" + card + room);
-                if (card.toString().equals(room)) {
-                    return card.toString();
-                }
-            }
-        }
-
-        return Names.ROOM_CARD_NAMES[rand.nextInt(Names.ROOM_CARD_NAMES.length)];
-    }
-
-    private String getRandomRoomCard() {
-        ArrayList<String> rooms = new ArrayList<>();
-        for (String room : Names.ROOM_CARD_NAMES) {
-            if (getUnseenRooms().contains(room)) {
-                rooms.add(room);
-            }
-        }
-        return rooms.get(rand.nextInt(rooms.size()));
-    }
-
-    public String getMove() {
-
-
-        Coordinates playerPosition = player.getToken().getPosition();
-        if (pathLeft == 0) {
-            System.out.println(player.getName() + "is moving towards room: " + goToRoom);
+	//Movement of the bot
+	public String getMove() {
+		
+		Coordinates playerPosition = player.getToken().getPosition();
+		
+		//Calculates the path from current position to destination
+		if(pathLeft == 0) {
+			//(test) message
+			System.out.println(player.getName() + " is moving towards room " + goToRoom);
             path = calculatePath(player.getToken().getPosition(),
                     map.getRoom(goToRoom).getDoorCoordinates(0));
             pathLeft += path.size();
-        }
-
+		}
+		
         if (path.size() == 0) {
             // When the AI tries to go back into the room it is in.
             Coordinates up = map.getNewPosition(playerPosition, "u");
@@ -372,126 +183,126 @@ public class Bot3 implements BotAPI {
 
             System.out.println("Path: " + path);
         }
+        
+        //Direction bot is moving in
         String randMove = getDirection(player.getToken().getPosition(),
                 path.remove(path.size() - 1));
         System.out.println("Direction:" + randMove);
         pathLeft--;
         squaresMoved += 1;
         return randMove;
+	}
 
-    }
-
-
-    private ArrayList<Coordinates> calculatePath(Coordinates s, Coordinates e) {
-
-        BZAstar pathFinder = new BZAstar(24, 25);
-        ArrayList<Coordinates> path = pathFinder.calculateAStarNoTerrain(s, e);
-        return path;
-    }
-
-    private String getDirection(Coordinates start, Coordinates end) {
-
-        System.out.println("Moving from: " + start + " to: " + end);
-        if (start.getRow() < end.getRow()) {
-            return "d";
-        } else if (start.getRow() > end.getRow()) {
-            return "u";
-        } else if (start.getCol() > end.getCol()) {
-            return "l";
-        } else if (start.getCol() < end.getCol()) {
-            return "r";
-        }
-
-        return null;
-    }
-
-    public String getSuspect() {
-
+	/**
+	 * Strategy:
+	 * 1. Just get unseen suspects
+	 * 2. If unseen suspect = 1, then we bluff
+	 */
+	public String getSuspect() {
+		
         ArrayList<String> unseen = getUnseenTokens();
-        String suspect = Names.SUSPECT_NAMES[0]; //Default
-
+        
+        //Accusation
         if (accuse) {
-            System.out.println(privateSeen);
-            System.out.println(guessGame);
             return getUnseenTokens().get(0);
         }
 
+        //Bluffing
         if (!accuse && getUnseenTokens().size() == 1) {
-            String randCard = Names.SUSPECT_NAMES[rand.nextInt(Names.SUSPECT_NAMES.length)];
             for (String s : Names.SUSPECT_NAMES) {
                 if (player.hasCard(s)) {
                     return s;
                 }
             }
-            return unseen.get(rand.nextInt(unseen.size()));
         }
 
         return unseen.get(rand.nextInt(unseen.size()));
-    }
+	}
 
-    public String getWeapon() {
+	/**
+	 * Strategy:
+	 * 1. Just get unseen suspects
+	 * 2. If unseen suspect = 1, then we bluff
+	 */
+	public String getWeapon() {
 
         ArrayList<String> unseen = getUnseenWeapons();
-        // Add your code here
+
+        //Accusation
         if (accuse) {
             return getUnseenWeapons().get(0);
         }
 
+        //Bluffing
         if (!accuse && getUnseenWeapons().size() == 1) {
-            String randCard = Names.WEAPON_NAMES[rand.nextInt(Names.WEAPON_NAMES.length)];
             for (String s : Names.WEAPON_NAMES) {
                 if (player.hasCard(s)) {
                     return s;
                 }
             }
-            return unseen.get(rand.nextInt(unseen.size()));
         }
+        
         return unseen.get(rand.nextInt(unseen.size()));
-    }
+	}
 
-    public String getRoom() {
+	/**
+	 * Strategy:
+	 * 1. Only get unseen rooms 
+	 */
+	public String getRoom() {
         if (accuse) {
             return getUnseenRooms().get(0);
         }
-        // Add your code here
-        System.exit(0);
-        ArrayList<String> unseen = getUnseenRooms();
-        return unseen.get(rand.nextInt(unseen.size()));
-    }
+        return getUnseenRooms().get(rand.nextInt(getUnseenRooms().size()));
+	}
+	
+	/**
+	 * Strategy:
+	 * 1. Finds the room the player is in
+	 * 2. Its available doors to exit from
+	 * 3. The destination room it wants to go to & its doors
+	 * 4. Calculates the best path from door to door
+	 * 5. Best path is our exit
+	 */
+	public String getDoor() {
+    	int door = 0;
+    	ArrayList<Coordinates> doorPath = calculatePath(player.getToken().getRoom().getDoorCoordinates(0), map.getRoom(goToRoom).getDoorCoordinates(0));
+    	ArrayList<Coordinates> tmp = new ArrayList<Coordinates>();
+    	
+    	//Finds best path between my current room doors and the next room doors
+    	for(int i = 0; i < player.getToken().getRoom().getNumberOfDoors(); i++) {
+    		for(int j = 0; j < map.getRoom(goToRoom).getNumberOfDoors(); j++) {
+    			tmp = calculatePath(player.getToken().getRoom().getDoorCoordinates(i), map.getRoom(goToRoom).getDoorCoordinates(j));
+    			
+    			//If found better path
+    			if(doorPath.size() > tmp.size()) {
+        			doorPath = tmp;
+        			door = i;
+        		}
+    		}
+    	}
 
-    public String getDoor() {
-        // Add your code here
-        int i = 0;
+    	return Integer.toString(door + 1);	
+	}
 
-        ArrayList<Coordinates> doorPath = calculatePath(player.getToken().getRoom().getDoorCoordinates(i), map.getRoom(goToRoom).getDoorCoordinates(i));
-        ArrayList<Coordinates> tmp = new ArrayList<Coordinates>();
-
-        //Finds best path between my current room doors and the next room doors
-        for(; i < player.getToken().getRoom().getNumberOfDoors(); i++) {
-
-            for(int j = 0; j < map.getRoom(goToRoom).getNumberOfDoors(); j++) {
-                tmp = calculatePath(player.getToken().getRoom().getDoorCoordinates(i), map.getRoom(goToRoom).getDoorCoordinates(j));
-
-                if(doorPath.size() > tmp.size()) {
-                    doorPath = tmp;
-
-                }
-            }
-        }
-        return Integer.toString(i);
-    }
-
-    public String getCard(Cards matchingCards) {
-        // Basic strategy for getCard. If they accuse us and we have the card, we give it to them.
-        // Otherwise returns not a room if possible since they are harder to access.
+	/**
+	 * Strategy:
+	 * 1. Return not a room if possible
+	 * Reason:
+	 * 1. Player takes more time walking from room to room
+	 */
+	public String getCard(Cards matchingCards) {
         boolean cardFound = false;
         String bestChoice = matchingCards.get().toString();
+        
+        //Get rid of bot's own token card
         for(Card card : matchingCards){
             if(card.hasName(player.getToken().getName())){
                 bestChoice = card.toString();
                 cardFound = true;
             }
         }
+        
         if(!cardFound){
           for (String weapon : Names.WEAPON_NAMES) {
                for (Card card : matchingCards) {
@@ -522,13 +333,19 @@ public class Bot3 implements BotAPI {
         }
 
         return bestChoice;
-    }
+	}
 
-    public void notifyResponse(Log response) {
-        // Add your code here
+	/**
+	 * Strategy
+	 * 1. If someone responds to a question
+	 * 2. Update our guessing sheet
+	 */
+	public void notifyResponse(Log response) {
+		
         String user = "";
         String cardShown = "";
         Boolean saw = false;
+        
         for (String s : response) {
             if (s.contains("showed")) {
                 saw = true;
@@ -575,77 +392,523 @@ public class Bot3 implements BotAPI {
             }
 
         }
+	}
 
+	public void notifyPlayerName(String playerName) {
+        System.out.println("PLAYER NAME:" + playerName);
+	}
+
+	public void notifyTurnOver(String playerName, String position) {
+		
+		System.out.println(playerName + " " + position);
+	}
+
+	public void notifyQuery(String playerName, String query) {
+        System.out.println(playerName + query);
+	}
+
+	public void notifyReply(String playerName, boolean cardShown) {
+
+	}
+	
+	//Prediction sheet
+	private void guessSheetSetUp() {
+		for(String name: playersInfo.getPlayersNames()) {
+			answerCounter.put(name, 0);
+			
+			//Don't record yourself
+			if(name.equals(player.getName())) {
+				continue;
+			}
+			
+			HashMap<String, ArrayList<Integer>> cardMap = new HashMap<>();
+			
+			for(String token: Names.SUSPECT_NAMES) {
+				cardMap.put(token, null);
+			}
+			for(String weapon: Names.WEAPON_NAMES) {
+				cardMap.put(weapon, null);
+			}
+			for(String room: Names.ROOM_CARD_NAMES) {
+				cardMap.put(room, null);
+			}
+			
+			System.out.println(cardMap); 	//(test) Displays deck of cards for other players
+			guessGame.put(name, cardMap); 	//Each player has a deck with integer beside each card
+		}
+	}
+	
+	//When log is updated, update guessGame
+	private void updateGuessSheet() {
+		ArrayList<String> tmp = new ArrayList<>();
+		int count = 0;
+		
+		//The amount of query in log
+		for(String info: log) {
+			tmp.add(info);
+			count++;
+		}
+		
+		//If there are any new logs
+		while(tmp.size() != count - logSizeCounter) {
+			tmp.remove(0);
+		}
+		
+		analyseLog(tmp);
+		logSizeCounter += count - logSizeCounter;
+	}
+	
+	
+	//Parsing the new log
+	private void analyseLog(ArrayList<String> tmp) {
+		for(int i = 0; i < tmp.size(); i++) {
+			
+			if(tmp.get(i).contains("questioned")) {
+				int z = i + 1;
+				
+				if(tmp.get(z).contains("showed")) {
+					String token = tmp.get(i).split("with", 2)[0].trim();
+					token = token.split("about", 2)[1].trim();
+					
+					String rest = tmp.get(i).split("with the ", 2)[1];
+					
+					String room = rest.split("in the", 2)[1];
+					room = room.substring(1, room.length() - 1);
+					
+					String weapon = rest.split(" in", 2)[0];
+					String user = tmp.get(z).split(" ", 2)[0];
+					
+					//(test) to see if parsing is right
+					System.out.println("USER: " + user + " TOKEN: " + token + " WEAPON: " + weapon + " ROOM: " + room);
+					learn(user, token, weapon, room);
+				}else {
+					String token = tmp.get(i).split("with", 2)[0].trim();
+					token = token.split("about", 2)[1].trim();
+					
+					String rest = tmp.get(i).split("with the ", 2)[1];
+					String room = rest.split("in the", 2)[1];
+					room = room.substring(1, room.length() - 1);
+					
+					String weapon = rest.split(" in", 2)[0];
+					String user = tmp.get(z).split(" ", 2)[0];
+					removeGuess(user, token, weapon, room);
+				}
+			}
+		}
+	}
+	
+	//Remove guess from the guess sheet
+    private void removeGuess(String user, String token, String weapon, String room) {
+        if (!user.equals(player.getName())) {
+            if (guessGame.get(user).get(token) != null) {
+                if (guessGame.get(user).get(token).size() != 0) {
+                    guessGame.get(user).put(token, new ArrayList<Integer>());
+                }
+            }
+
+            if (guessGame.get(user).get(weapon) != null) {
+                if (guessGame.get(user).get(weapon).size() != 0) {
+                    guessGame.get(user).put(weapon, new ArrayList<Integer>());
+                }
+            }
+
+            if (guessGame.get(user).get(room) != null) {
+                if (guessGame.get(user).get(room).size() != 0) {
+                    guessGame.get(user).put(room, new ArrayList<Integer>());
+                }
+            }
+        }
+
+        reloadGuessMap();
+    }
+	
+	
+	private void learn(String user, String token, String weapon, String room) {
+		//Can't learn anything new if, the bot itself answered the question
+		if(!user.equals(player.getName())) {
+			int currentToken = answerCounter.get(user) + 1;
+			int counter = 0;
+			String singleValue = "";
+					
+			//Unseen cards, increment their counters for guessing
+            if (!player.hasCard(token)) {
+                if (guessGame.get(user).get(token) != null && guessGame.get(user).get(token).size()
+                        == 0) {
+                } else {
+                    ArrayList<Integer> privateList = new ArrayList<>();
+                    if (guessGame.get(user).get(token) != null) {
+                        privateList = guessGame.get(user).get(token);
+                    }
+                    privateList.add(currentToken);
+
+                    System.out.println("Added " + token + privateList);
+                    guessGame.get(user).put(token, privateList);
+                    singleValue = token;
+                    counter++;
+
+                }
+            }
+
+            if (!player.hasCard(weapon)) {
+                if (guessGame.get(user).get(weapon) != null && guessGame.get(user).get(
+                        weapon).size()
+                        == 0) {
+                } else {
+                    ArrayList<Integer> privateList = new ArrayList<>();
+                    privateList.clear();
+                    if (guessGame.get(user).get(weapon) != null) {
+                        privateList = guessGame.get(user).get(weapon);
+                    }
+                    privateList.add(currentToken);
+                    System.out.println("Added " + weapon + privateList);
+                    guessGame.get(user).put(weapon, privateList);
+                    singleValue = weapon;
+                    counter++;
+                }
+            }
+
+            if (!player.hasCard(room)) {
+                if (guessGame.get(user).get(room) != null && guessGame.get(user).get(room).size()
+                        == 0) {
+                } else {
+                    ArrayList<Integer> privateList = new ArrayList<>();
+                    privateList.clear();
+                    if (guessGame.get(user).get(room) != null) {
+                        privateList = guessGame.get(user).get(room);
+                    }
+                    privateList.add(currentToken);
+                    guessGame.get(user).put(room, privateList);
+                    System.out.println("Added " + room + privateList);
+                    singleValue = room;
+                    counter++;
+                }
+            }
+            
+            answerCounter.put(user, currentToken);
+            
+            //(test) to see players cards
+            for(Card card: player.getCards()) {
+            	if(!hasSeen(card.toString())) {
+            		System.out.println("Player has: " + card.toString());
+            	}
+            }
+            
+            if (counter == 1) {
+                if (!privateSeen.contains(singleValue)) {
+                    privateSeen.add(singleValue);
+                    System.out.println("SEEN:");
+                    System.out.println(privateSeen);
+                    for (String s : Names.ROOM_CARD_NAMES) {
+                        if (player.hasSeen(s)) {
+                            System.out.println(s);
+                        }
+                    }
+                    for (String s : Names.SUSPECT_NAMES) {
+                        if (player.hasSeen(s)) {
+                            System.out.println(s);
+                        }
+                    }
+                    for (String s : Names.WEAPON_NAMES) {
+                        if (player.hasSeen(s)) {
+                            System.out.println(s);
+                        }
+                    }
+                    System.out.println("Player's cards:");
+                    for (Card c : player.getCards()) {
+                        System.out.print("[" + c.toString() + "]");
+                    }
+             
+                    reloadGuessMap();
+                 
+                }
+            } else {
+                System.out.println(counter);
+            }
+            System.out.println(answerCounter);
+        }
+
+        System.out.println(guessGame);		
+	}
+	
+	//Checks to see if card has been seen 
+    private boolean hasSeen(String card) {
+        if (player.hasSeen(card) || privateSeen.contains(card)) {
+            return true;
+        }
+        return false;
+    }
+    
+    //Unseen token cards
+    private ArrayList<String> getUnseenTokens() {
+        ArrayList<String> unseenTokens = new ArrayList<>();
+        
+        //Token accusation found
+        if (found[0] != null) {
+            unseenTokens.add(found[0]);
+            return unseenTokens;
+        }
+        
+        for (String token : Names.SUSPECT_NAMES) {
+            if (!player.hasCard(token) && !player.hasSeen(token)) {
+                unseenTokens.add(token);
+            }
+        }
+        return unseenTokens;
     }
 
-    public void updateGuessMap(String user, String card) {
+    //Unseen weapon cards
+    private ArrayList<String> getUnseenWeapons() {
+        ArrayList<String> unseenWeapons = new ArrayList<>();
+        
+        //Weapon accusation found
+        if (found[1] != null) {
+            unseenWeapons.add(found[1]);
+            return unseenWeapons;
+        }
+        
+        for (String weapon : Names.WEAPON_NAMES) {
+            if (!player.hasCard(weapon) && !player.hasSeen(weapon)) {
+                unseenWeapons.add(weapon);
+            }
+        }
+        return unseenWeapons;
+    }
+    
+    //Unseen room cards
+    private ArrayList<String> getUnseenRooms() {
+        ArrayList<String> unseenRooms = new ArrayList<>();
+        
+        //Accusation of room is found
+        if(found[2] != null) {
+        	unseenRooms.add(found[2]);
+        	return unseenRooms;
+        }
+        
+        for (String room : Names.ROOM_CARD_NAMES) {
+            if (!player.hasCard(room) && !player.hasSeen(room)) {
+                unseenRooms.add(room);
+            }
+        }
+        return unseenRooms;
+    }
+    
+    /**
+     * Strategy:
+     * 1. Acquires best path from player to room
+     * 2. Take account into different doors, to find the best door to enter to
+     * @return
+     */
+    private String getRoomCard() {        
+        ArrayList<String> myRooms = new ArrayList<>();
+
+        //Gets a list of room cards that the bot has
+        for (Card card : player.getCards()) {
+            for (String room : Names.ROOM_CARD_NAMES) {
+                if (card.toString().equals(room)) {
+                    myRooms.add(room);
+                }
+            }
+        }
+
+        if (!myRooms.isEmpty()) {
+
+            return getClosestRoom(myRooms);
+
+        } else if (!getUnseenRooms().isEmpty()) {
+            ArrayList<Room> unseenRooms = new ArrayList<Room>();
+            ArrayList<String> rooms = getUnseenRooms();
+
+            //Adds to arrayList
+            for (int i = 0; i < rooms.size(); i++) {
+                unseenRooms.add(map.getRoom(rooms.get(i)));
+            }
+
+            if (!player.getToken().isInRoom()) {
+                int room = 0;
+                ArrayList<Coordinates> doorPath = calculatePath(
+                        player.getToken().getPosition(), unseenRooms.get(0).getDoorCoordinates(0));
+
+                ArrayList<Coordinates> tmp = new ArrayList<Coordinates>();
+
+                //Rooms we have
+                for (int i = 0; i < unseenRooms.size(); i++) {
+                    //The doors of that room
+                    for (int j = 0; j < unseenRooms.get(i).getNumberOfDoors(); j++) {
+                        tmp = calculatePath(player.getToken().getPosition(),
+                                unseenRooms.get(i).getDoorCoordinates(j));
+
+                        if (doorPath.size() > tmp.size()) {
+                            doorPath = tmp;
+                            room = i;
+                        }
+                    }
+                }
+
+                return unseenRooms.get(room).toString();
+            } else {
+                int room = 0;
+                ArrayList<Coordinates> doorPath = calculatePath(
+                        player.getToken().getRoom().getDoorCoordinates(0),
+                        unseenRooms.get(0).getDoorCoordinates(0));
+                ArrayList<Coordinates> tmp = new ArrayList<Coordinates>();
+
+                //Token position - doors
+                for (int i = 0; i < player.getToken().getRoom().getNumberOfDoors(); i++) {
+                    //Rooms we have
+                    for (int j = 0; j < unseenRooms.size(); j++) {
+                        //The doors of that room
+                        for (int k = 0; k < unseenRooms.get(j).getNumberOfDoors(); k++) {
+                            tmp = calculatePath(player.getToken().getRoom().getDoorCoordinates(i),
+                                    unseenRooms.get(j).getDoorCoordinates(k));
+
+                            if (doorPath.size() > tmp.size()) {
+                                doorPath = tmp;
+                                room = j;
+                            }
+                        }
+                    }
+                }
+                return unseenRooms.get(room).toString();
+            }
+        }
+        
+        return Names.ROOM_CARD_NAMES[rand.nextInt(Names.ROOM_CARD_NAMES.length)];
+    }
+    
+  
+    /**
+     * Strategy:
+     * 1. Goes around to find the right unseen room
+     * @return
+     */
+    private String getRandomRoomCard() {
+
+        if (!hasSeen(player.getToken().getRoom().toString()) && !player.hasCard(
+                player.getToken().getRoom().toString())) {
+            return player.getToken().getRoom().toString();
+        }
+        return getClosestRoom(getUnseenRooms());
+    }
+    
+    //Acquires shortest distance between player and room
+    private String getClosestRoom(ArrayList<String> rooms) {
+    	
+    	//Acquires shortest distance from room A to room B
+        if (player.getToken().isInRoom()) {
+            if (rooms.contains(player.getToken().getRoom().toString())) {
+                return player.getToken().getRoom().toString();
+            }else{
+                goToRoom = rooms.get(0);
+                ArrayList<Coordinates> bestDoor = calculatePath(player.getToken().getRoom().getDoorCoordinates(Integer.parseInt(getDoor())-1),
+                        map.getRoom(rooms.get(0)).getDoorCoordinates(0));
+                int bestRoom = 0;
+                for (int i = 1; i < rooms.size(); i++) {
+                    goToRoom = rooms.get(i);
+                    ArrayList<Coordinates> tmp = calculatePath(player.getToken().getRoom().getDoorCoordinates(Integer.parseInt(getDoor())-1),
+                            map.getRoom(rooms.get(i)).getDoorCoordinates(0));
+                    if (tmp.size() < bestDoor.size()) {
+                        bestDoor = tmp;
+                        bestRoom = i;
+                    }
+                }
+                return rooms.get(bestRoom);
+            }
+        }else {
+
+            ArrayList<Coordinates> bestDoor = calculatePath(player.getToken().getPosition(),
+                    map.getRoom(rooms.get(0)).getDoorCoordinates(0));
+            int bestRoom = 0;
+            for (int i = 1; i < rooms.size(); i++) {
+                ArrayList<Coordinates> tmp = calculatePath(player.getToken().getPosition(),
+                        map.getRoom(rooms.get(i)).getDoorCoordinates(0));
+                if (tmp.size() < bestDoor.size()) {
+                    bestDoor = tmp;
+                    bestRoom = i;
+                }
+            }
+            return rooms.get(bestRoom);
+        }
+    }
+    
+    //A* calculating path
+    private ArrayList<Coordinates> calculatePath(Coordinates s, Coordinates e) {
+        BZAstar pathFinder = new BZAstar(24, 25);
+        ArrayList<Coordinates> path = pathFinder.calculateAStarNoTerrain(s, e);
+        return path;
+    }
+
+    private String getDirection(Coordinates start, Coordinates end) {
+
+        System.out.println("Moving from: " + start + " to: " + end);
+        if (start.getRow() < end.getRow()) {
+            return "d";
+        } else if (start.getRow() > end.getRow()) {
+            return "u";
+        } else if (start.getCol() > end.getCol()) {
+            return "l";
+        } else if (start.getCol() < end.getCol()) {
+            return "r";
+        }
+
+        return null;
+    }
+    
+    //Update guess sheet
+    private void updateGuessMap(String user, String card) {
         for (String u : playersInfo.getPlayersNames()) {
             if (u.equals(user) || u.equals(player.getName())) {
                 continue;
-            } else if (guessGame.get(u).get(card) != 0) {
-                guessGame.get(u).put(card, 0);
+            } else if (guessGame.get(u).get(card) != null) {
+                guessGame.get(u).put(card, new ArrayList<Integer>());
                 System.out.println("Updated value of card " + card + " on user " + u);
                 System.out.println(guessGame);
             }
         }
     }
 
-    public void reloadGuessMap() {
-        String current = "";
+    private void reloadGuessMap() {
+
         for (String c : playersInfo.getPlayersNames()) {
+            System.out.println(c + " IS MY NAME !");
             int currentCount = answerCounter.get(c);
-            for (int i = 1; i <= currentCount; i++) {
-                Iterator it = guessGame.get(c).entrySet().iterator();
-                int d = 0;
-                while (it.hasNext()) {
-                    java.util.Map.Entry pair = (java.util.Map.Entry) it.next();
-                    System.out.println(pair.getKey() + " = " + pair.getValue());
-                    if (pair.getValue().equals(i)) {
-                        d++;
-                        current = pair.getKey().toString();
+            if (c != player.getName()) {
+                for (int i = 1; i <= currentCount; i++) {
+                    Iterator<java.util.Map.Entry<String, ArrayList<Integer>>> it = guessGame.get(
+                            c).entrySet().iterator();
+                    int d = 0;
+                    String found = "";
+                    while (it.hasNext()) {
+                        java.util.Map.Entry<String, ArrayList<Integer>> pair = (java.util.Map.Entry) it.next();
+                        if (pair.getValue() != null && pair.getValue().contains(i)) {
+                            d++;
+                            found = pair.getKey();
+                        }
+                    }
+
+                    if (d == 1) {
+                        if (!privateSeen.contains(found)) {
+                            //JOptionPane.showMessageDialog(null, "We've found" + found);
+                            privateSeen.add(found);
+                        }
                     }
                 }
-                if (d == 1) {
-                    if (!privateSeen.contains(current)) {
-                        privateSeen.add(current);
-                        JOptionPane.showMessageDialog(null, "n1" + current);
-                    }
-                }
+
             }
         }
     }
+ 
 
-    public void notifyPlayerName(String playerName) {
-        // Add your code here
-        System.out.println("PLAYER NAME:" + playerName);
-    }
-
-
-    public boolean hasSeen(String card) {
-        if (player.hasSeen(card) || privateSeen.contains(card)) {
-            return true;
-        }
-        return false;
-    }
-
-
-    public void notifyTurnOver(String playerName, String position) {
-        // Add your code here
-        System.out.println(playerName + " " + position);
-
-    }
-
-    public void notifyQuery(String playerName, String query) {
-        // Add your code here
-        System.out.println(playerName + query);
-
-
-    }
-
-    public void notifyReply(String playerName, boolean cardShown) {
-    }
-
-
+    
+    
+    
+    
+    
+    
+    //////////////////////////////////////////////////////////////////////////////
+    //																			//
+    //					A* PATH FINDING											//		
+    //																			//
+    //////////////////////////////////////////////////////////////////////////////
     class BZAstar {
 
         private final int width;
@@ -793,5 +1056,5 @@ public class Bot3 implements BotAPI {
         }
     }
 
+	
 }
-
