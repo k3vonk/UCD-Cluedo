@@ -35,6 +35,7 @@ public class Bot1 implements BotAPI {
 
     private String mapDirections[] = {"u", "d", "l", "r"};
     private ArrayList<Coordinates> path;
+   // private ArrayList<Card, List<String, String>> deductionPile = new ArrayList<Card, ArrayList<String, String>>();
     private String goToRoom = null;
 
 
@@ -63,7 +64,7 @@ public class Bot1 implements BotAPI {
             goToRoom = null;
         }
 
-        //Depending on hand, do something
+        //If no room to go to and depending on the size of unseen cards
         if (goToRoom == null) {
             if (getUnseenWeapons().size() > 1 && getUnseenTokens().size() > 1) {
                 goToRoom = getRoomCard();
@@ -73,7 +74,6 @@ public class Bot1 implements BotAPI {
                 goToRoom = getRandomRoomCard();
             }
         }
-
 
         //Only take passage if it is a seen card, otherwise no point leaving
         if (player.getToken().isInRoom() && squaresMoved == 0) {
@@ -125,8 +125,8 @@ public class Bot1 implements BotAPI {
 
     public String getMove() {
 
-
         Coordinates playerPosition = player.getToken().getPosition();
+        
         if (pathLeft == 0) {
             System.out.println(player.getName() + "is moving towards room: " + goToRoom);
             path = calculatePath(player.getToken().getPosition(),
@@ -163,7 +163,6 @@ public class Bot1 implements BotAPI {
         pathLeft--;
         squaresMoved += 1;
         return randMove;
-
     }
 
     public String getSuspect() {
@@ -355,23 +354,18 @@ public class Bot1 implements BotAPI {
     }
 
     public void notifyPlayerName(String playerName) {
-        // Add your code here
         System.out.println("PLAYER NAME:" + playerName);
-
-
     }
 
     public void notifyTurnOver(String playerName, String position) {
         // Add your code here
         System.out.println(playerName + " " + position);
-
     }
 
     public void notifyQuery(String playerName, String query) {
         // Add your code here
+    	System.out.println("QUERY: " + query);
         System.out.println(playerName + query);
-
-
     }
 
     public void notifyReply(String playerName, boolean cardShown) {
