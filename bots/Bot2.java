@@ -127,8 +127,10 @@ public class Bot2 implements BotAPI {
             if (player.getToken().getRoom().hasPassage()) {
                 if (goToRoom.equals(
                         player.getToken().getRoom().getPassageDestination().toString())) {
-                    hasRolled = true;
-                    return "passage";
+                    if (player.hasSeen(player.getToken().getRoom().toString())) {
+                        hasRolled = true;
+                        return "passage";
+                    }
                 }
             }
         }
@@ -424,27 +426,7 @@ public class Bot2 implements BotAPI {
             return unseen.get(rand.nextInt(unseen.size()));
         }
 
-        //Ask random cards as long as its not seen
-        //Ask random cards as long as its not seen
-        do {
-            do {
-                suspect = Names.SUSPECT_NAMES[rand.nextInt(Names.SUSPECT_NAMES.length)];
-
-                if (switchX == 0 && !hasSeen(suspect) && !player.hasCard(suspect)) {
-                    switchX = 1;
-                }
-            } while (switchX == 0);
-        } while (hasSeen(suspect));
-
-        //If you bluffed last turn, you cant bluff again
-        if (player.hasCard(suspect)) {
-            System.out.println("Just bluffed haha");
-            switchX = 0;
-        } else {
-            switchX = 1;
-        }
-
-        return suspect;
+        return unseen.get(rand.nextInt(unseen.size()));
     }
 
     public String getWeapon() {
@@ -479,7 +461,24 @@ public class Bot2 implements BotAPI {
 
     public String getDoor() {
         // Add your code here
-        return "1";
+        int i = 0;
+
+        ArrayList<Coordinates> doorPath = calculatePath(player.getToken().getRoom().getDoorCoordinates(i), map.getRoom(goToRoom).getDoorCoordinates(i));
+        ArrayList<Coordinates> tmp = new ArrayList<Coordinates>();
+
+        //Finds best path between my current room doors and the next room doors
+        for(; i < player.getToken().getRoom().getNumberOfDoors(); i++) {
+
+            for(int j = 0; j < map.getRoom(goToRoom).getNumberOfDoors(); j++) {
+                tmp = calculatePath(player.getToken().getRoom().getDoorCoordinates(i), map.getRoom(goToRoom).getDoorCoordinates(j));
+
+                if(doorPath.size() > tmp.size()) {
+                    doorPath = tmp;
+
+                }
+            }
+        }
+        return Integer.toString(i);
     }
 
     public String getCard(Cards matchingCards) {
@@ -602,8 +601,8 @@ public class Bot2 implements BotAPI {
                 if (d == 1) {
                     if (!privateSeen.contains(current)) {
                         privateSeen.add(current);
+                        JOptionPane.showMessageDialog(null, "n1" + current);
                     }
-
                 }
             }
         }
