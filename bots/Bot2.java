@@ -262,13 +262,13 @@ public class Bot2 implements BotAPI {
             String singleValue = "";
 
             if (guessGame.get(user).get(token) != 0) {
-                currentToken = guessGame.get(user).get(token) - 1;
+                currentToken = guessGame.get(user).get(token);
             }
             if (guessGame.get(user).get(weapon) != 0) {
-                currentToken = guessGame.get(user).get(weapon) - 1;
+                currentToken = guessGame.get(user).get(weapon);
             }
             if (guessGame.get(user).get(room) != 0) {
-                currentToken = guessGame.get(user).get(room) - 1;
+                currentToken = guessGame.get(user).get(room);
             }
 
             if (!player.hasCard(token)) {
@@ -404,6 +404,8 @@ public class Bot2 implements BotAPI {
     }
 
     public String getSuspect() {
+
+        ArrayList<String> unseen = getUnseenTokens();
         String suspect = Names.SUSPECT_NAMES[0]; //Default
 
         if (accuse) {
@@ -413,11 +415,13 @@ public class Bot2 implements BotAPI {
         }
 
         if (!accuse && getUnseenTokens().size() == 1) {
-            String randCard = "";
-            do {
-                randCard = Names.SUSPECT_NAMES[rand.nextInt(Names.SUSPECT_NAMES.length)];
-            } while (!player.hasCard(randCard));
-            return randCard;
+            String randCard = Names.SUSPECT_NAMES[rand.nextInt(Names.SUSPECT_NAMES.length)];
+            for (String s : Names.SUSPECT_NAMES) {
+                if (player.hasCard(s)) {
+                    return s;
+                }
+            }
+            return unseen.get(rand.nextInt(unseen.size()));
         }
 
         //Ask random cards as long as its not seen
@@ -444,21 +448,22 @@ public class Bot2 implements BotAPI {
     }
 
     public String getWeapon() {
+
+        ArrayList<String> unseen = getUnseenWeapons();
         // Add your code here
         if (accuse) {
             return getUnseenWeapons().get(0);
         }
 
         if (!accuse && getUnseenWeapons().size() == 1) {
-            String randCard = "";
-            do {
-                randCard = Names.WEAPON_NAMES[rand.nextInt(Names.WEAPON_NAMES.length)];
-            } while (!player.hasCard(randCard));
-            return randCard;
-
+            String randCard = Names.WEAPON_NAMES[rand.nextInt(Names.WEAPON_NAMES.length)];
+            for (String s : Names.WEAPON_NAMES) {
+                if (player.hasCard(s)) {
+                    return s;
+                }
+            }
+            return unseen.get(rand.nextInt(unseen.size()));
         }
-
-        ArrayList<String> unseen = getUnseenWeapons();
         return unseen.get(rand.nextInt(unseen.size()));
     }
 
