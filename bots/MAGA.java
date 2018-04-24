@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 import gameengine.*;
 
-public class Bot1 implements BotAPI {
+public class MAGA implements BotAPI {
 	
     private Player player;
     private PlayersInfo playersInfo;
@@ -41,7 +41,7 @@ public class Bot1 implements BotAPI {
     private ArrayList<String> privateSeen = new ArrayList<>();
     private String[] found = {null, null, null};
 
-    public Bot1(Player player, PlayersInfo playersInfo, Map map, Dice dice, Log log, Deck deck) {
+    public MAGA(Player player, PlayersInfo playersInfo, Map map, Dice dice, Log log, Deck deck) {
         this.player = player;
         this.playersInfo = playersInfo;
         this.map = map;
@@ -584,7 +584,8 @@ public class Bot1 implements BotAPI {
         if(!myRooms.isEmpty()) {
         	if(!player.getToken().isInRoom()) {
         		int room = 0;
-	        	ArrayList<Coordinates> doorPath = calculatePath(player.getToken().getPosition(), myRooms.get(0).getDoorCoordinates(0));
+	        	ArrayList<Coordinates> doorPath = calculatePath(
+	        					player.getToken().getPosition(), myRooms.get(0).getDoorCoordinates(0));
 	        	
 	        	ArrayList<Coordinates> tmp = new ArrayList<Coordinates>();
 	        	
@@ -694,6 +695,7 @@ public class Bot1 implements BotAPI {
     
     //A* calculating path
     private ArrayList<Coordinates> calculatePath(Coordinates s, Coordinates e) {
+
         BZAstar pathFinder = new BZAstar(24, 25);
         ArrayList<Coordinates> path = pathFinder.calculateAStarNoTerrain(s, e);
         return path;
