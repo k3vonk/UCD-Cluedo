@@ -584,8 +584,7 @@ public class Bot1 implements BotAPI {
         if(!myRooms.isEmpty()) {
         	if(!player.getToken().isInRoom()) {
         		int room = 0;
-	        	ArrayList<Coordinates> doorPath = calculatePath(
-	        					player.getToken().getPosition(), myRooms.get(0).getDoorCoordinates(0));
+	        	ArrayList<Coordinates> doorPath = calculatePath(player.getToken().getPosition(), myRooms.get(0).getDoorCoordinates(0));
 	        	
 	        	ArrayList<Coordinates> tmp = new ArrayList<Coordinates>();
 	        	
@@ -695,7 +694,6 @@ public class Bot1 implements BotAPI {
     
     //A* calculating path
     private ArrayList<Coordinates> calculatePath(Coordinates s, Coordinates e) {
-
         BZAstar pathFinder = new BZAstar(24, 25);
         ArrayList<Coordinates> path = pathFinder.calculateAStarNoTerrain(s, e);
         return path;
