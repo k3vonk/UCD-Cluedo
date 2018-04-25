@@ -794,10 +794,11 @@ public class Bot1 implements BotAPI {
      * 1. Goes around to find the right unseen room
      */
     private String getRandomRoomCard() {
-
-        if (!hasSeen(player.getToken().getRoom().toString()) && !player.hasCard(
-                player.getToken().getRoom().toString())) {
-            return player.getToken().getRoom().toString();
+        if(player.getToken().isInRoom()) {
+            if (!hasSeen(player.getToken().getRoom().toString()) && !player.hasCard(
+                    player.getToken().getRoom().toString())) {
+                return player.getToken().getRoom().toString();
+            }
         }
         return getClosestRoom(getUnseenRooms());
     }
