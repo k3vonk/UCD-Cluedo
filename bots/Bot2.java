@@ -137,17 +137,17 @@ public class Bot2 implements BotAPI {
 
         if (getUnseenRooms().size() == 1 && getUnseenTokens().size() == 1
                 && getUnseenWeapons().size() == 1) {
-            System.out.println("TIME TO ACCUSE");
-            System.out.println(getUnseenRooms().get(0));
-            System.out.println(getUnseenTokens().get(0));
-            System.out.println(getUnseenWeapons().get(0));
             accuse = true;
-        } else {
-            System.out.println(
-                    "===================  Remaining: BOT2 ==================="
-                            + getUnseenTokens().size() + "," + getUnseenWeapons().size() + ","
-                            + getUnseenRooms().size());
-            System.out.println(privateSeen);
+            goToRoom = "Cellar";
+            if(player.getToken().isInRoom()){
+                path = calculatePath(player.getToken().getRoom().getDoorCoordinates(Integer.parseInt(getDoor())-1),
+                        map.getRoom(goToRoom).getDoorCoordinates(0));
+            }else{
+                JOptionPane.showMessageDialog(null, "YIKES BOT 2");
+                path = calculatePath(player.getToken().getPosition(),
+                        map.getRoom(goToRoom).getDoorCoordinates(0));
+            }
+            pathLeft = path.size();
         }
 
         //Has the player rolled their dice for the start of the round
