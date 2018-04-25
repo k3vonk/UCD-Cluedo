@@ -1027,6 +1027,7 @@ public class Bot1 implements BotAPI {
                     if (!closedList.contains(adjNode)) {
                         if (!openList.contains(adjNode)) {
                             adjNode.parent = currentNode;
+                            // Calculates g and h value based on this node and the destination node
                             adjNode.calculateGValue(currentNode);
                             adjNode.calculateHValue(destNode);
                             openList.add(adjNode);
@@ -1097,11 +1098,13 @@ public class Bot1 implements BotAPI {
             this.gValue = amount;
         }
 
+        // Calculates an estimated cost to the finish line using basic maths
         public void calculateHValue(Node destPoint) {
             this.hValue = (Math.abs(point.getCol() - destPoint.point.getCol()) + Math.abs(
                     point.getRow() - destPoint.point.getRow())) * this.MOVEMENT_COST;
         }
 
+        // Calculates G value based on parent node's g value
         public void calculateGValue(Node point) {
             this.gValue = point.gValue + this.MOVEMENT_COST;
         }
