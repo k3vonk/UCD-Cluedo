@@ -1,5 +1,11 @@
 package bots;
 
+/**
+ * @Team MAGA
+ * @Author Royal Thomas 			- 16326926
+ * @Author Richard  Otroshchenko 	- 16353416	
+ * @Author Gajun Young 				- 16440714
+ */
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -23,7 +29,7 @@ public class Bot1 implements BotAPI {
     private Random rand = new Random();
     
     //Checks
-    private boolean hasAccused = false;
+    private boolean hasQuestioned = false;
     private boolean hasRolled = false;
     private boolean accuse = false;
     
@@ -67,7 +73,7 @@ public class Bot1 implements BotAPI {
 		if(guessGame.isEmpty()) { guessSheetSetUp(); }
 		
 		
-		//Update log (needs to be moved to notify turn over)
+		//Update log 
 		if(!log.isEmpty()) { updateGuessSheet(); }
 		
 		//If a player just walks into a room, reset
@@ -103,25 +109,25 @@ public class Bot1 implements BotAPI {
             }
         }
         
-		//(test)
         //If unseen cards are 1 for each category then accuse, else do nothing
         if (getUnseenRooms().size() == 1 && getUnseenTokens().size() == 1 && getUnseenWeapons().size() == 1) {
-            System.out.println("TIME TO ACCUSE");
+        	//Accusation
+        	/*  System.out.println("TIME TO ACCUSE");
             System.out.println(getUnseenRooms().get(0));
             System.out.println(getUnseenTokens().get(0));
-            System.out.println(getUnseenWeapons().get(0));
+            System.out.println(getUnseenWeapons().get(0)); */
             accuse = true;
-        } else {
+        }/* else {
         	System.out.println("===================  Remaining: MAGA ==================="
             + "\nRemaining Cards [T,W,R]: " + getUnseenTokens().size() + "," + getUnseenWeapons().size() + ","
                             + getUnseenRooms().size());
             System.out.println(privateSeen);
-        }
+        }*/
 		
         //Has the player rolled their dice for the start of the round
         if (!hasRolled) {
             //resets (start of turn)
-            hasAccused = false;
+            hasQuestioned = false;
             hasRolled = true;
             squaresMoved = 0;
             return "roll";
@@ -129,10 +135,9 @@ public class Bot1 implements BotAPI {
                 && player.getToken().getRoom().accusationAllowed()) {
             return "accuse";
         } else if (!map.isCorridor(player.getToken().getPosition()) && squaresMoved > 0) {
-            if (!hasAccused) {
-                System.out.println("I'm in a room can accuse");
-                // accuse
-                hasAccused = true;
+            if (!hasQuestioned) {
+                // System.out.println("I'm in a room can accuse");
+                hasQuestioned = true;
                 return "question";
             } else { //Player already questioned, nothing left to do
                 hasRolled = false;
@@ -154,7 +159,7 @@ public class Bot1 implements BotAPI {
 		//Calculates the path from current position to destination
 		if(pathLeft == 0) {
 			//(test) message
-			System.out.println(player.getName() + " is moving towards room " + goToRoom);
+			//System.out.println(player.getName() + " is moving towards room " + goToRoom);
             path = calculatePath(player.getToken().getPosition(),
                     map.getRoom(goToRoom).getDoorCoordinates(0));
             pathLeft += path.size();
@@ -181,13 +186,13 @@ public class Bot1 implements BotAPI {
                 path.add(right);
             }
 
-            System.out.println("Path: " + path);
+           // System.out.println("Path: " + path);
         }
         
         //Direction bot is moving in
         String randMove = getDirection(player.getToken().getPosition(),
                 path.remove(path.size() - 1));
-        System.out.println("Direction:" + randMove);
+        //System.out.println("Direction:" + randMove);
         pathLeft--;
         squaresMoved += 1;
         return randMove;
@@ -204,6 +209,8 @@ public class Bot1 implements BotAPI {
         
         //Accusation
         if (accuse) {
+        	System.out.println(privateSeen);
+            System.out.println(guessGame);
             return getUnseenTokens().get(0);
         }
 
@@ -349,12 +356,12 @@ public class Bot1 implements BotAPI {
         for (String s : response) {
             if (s.contains("showed")) {
                 saw = true;
-                System.out.println(s);
+                //System.out.println(s);
                 user = s.split(" ", 2)[0];
-                System.out.println("User: " + user);
+                //System.out.println("User: " + user);
                 cardShown = s.split(": ", 2)[1];
                 cardShown = cardShown.substring(0, cardShown.length() - 1);
-                System.out.println("Card: " + cardShown);
+                //System.out.println("Card: " + cardShown);
             }
         }
 
@@ -367,7 +374,7 @@ public class Bot1 implements BotAPI {
             String room = "";
             Boolean foundQ = false;
             for (String c : response) {
-                System.out.println(c);
+               // System.out.println(c);
                 if (c.contains("questioned")) {
                     foundQ = true;
                     token = c.split("with", 2)[0].trim();
@@ -376,7 +383,7 @@ public class Bot1 implements BotAPI {
                     room = rest.split("in the", 2)[1];
                     room = room.substring(1, room.length() - 1);
                     weapon = rest.split(" in", 2)[0];
-                    System.out.println(user + "XD" + token + "xd" + weapon + "XD" + room + "XD");
+                   // System.out.println(user + "XD" + token + "xd" + weapon + "XD" + room + "XD");
                 }
             }
             if (foundQ) {
@@ -433,7 +440,7 @@ public class Bot1 implements BotAPI {
 				cardMap.put(room, null);
 			}
 			
-			System.out.println(cardMap); 	//(test) Displays deck of cards for other players
+			//System.out.println(cardMap); 	//(test) Displays deck of cards for other players
 			guessGame.put(name, cardMap); 	//Each player has a deck with integer beside each card
 		}
 	}
@@ -466,6 +473,7 @@ public class Bot1 implements BotAPI {
 			if(tmp.get(i).contains("questioned")) {
 				int z = i + 1;
 				
+				//Answered
 				if(tmp.get(z).contains("showed")) {
 					String token = tmp.get(i).split("with", 2)[0].trim();
 					token = token.split("about", 2)[1].trim();
@@ -479,9 +487,9 @@ public class Bot1 implements BotAPI {
 					String user = tmp.get(z).split(" ", 2)[0];
 					
 					//(test) to see if parsing is right
-					System.out.println("USER: " + user + " TOKEN: " + token + " WEAPON: " + weapon + " ROOM: " + room);
+					//System.out.println("USER: " + user + " TOKEN: " + token + " WEAPON: " + weapon + " ROOM: " + room);
 					learn(user, token, weapon, room);
-				}else {
+				}else { //not answered
 					String token = tmp.get(i).split("with", 2)[0].trim();
 					token = token.split("about", 2)[1].trim();
 					
@@ -541,14 +549,13 @@ public class Bot1 implements BotAPI {
                     }
                     privateList.add(currentToken);
 
-                    System.out.println("Added " + token + privateList);
+                    //System.out.println("Added " + token + privateList);
                     guessGame.get(user).put(token, privateList);
                     singleValue = token;
                     counter++;
 
                 }
             }
-
             if (!player.hasCard(weapon)) {
                 if (guessGame.get(user).get(weapon) != null && guessGame.get(user).get(
                         weapon).size()
@@ -560,13 +567,12 @@ public class Bot1 implements BotAPI {
                         privateList = guessGame.get(user).get(weapon);
                     }
                     privateList.add(currentToken);
-                    System.out.println("Added " + weapon + privateList);
+                   // System.out.println("Added " + weapon + privateList);
                     guessGame.get(user).put(weapon, privateList);
                     singleValue = weapon;
                     counter++;
                 }
             }
-
             if (!player.hasCard(room)) {
                 if (guessGame.get(user).get(room) != null && guessGame.get(user).get(room).size()
                         == 0) {
@@ -578,25 +584,20 @@ public class Bot1 implements BotAPI {
                     }
                     privateList.add(currentToken);
                     guessGame.get(user).put(room, privateList);
-                    System.out.println("Added " + room + privateList);
+                   // System.out.println("Added " + room + privateList);
                     singleValue = room;
                     counter++;
                 }
             }
             
             answerCounter.put(user, currentToken);
-            
-            //(test) to see players cards
-            for(Card card: player.getCards()) {
-            	if(!hasSeen(card.toString())) {
-            		System.out.println("Player has: " + card.toString());
-            	}
-            }
-            
+                    
             if (counter == 1) {
                 if (!privateSeen.contains(singleValue)) {
                     privateSeen.add(singleValue);
-                    System.out.println("SEEN:");
+                    
+                    //(test visuals)
+                    /*System.out.println("SEEN:");
                     System.out.println(privateSeen);
                     for (String s : Names.ROOM_CARD_NAMES) {
                         if (player.hasSeen(s)) {
@@ -617,17 +618,17 @@ public class Bot1 implements BotAPI {
                     for (Card c : player.getCards()) {
                         System.out.print("[" + c.toString() + "]");
                     }
-             
+             		*/
                     reloadGuessMap();
                  
                 }
             } else {
-                System.out.println(counter);
+              //  System.out.println(counter);
             }
-            System.out.println(answerCounter);
+          //  System.out.println(answerCounter);
         }
 
-        System.out.println(guessGame);		
+       // System.out.println(guessGame);		
 	}
 	
 	//Checks to see if card has been seen 
@@ -860,17 +861,19 @@ public class Bot1 implements BotAPI {
                 continue;
             } else if (guessGame.get(u).get(card) != null) {
                 guessGame.get(u).put(card, new ArrayList<Integer>());
-                System.out.println("Updated value of card " + card + " on user " + u);
-                System.out.println(guessGame);
+               // System.out.println("Updated value of card " + card + " on user " + u);
+              //  System.out.println(guessGame);
             }
         }
     }
 
+    //Reload guess sheet with new data 
     private void reloadGuessMap() {
 
         for (String c : playersInfo.getPlayersNames()) {
-            System.out.println(c + " IS MY NAME !");
+           // System.out.println(c + " IS MY NAME !");
             int currentCount = answerCounter.get(c);
+            
             if (c != player.getName()) {
                 for (int i = 1; i <= currentCount; i++) {
                     Iterator<java.util.Map.Entry<String, ArrayList<Integer>>> it = guessGame.get(
@@ -898,11 +901,7 @@ public class Bot1 implements BotAPI {
     }
  
 
-    
-    
-    
-    
-    
+  
     
     //////////////////////////////////////////////////////////////////////////////
     //																			//
