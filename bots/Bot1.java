@@ -120,11 +120,12 @@ public class Bot1 implements BotAPI {
                 && getUnseenWeapons().size() == 1) {
             accuse = true;
             goToRoom = "Cellar";
+
+            // If the bot is mid movement and deduces the final murder cards, it changes direction.
             if(player.getToken().isInRoom()){
                 path = calculatePath(player.getToken().getRoom().getDoorCoordinates(Integer.parseInt(getDoor())-1),
                         map.getRoom(goToRoom).getDoorCoordinates(0));
             }else{
-                //JOptionPane.showMessageDialog(null, "YIKES BOT 1");
                 path = calculatePath(player.getToken().getPosition(),
                         map.getRoom(goToRoom).getDoorCoordinates(0));
             }
